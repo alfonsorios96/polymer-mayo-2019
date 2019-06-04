@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="polymer-first">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `polymer-first`
+     * description
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PolymerFirst extends Polymer.Element {
+      static get is() { return 'polymer-first'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'polymer-first'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PolymerFirst.is, PolymerFirst);
+  </script>
+</dom-module>
