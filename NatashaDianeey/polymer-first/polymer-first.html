@@ -1,0 +1,59 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="polymer-first">
+  <template>
+    <style>
+      .button {
+        background-color: royalblue;
+        border: 2px solid royalblue;
+        max-width: 100px;
+        height: auto;
+        padding: 10px 20px;
+        text-align: center;
+        color: antiquewhite;
+        cursor: pointer;
+      }
+      .button:hover {
+        border: 2px solid royalblue;
+        background-color: white;
+        color: royalblue;
+      }
+    </style>
+    <div class="button" on-click="submit">
+      [[label]]
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `polymer-first`
+     * description
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PolymerFirst extends Polymer.Element {
+      static get is() { return 'polymer-first'; }
+
+      static get properties() {
+        return {
+          label: {
+            type: String,
+            value: ''
+          } 
+        }
+      }
+
+      submit() {
+        this.dispatchEvent(new CustomEvent('button-clickeado', {
+        bubbles: false,
+        composed: false,
+        detail: 'ready my button'
+        }));
+      } 
+    }
+
+    window.customElements.define(PolymerFirst.is, PolymerFirst);
+  </script>
+</dom-module>
