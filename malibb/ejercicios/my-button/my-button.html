@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="my-button">
+  <template>
+    <style>
+      .button {
+                background-color: var(--my-button-background-color,aquamarine);
+                color: var(--my-button-color,black);
+                width:  var(--my-button-width,15vw);
+                height: var(--my-button-heigth,5vh);
+                padding: 1rem;
+                border: 0.1rem solid black;
+            }
+    </style>
+    <div class="button" on-click="submit">
+      [[label]]
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `my-button`
+     * &#34;My first button&#34;
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MyButton extends Polymer.Element {
+      static get is() { return 'my-button'; }
+      static get properties() {
+        return {
+          label: {
+            type: String,
+            value: ''
+          }
+        };
+      }
+
+      submit(){
+          this.dispatchEvent(new CustomEvent('button-clicked', {
+            bubbles: false,
+            composed: false,
+            detail: 'I was clicked O.O'
+          }));
+      }
+    }
+
+    window.customElements.define(MyButton.is, MyButton);
+  </script>
+</dom-module>
