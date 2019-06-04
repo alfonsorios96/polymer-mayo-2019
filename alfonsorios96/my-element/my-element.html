@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="my-element">
+    <template>
+        <style>
+            .button {
+                background-color: var(--my-element-button-background-color, white);
+                color: var(--my-element-button-color, blue);
+                padding: 5px;
+                border: 1px solid black;
+                max-width: 100px;
+                height: 40px;
+            }
+        </style>
+        <div class="button" on-click="submit">
+            [[label]]
+        </div>
+    </template>
+
+    <script>
+      /**
+       * `my-element`
+       * Loquesea
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class MyElement extends Polymer.Element {
+        static get is() {
+          return 'my-element';
+        }
+
+        static get properties() {
+          return {
+            label: {
+              type: String,
+              value: ''
+            }
+          };
+        }
+
+        submit(){
+          this.dispatchEvent(new CustomEvent('button-clicked', {
+            bubbles: false,
+            composed: false,
+            detail: 'My magic button was clicked.'
+          }));
+        }
+      }
+
+      window.customElements.define(MyElement.is, MyElement);
+    </script>
+</dom-module>

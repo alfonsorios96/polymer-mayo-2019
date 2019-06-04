@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>my-element demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="../my-element.html">
+  </head>
+  <body>
+  <style>
+    .button {
+      color: red;
+    }
+  </style>
+    <my-element label="My button"></my-element>
+  <script>
+    const element = document.querySelector('my-element');
+    element.addEventListener('button-clicked', event => {
+      alert(event.detail);
+    });
+  </script>
+  </body>
+</html>
