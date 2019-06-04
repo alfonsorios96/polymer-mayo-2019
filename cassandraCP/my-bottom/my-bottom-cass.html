@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="my-bottom-cass">
+  <template>
+    <style>
+      :host {
+        font-size: 10px(1rem);
+      }
+      .my-button-cass {
+        background-color: var(--my-background-color, #D68B8B);
+        max-width: 8rem;
+        height: 3rem;
+        color: black;
+        border: 1px solid black;
+      }
+    </style>
+    <div class="my-button-cass" on-click="submit"></div>
+        
+  </template>
+
+  <script>
+    /**
+     * `my-bottom-cass`
+     * &#34;boton como web component&#34;componente&#34;
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MyBottomCass extends Polymer.Element {
+      static get is() { return 'my-bottom-cass'; }
+      static get properties() {
+        return {
+          propertiesButton: {
+            type: String,
+            value: ''
+          }
+        };
+      }
+      submit(){
+          this.dispatchEvent(new CustomEvent('button-clicked', {
+            bubbles: false,
+            composed: false,
+            detail: 'Hola Cassandra'
+          }));
+        }
+    }
+
+    window.customElements.define(MyBottomCass.is, MyBottomCass);
+  </script>
+</dom-module>

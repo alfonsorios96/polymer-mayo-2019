@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>polymer-first demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../polymer-first.html">
+
+  </head>
+  <body>
+    <polymer-first label="Button"></polymer-first>
+    <script>
+      const element = document.querySelector('polymer-first');
+      element.addEventListener('button-clickeado', event => {
+        alert(event.detail);
+        console.log(event.detail);
+      });
+    </script>
+  </body>
+</html>
