@@ -1,0 +1,78 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="form-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <form>
+      <input id="userInput" placeholder="User">
+      <input id="passwordInput" placeholder="Password">
+      <button on-click="submit">Login</button>
+    </form>
+  </template>
+
+  <script>
+    /**
+     * `form-component`
+     * &#34;formulario login&#34;
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FormComponent extends Polymer.Element {
+      static get is() { return 'form-component'; }
+      static get properties() {
+        return {
+          user: {
+            type: String,
+            value: ''
+          },
+          password: {
+            type: String,
+            value: ''
+          }
+        };
+      }
+      submit(){        
+        const user={
+          userName=this.$.userInput.value,
+          passUser=this.$.passwordInput.value
+        }
+       
+        this.dispatchEvent(new CustomEvent('request-login', {
+            bubbles: false,
+            composed: false,
+            detail: user
+          }));
+        }
+      /*requestLogin(){
+        this.dispatchEvent(new CustomEvent('button-clicked', {
+            bubbles: false,
+            composed: false,
+            detail: `Solicitud de entrada de ${user} con la contraseña ${password}`
+          }));
+      }
+      loginSuccess(){
+        this.dispatchEvent(new CustomEvent('button-clicked', {
+            bubbles: false,
+            composed: false,
+            detail: `Acceso exitoso de ${user} con la contraseña ${password}`
+          }));
+      }
+      loginError(){
+        this.dispatchEvent(new CustomEvent('button-clicked', {
+            bubbles: false,
+            composed: false,
+            detail: `Acceso erróneo de ${user} con la contraseña ${password}`
+          }));
+      }*/
+      
+    }
+    
+    window.customElements.define(FormComponent.is, FormComponent);
+  </script>
+</dom-module>

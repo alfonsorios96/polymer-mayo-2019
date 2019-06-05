@@ -4,20 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>my-element demo</title>
+    <title></title>
 
     <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-    <link rel="import" href="../my-element.html">
+    <link rel="import" href="../my-bottom-cass.html">
   </head>
   <body>
   <style>
-    my-element {
-      --my-element-button-background-color: yellow;
+    .my-button-cass {
+      color: black;
     }
   </style>
-    <my-element label="My button"></my-element>
+    <my-bottom-cass propertiesButton="Cassandra"></my-bottom-cass>
   <script>
-    const element = document.querySelector('my-element');
+    const element = document.querySelector('my-bottom-cass');
     element.addEventListener('button-clicked', event => {
       alert(event.detail);
     });

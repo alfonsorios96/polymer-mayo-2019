@@ -1,0 +1,104 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+
+<dom-module id="form-component">
+  <template>
+    <style>
+      paper-button {
+        background-color: aqua;
+        color: black;
+      }
+      .container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+      }
+    </style>
+    <paper-toast text="" id="toast"></paper-toast>
+    <dom-if if="[[isLoading]]">
+      <template>
+          <paper-spinner active></paper-spinner>
+      </template>
+    </dom-if>
+    <dom-if if="[[!isLoading]]">
+        <template>
+            <div class="container">
+                <paper-input label="Usuario o correo electrónico" id="user"></paper-input>
+                <paper-input label="Contraseña" type="password" id="pass"></paper-input>
+                <paper-button on-click="submit">Iniciar sesión</paper-button>
+            </div>
+        </template>
+      </dom-if>
+  </template>
+
+  <script>
+    /**
+     * `form-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FormComponent extends Polymer.Element {
+      static get is() { return 'form-component'; }
+      static get properties() {
+        return {
+          message: {
+            type: String,
+            value: ''
+          },
+          username: {
+            type: String,
+            value: ''
+          },
+          password: {
+            type: String,
+            value: ''
+          },
+          isLoading: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+      submit() {
+        const user = {
+          username: this.shadowRoot.querySelector('#user').value,
+          password: this.shadowRoot.querySelector('#pass').value
+        };
+        this.dispatchEvent(new CustomEvent('request-login', {
+          bubbles: false,
+          composed: false,
+          detail: user
+        }));
+        this.set('isLoading', true);
+        setTimeout(() => {
+          this.responseSuccess();
+          this.set('isLoading', false);
+        }, 2000);
+      }
+      responseSuccess() {
+        this.$.toast.text = 'Login exitoso';
+        this.$.toast.show();
+        this.dispatchEvent(new CustomEvent('login-success', {
+          bubbles: false,
+          composed: false
+        }));
+      }
+      responseError() {
+        this.$.toast.text = 'Usuario o contraseña erróneo';
+        this.$.toast.show();
+        this.dispatchEvent(new CustomEvent('login-error', {
+          bubbles: false,
+          composed: false
+        }));
+      }
+    }
+
+    window.customElements.define(FormComponent.is, FormComponent);
+  </script>
+</dom-module>

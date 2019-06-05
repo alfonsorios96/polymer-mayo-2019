@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>my-button demo</title>
+
+    <link rel="import" href="../my-button.html">
+    <style>
+    .back{
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+    }
+    </style>
+
+  </head>
+  <body>
+    <div class="vertical-section-container centered back">
+          <my-button label="MY BUTTON"></my-button>
+    </div>
+  </body>
+  <script>
+    const element = document.querySelector('my-button');
+      element.addEventListener('button-clicked', event => {
+      alert(event.detail);
+    });
+  </script>
+</html>
