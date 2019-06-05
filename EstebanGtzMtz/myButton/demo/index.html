@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>magick-button demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../magick-button.html">
+
+</head>
+
+<body>
+    <magick-button label="My button ggg"></magick-button>
+    <script>
+        const element = document.querySelector('magick-button');
+        element.addEventListener('button-clicked', event => {
+            alert(event.detail);
+        })
+    </script>
+</body>
+
+</html>
