@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>modal-element demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../modal-element.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+        <modal-element></modal-element>
+        <script>
+          
+          const element = document.querySelector('modal-element');
+          element.addEventListener('modal-opened', event => console.log(event.detail));
+          element.addEventListener('modal-closed', event => console.log(event.detail));
+
+          element.addEventListener('modal-type', event => {
+            console.log(event.detail[0]);
+          });
+
+        </script>
+    </div>
+  </body>
+</html>
