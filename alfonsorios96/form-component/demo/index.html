@@ -18,19 +18,9 @@
     </custom-style>
   </head>
   <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic form-component demo</h3>
-      <demo-snippet>
-        <template>
-          <form-component></form-component>
-          <script>
-            const element = document.querySelector('form-component');
-            element.addEventListener('request-login', event => console.log(event.detail));
-            element.addEventListener('login-success', event => console.log('La petición fue exitosa'));
-            element.addEventListener('login-error', event => console.log('La petición fue fallida'));
-          </script>
-        </template>
-      </demo-snippet>
-    </div>
+      <script>
+          const element = new FormComponent();
+          document.querySelector('body').appendChild(element);
+        </script>
   </body>
 </html>

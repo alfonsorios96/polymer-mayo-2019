@@ -27,7 +27,7 @@
         <template>
             <div class="container">
                 <paper-input label="Usuario o correo electrónico" id="user"></paper-input>
-                <paper-input label="Contraseña" type="password" id="pass"></paper-input>
+                <paper-input label="Contraseña" type="password" id="pass" value="{{password}}"></paper-input>
                 <paper-button on-click="submit">Iniciar sesión</paper-button>
             </div>
         </template>
@@ -47,23 +47,44 @@
       static get is() { return 'form-component'; }
       static get properties() {
         return {
-          message: {
+          messageChido: {
             type: String,
-            value: ''
+            value: '',
+            reflectToAttribute: true
           },
           username: {
             type: String,
-            value: ''
+            value: '',
+            notify: true
           },
           password: {
             type: String,
-            value: ''
+            value: 'mypass1',
+            observer: '_passwordChanged'
           },
           isLoading: {
             type: Boolean,
             value: false
           }
         };
+      }
+      constructor() {
+        super();
+        console.log('Holi, soy el constructor.');
+      }
+      connectedCallback(){
+        super.connectedCallback();
+        console.log('Connected callback');
+      }
+      disconnectedCallback(){
+        super.disconnectedCallback();
+        console.log('disconnected callback');
+      }
+      attributeChangedCallback(property, oldValue, newValue){
+          console.log('prop', property);
+          console.log('old', oldValue);
+          console.log('new', newValue);
+          this[property] = newValue;
       }
       submit() {
         const user = {
@@ -96,6 +117,9 @@
           bubbles: false,
           composed: false
         }));
+      }
+      _passwordChanged() {
+        console.log('password', this.password);
       }
     }
 
