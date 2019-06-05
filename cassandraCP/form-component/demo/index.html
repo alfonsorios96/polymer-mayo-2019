@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>form-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../form-component.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic form-component demo</h3>
+      <demo-snippet>
+        <template>
+          <form-component></form-component>
+          <script>
+            const element = document.querySelector('form-component').addEventListener('request-login',event=>{alert(JSON.stringify(event.detail)); });
+            //element.addEventListener('login-success',event=>{alert(JSON.stringify(event.detail)); });
+            //element.addEventListener('login-error',event=>{alert(JSON.stringify(event.detail)); });
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
