@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+        <title>form-component demo</title>
+
+        <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+        <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../form-component.html">
+
+        <custom-style>
+            <style is="custom-style" include="demo-pages-shared-styles">
+            </style>
+        </custom-style>
+    </head>
+    <body>
+        <form-component label="Button"></form-component>
+        <script>
+            const element = document.querySelector('form-component');
+            element.addEventListener('request-login', event => {
+                console.log(event.detail);
+            });
+
+            element.addEventListener('login-success', event => {
+                console.log('La peticion fue exitosa');
+            });
+
+            element.addEventListener('login-error', event => {
+                console.log('La peticion fue erronea');
+            });
+        </script>
+    </body>
+</html>

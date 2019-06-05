@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<!-- <link rel="import" href="../"> -->
+
+<dom-module id="form-component">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        label {
+            display: block;
+        } 
+        </style>
+        <div>
+            <h2>FORM</h2>
+            <form action="">
+                <label for="">
+                    [[username]]
+                    <input id="ussername" type="text" label="">
+                </label>
+                <label for="Hola">
+                    [[password]]
+                    <input id="password" type="password" name="" id="" value="">
+                </label>
+                <button class="button" on-click="submit" value="[[label]]">Guardar</button>
+            </form>
+        </div>
+    </template>
+
+    <script>
+        /**
+         * `form-component`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class FormComponent extends Polymer.Element {
+            static get is() { return 'form-component'; }
+            static get properties() {
+                return {
+                    username: {
+                        type: String,
+                        value: 'Ingresa tu nombre:'
+                    },
+                    password: {
+                        type: String,
+                        value: 'Ingresa tu password'
+                    }
+                };
+            }
+
+            submit() {
+                const user = {
+                    username: this.shadowRoot.querySelector('#ussername').value,
+                    password: this.$.password.value
+                }
+                
+                this.dispatchEvent(new CustomEvent('request-login', {
+                    bubbles: false,
+                    composed: false,
+                    detail: 'user'
+                }));
+                setTimeout(() => {
+                    Math.random() % 2 === 0 ? this.responsesSuccess : this.responsesError;
+                }, 2000);
+            }
+            responsesSuccess() {
+                this.dispatchEvent(new CustomEvent('login-success', {
+                    bubbles: false,
+                    composed: false,
+                }));
+            }
+            responsesError() {
+                this.dispatchEvent(new CustomEvent('login-error', {
+                    bubbles: false,
+                    composed: false,
+                }));
+            }
+        }
+
+        window.customElements.define(FormComponent.is, FormComponent);
+    </script>
+</dom-module>
