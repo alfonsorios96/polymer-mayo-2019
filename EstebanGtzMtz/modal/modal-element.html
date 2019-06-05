@@ -1,0 +1,58 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+
+<dom-module id="modal-element">
+    <template>
+    
+    <style>
+      :host {
+        display: block;
+      }
+
+      .btn{
+          background-color: darkred;
+          color: white;
+      }
+
+      
+    
+    </style>
+    
+    <h2>[[prop1]]!</h2>
+    <paper-button class="btn">Puchale</paper-button>
+
+    
+
+          
+    </div>
+  
+</template>
+
+    <script>
+        /**
+         * `modal-element`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class ModalElement extends Polymer.Element {
+            static get is() {
+                return 'modal-element';
+            }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'Intento de modal ggg :v'
+                    }
+                };
+            }
+        }
+
+
+        window.customElements.define(ModalElement.is, ModalElement);
+    </script>
+</dom-module>

@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="form-component">
+    <template>
+    <style> 
+      button{
+        background-color: black;
+        color: white;
+      }
+    </style>
+
+    <h2>Que onda que pez</h2>
+    
+    <div class="form">
+      User: 
+        <input type="text" id="user">
+        Password: 
+        <input type="text" id="password">
+        <button on-click="submit">
+          Login
+        </button>
+    </div>
+    
+  </template>
+
+    <script>
+        class FormComponent extends Polymer.Element {
+            static get is() {
+                return 'form-component';
+            }
+            static get properties() {
+                return {
+                    user: {
+                        type: String,
+                        value: ''
+                    },
+                    password: {
+                        type: String,
+                        value: ''
+                    }
+                };
+            }
+
+            submit() {
+                const getUser = this.shadowRoot.querySelector('#user').value;
+                const getPassword = this.shadowRoot.querySelector('#password').value;
+                this.dispatchEvent(new CustomEvent('request-login', {
+                    bubles: false,
+                    composed: false,
+                    detail: `${getUser} ${getPassword}`
+                }));
+            }
+
+            responseSucces() {
+                this.dispatchEvent(new CustomEvent('request-login', {
+                    bubles: false,
+                    composed: false
+                }));
+            }
+
+            responseError() {
+                this.dispatchEvent(new CustomEvent('request-login', {
+                    bubles: false,
+                    composed: false
+                }));
+            }
+        }
+
+        window.customElements.define(FormComponent.is, FormComponent);
+      </dom-module>
+    </script>
