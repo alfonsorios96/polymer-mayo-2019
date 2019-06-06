@@ -80,19 +80,16 @@
       }
     </style>
 
-
-    
-
     <dom-if if="[[_isOpened]]">
       <template>
         <div class$="container" name="Modal">
           <div class="modal" id='modal'>
             <span class="close" on-click="hide">&times;</span>
-            <div class$="title-modal [[type]]">
+            <div id="titleDiv" class$="title-modal">
               <h1>[[title]]</h1>
             </div>
 
-            <div class$="body-modal [[type]]">
+            <div id="bodyDiv" class$="body-modal">
               <h3>[[body]]</h3>
 
             </div>
@@ -100,11 +97,6 @@
         </div>
       </template>
     </dom-if>
-
-
-
-
-
   </template>
 
   <script>
@@ -131,7 +123,8 @@
           },
           type: {
             type: String,
-            value: ''
+            value: 'info',
+            observer: '_typeChanged'
           }
         };
       }
@@ -158,6 +151,14 @@
         }));
       }
 
+      _typeChanged(){
+        const titleDiv = this.shadowRoot.querySelector('#titleDiv');
+        const bodyDiv = this.shadowRoot.querySelector('#bodyDiv');
+        if(titleDiv !== null && bodyDiv !== null) {
+          titleDiv.classList.add(this.type);
+          bodyDiv.classList.add(this.type);
+        }
+      }
     }
 
     window.customElements.define(ModalElement.is, ModalElement);
