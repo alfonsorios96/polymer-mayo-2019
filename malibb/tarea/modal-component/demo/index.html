@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>modal-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../modal-component.html">
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic modal-component demo</h3>
+      <demo-snippet>
+        <template>
+          <button id="button">Mostrar modal</button>
+          <modal-component></modal-component>
+          <script>
+              const element = document.querySelector('modal-component');
+                element.addEventListener('modal-show', event => {  });
+                element.addEventListener('modal-hide', event => {  });
+      
+               let button = document.querySelector('#button');
+                button.addEventListener('click',()=>{
+                  element.show();
+                })
+            </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

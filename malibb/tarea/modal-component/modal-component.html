@@ -1,0 +1,114 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="modal-component">
+  <template>
+    <style>
+      .modal {
+        background-color: var(--modal-background-color, aquamarine);
+        color: var(--modal-color, black);
+        width: var(--modal-width, 20vw);
+        height: var(--modal-heigth, 10vh);
+        padding: 1rem;
+        position: relative;
+        display: block;
+        align-content: center;
+        z-index: 1;
+        border: 0.1rem solid black;
+      }
+
+      .info {
+        background-color: var(rgb(17, 46, 119));
+        color: black;
+      }
+
+      .success {
+        background-color: green;
+        color: black;
+      }
+
+      .error {
+        background-color: red;
+        color: black;
+      }
+
+      .warning {
+        background-color: yellow;
+        color: black;
+      }
+    </style>
+    <div>
+      <dom-if if="[[_isOpened]]">
+          <template>
+              <div class="modal" class$="[[type]]"> 
+                  <div class="header">[[title]]</div>
+                  <div class="body">
+                    [[body]]
+                    <paper-button on-click='hide'>Button</paper-button>
+                  </div>
+                </div>
+          </template>
+      </dom-if>
+    </div>
+  </template>
+  <script>
+    /**
+     * `modal-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ModalComponent extends Polymer.Element {
+      static get is() { return 'modal-component'; }
+      static get properties() {
+        return {
+          delay: {
+            type: Number,
+            value: 10000,
+            reflectToAttribute: true
+          },
+          _isOpened: {
+            type: Boolean,
+            value: false
+          },
+          title: {
+            type: String,
+            value: 'My Modal'
+          },
+          body: {
+            type: String,
+            value: 'ABCD'
+          },
+          type: {
+            type: String,
+            value: 'success'
+          }
+        };
+      }
+
+      show() {
+        this.set('_isOpened',true);
+        this.dispatchEvent(new CustomEvent('modal-show', {
+          bubbles: false,
+          composed: false
+        }));
+        
+        setTimeout(() => {
+          this.hide();
+        }, this.delay);
+      }
+
+      hide() {
+        this.dispatchEvent(new CustomEvent('modal-hide', {
+          bubbles: false,
+          composed: false
+        }));
+        this.set('_isOpened',false);
+      }
+    }
+
+    window.customElements.define(ModalComponent.is, ModalComponent);
+  </script>
+</dom-module>
