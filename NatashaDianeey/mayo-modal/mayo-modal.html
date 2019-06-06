@@ -1,133 +1,170 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
 <dom-module id="mayo-modal">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-      .wrapper {
-        background-color: rgba(127, 255, 212, 0.7);
-        min-width: 320px;
-        width: 50vw;
-        position: absolute;
-        left: 0;
-        height: 50vh;
-        top: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: none;
-      }
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
 
-      .modal {
-        width: 100%;
-        height: 100%;
-      }
+            body {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
 
-      .modal .header {
-        background-color: #d57fff;
-        padding: 10px;
-        height: calc(100% - 60%);
-      }
+            .wrapper {
+                background-color: rgba(0, 0, 0, 0.6);
+                width: 100vw;
+                height: 100vh;
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: none;
 
-      .modal .body {
-        background-color: bisque;
-        padding: 10px;
-        height: calc(100% - 45%);
-      }
+            }
 
-      button.close {
-        position: absolute;
-        right: 0;
-        top: 0;
-        border: 0;
-        background-color: transparent;
-        font-size: 2vh;
-        cursor: pointer;
-      }
-      
-    </style>
-    <div class="wrapper" id="wrapper">
-      <div class="modal">
-        <div class="header">
-          <h2>[[title]]</h2>
-          <button class="close" id="close-modal" on-click="hide">X</button>
-        </div>
-        <div class="body">[[body]]</div>
-      </div>
-    </div>
-    <button id="open-modal" on-click="show">Modal button</button>
-  </template>
+            .modal-content {
+                background-color: rgba(127, 255, 212, 0.7);
+                min-width: 320px;
+                width: 50vw;
+                position: absolute;
+                left: 0;
+                height: 50vh;
+                top: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
 
+            .modal-content .header {
+                background-color: #d57fff;
+                padding: 0 10px;
+                height: 20%;
+            }
 
-  <script>
-    class MayoModal extends Polymer.Element {
-      static get is() { return 'mayo-modal'; }
+            .modal-content .header h2 {
+                margin: 0;
+            }
 
-      static get properties() {
-        return {
-          title: {
-            type: String,
-            value: 'Title modal'
-          },
-          body: {
-            type: String,
-            value: 'Body modal'
-          },
-          // type: {
-          //   observer: changeColor
-          // }
-        };
-      }
+            .modal-content .body {
+                background-color: bisque;
+                padding: 0 10px;
+                height: 80%;
+            }
 
-      show() {
+            button.close {
+                position: absolute;
+                right: 0;
+                top: 0;
+                border: 0;
+                background-color: transparent;
+                font-size: 2vh;
+                cursor: pointer;
+            }
 
-        const modal = this.shadowRoot.querySelector('#wrapper');
-        modal.style.display = "block";
+            .info {
+                background-color: aqua;
+            }
 
-        this.dispatchEvent(new CustomEvent('modal-opened', {
-          bubbles: false,
-          composed: false,
-          detail: 'modal opened'
-        }));
-        
-        setTimeout(() => {
-          
-          if(Math.floor((Math.random() * 10) + 1) >= 3) {
-            console.log('info');
-          } else if(Math.floor((Math.random() * 10) + 1) >= 6) {
-            console.log('success');
-          } else if(Math.floor((Math.random() * 10) + 1) >= 9) {
-            console.log('error');
-          } else {
-            console.log('warning');
-          }
+            .success {
+                background-color: greenyellow;
+            }
 
-        }, 1000);
-      }
+            .warning {
+                background-color: orange;
+            }
 
-      
+            .error {
+                background-color: red;
+            }
 
-      hide() {
-        const modal = this.shadowRoot.querySelector('#wrapper');
-        modal.style.display = "none";
-        
-        this.dispatchEvent(new CustomEvent('modal-closed', {
-          bubbles: false,
-          composed: false,
-          detail: 'modal closed'
-        }));
-      }
-
-      // changeColor(){
-
-      // }
+        </style>
 
 
-    }
+        <dom-if if="[[_isOpened]]">
+            <template>
+                <div class$="wrapper container [[type]]" id="wrapper">
+                    <div class="modal-content">
+                        <div class="header">
+                            <h2>[[title]]</h2>
+                            <button class="close" id="close-modal" on-click="hide">X</button>
+                        </div>
+                        <div class="body">[[body]]</div>
+                    </div>
+                </div>
+            </template>
+        </dom-if>
 
-    window.customElements.define(MayoModal.is, MayoModal);
-  </script>
+    </template>
+
+    <script>
+        class MayoModal extends Polymer.Element {
+            static get is() { return 'mayo-modal'; }
+
+            static get properties() {
+                return {
+                    delay: {
+                        type: Number,
+                        value: '1000'
+                    },
+
+                    title: {
+                        type: String,
+                        value: ''
+                    },
+
+                    body: {
+                        type: String,
+                        value: ''
+                    },
+
+                    // PROPIEDADES = Estados _ es privada para que no esta  
+                    _isOpened: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    type: {
+                        type: String,
+                        value: ''
+                    }
+                };
+            }
+
+            show() {
+                this.set('_isOpened', true);
+
+                this.dispatchEvent(new CustomEvent('modal-opened', {
+                    bubbles: false,
+                    composed: false
+                }));
+
+                // const modal = this.shadowRoot.querySelector('#wrapper');
+                // modal.style.display = "block";
+
+                // this.modalOpened = true;
+                // this.set('modalOpened', true);
+
+                setTimeout(() => {
+                    this.hide();
+                }, this.delay);
+            }
+
+            hide() {
+                this.set('_isOpened', false);
+
+                this.dispatchEvent(new CustomEvent('modal-closed', {
+                    bubbles: false,
+                    composed: false
+                }));
+
+                // const modal = this.shadowRoot.querySelector('#wrapper');
+                // modal.style.display = "none";
+            }
+        }
+
+        window.customElements.define(MayoModal.is, MayoModal);
+    </script>
 </dom-module>
