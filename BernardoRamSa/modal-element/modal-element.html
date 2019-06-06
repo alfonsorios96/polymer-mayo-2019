@@ -38,7 +38,6 @@
       }
       .body-modal{
         height: 300px;
-        background-color: aqua;
         padding: 16px;
         background-color: white;
         color: black;
@@ -142,9 +141,12 @@
       changeType(e){
         this.tipo = e.target.getAttribute('data-args').split(',');
 
-        let element = this.shadowRoot.querySelector('#modal');
-        console.log(element);
-        element.style.backgroundColor = this.tipo;
+        let elementTit = this.shadowRoot.querySelector('.title-modal');
+        let elementBod = this.shadowRoot.querySelector('.body-modal');
+        console.log(elementTit);
+
+        elementTit.style.backgroundColor = this.tipo;
+        elementBod.style.backgroundColor = this.tipo;
 
         this.dispatchEvent(new CustomEvent('modal-type', {
           bubbles: false,
