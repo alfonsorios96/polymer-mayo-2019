@@ -10,6 +10,7 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
     <link rel="import" href="../modal-element.html">
 
     <custom-style>
@@ -18,19 +19,41 @@
     </custom-style>
   </head>
   <body>
-    <div class="vertical-section-container centered">
-        <modal-element title="este es el titulo" body="este es el body" tipo=""></modal-element>
-        <script>
-          
-          const element = document.querySelector('modal-element');
-          element.addEventListener('modal-opened', event => console.log(event.detail));
-          element.addEventListener('modal-closed', event => console.log(event.detail));
+      <div class="vertical-section-container centered">
+          <h3>Basic modal-component demo</h3>
+          <demo-snippet>
+            <template>
+                <dom-bind id="demo">
+                  <template>
+                      <button on-click="buttonClicked">Abrir Modal</button>
+                      <modal-element 
+                        title="[[title]]" 
+                        body="[[body]]" 
+                        type="[[type]]"
+                        delay="[[delay]]">
+                      </modal-element>
 
-          element.addEventListener('modal-type', event => {
-            console.log(event.detail[0]);
-          });
+                    </template>
+                </dom-bind>
+                
+                <script>
+                  document.addEventListener('WebComponentsReady', () => {
+                    const demo = document.querySelector('#demo');
+                    demo.title = 'Mi titulo';
+                    demo.body = 'ESte es el cuerpo';
+                    demo.type = 'warning';
+                    demo.delay = 2000;
+                    demo.buttonClicked = () => {
+                      const element = document.querySelector('modal-element');
+                      
+                      element.show();
+                    };
+                  });
 
-        </script>
-    </div>
+                  
+                </script>
+            </template>
+          </demo-snippet>
+        </div>
   </body>
 </html>
