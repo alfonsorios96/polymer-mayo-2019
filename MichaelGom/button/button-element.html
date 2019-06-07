@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="button-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+          <button on-click="thisClick">[[label]]</button>
+  </template>
+
+  <script>
+    
+    class ButtonElement extends Polymer.Element {
+      static get is() { return 'button-element'; }
+      static get properties() {
+        return {
+          label: {
+            type: String,
+            value: ''
+          },
+        };
+      }
+    
+
+    thisClick() {
+      this.dispatchEvent(new CustomEvent('button-click',{
+          detail: {
+            clicked:true
+            }
+          }
+      ));
+    }
+
+    }
+
+    document.querySelector('button-element').addEventListener('button-click', function(a){
+      console.log(a.detail.clicked);
+    });
+
+    window.customElements.define(ButtonElement.is, ButtonElement);
+  </script>
+
+  <script>
+
+  </script>
+</dom-module>
