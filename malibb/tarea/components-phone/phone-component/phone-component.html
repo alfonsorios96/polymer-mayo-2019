@@ -1,0 +1,50 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../player-component/player-component.html">
+<link rel="import" href="../battery-component/battery-component.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      header {
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+    <div class="container">
+      <header>
+        <battery-component></battery-component>
+        <iron-icon icon="device:signal-cellular-3-bar"></iron-icon>Signal
+      </header>
+      <div class="body">
+          <player-component on-battery-using="somethingIsUsingBattery"></player-component>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'phone-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>

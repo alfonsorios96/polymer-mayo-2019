@@ -1,0 +1,50 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+
+<dom-module id="battery-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <iron-icon icon="device:device:battery-[[status]]"></iron-icon>Battery [[status]]
+  </template>
+
+  <script>
+    /**
+     * `battery-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BatteryComponent extends Polymer.Element {
+      static get is() { return 'battery-component'; }
+      static get properties() {
+        return {
+          status:{
+            type:String,
+            string:''
+          },
+          battery: {
+            type: Number,
+            value: 100,
+            reflectToAttribute: true,
+            observer: '_batteryChanged'
+          }
+        };
+      }
+      _batteryChanged(){
+        this.status = this.battery>=0 ?
+          ( this.battery>=20 ?( this.battery>=80 ?
+          (this.battery>=100?'charging-full':'80'):'80'):'20'):'0';
+      }
+    }
+
+    window.customElements.define(BatteryComponent.is, BatteryComponent);
+  </script>
+</dom-module>
