@@ -1,0 +1,22 @@
+# \<modal-component\>
+
+## MODAL-COMPONENT
+
+-out
+    phone-charging
+    phone-disconnected
+    phone-playing
+-in
+    -propierties
+        charging
+    -method
+        play
+        stop
+
+
+## Viewing Your Element
+
+```
+$ polymer serve
+```
+# \<phone-component\>

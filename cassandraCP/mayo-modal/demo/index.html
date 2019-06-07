@@ -11,6 +11,8 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../mayo-modal.html">
+    <link rel="import" href="../paper-button/paper-button.html">
+
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -18,15 +20,20 @@
     </custom-style>
   </head>
   <body>
+    <demo-snippet>
     <div class="vertical-section-container centered">
+        <paper-button raised id="boton" on-click="clik" class="indigo">Open</paper-button>
       <mayo-modal ></mayo-modal>
     </div>
     <script>
     const element = document.querySelector('mayo-modal');
             element.addEventListener('modal-opened', event => console.log(event.detail));
             element.addEventListener('modal-closed', event => console.log(event.detail));
-    const estilo = document.querySelector('mayo-modal');
-            estilo.setAttribute('typeProperty','info');
+    const paperButton = document.querySelector('paper-button');
+            paperButton.addEventListener('click', event => {
+              element.show();
+            })
     </script>
+    </demo-snippet>
   </body>
 </html>
