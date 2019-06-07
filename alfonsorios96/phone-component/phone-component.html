@@ -1,8 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../iron-icons/av-icons.html">
 <link rel="import" href="../iron-icons/device-icons.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../player-component/player-component.html">
 
 <dom-module id="phone-component">
     <template>
@@ -11,18 +10,9 @@
                 display: block;
             }
 
-            #player {
-                border: 1px solid black;
-            }
-
             iron-icon {
                 --iron-icon-height: 32px;
                 --iron-icon-width: 32px;
-            }
-
-            paper-icon-button {
-                height: 40px;
-                width: 40px;
             }
 
             .container {
@@ -76,25 +66,7 @@
                 </div>
                 <span><iron-icon icon="device:signal-cellular-4-bar"></iron-icon></span>
             </section>
-            <section>
-                <div id="player">
-                    <section class="player-title">
-                        <h3>Take Me To Church - Hozier</h3>
-                    </section>
-                    <section class="player-actions">
-                        <dom-if if="[[!_isPlaying]]">
-                            <template>
-                                <paper-icon-button icon="av:play-circle-outline" on-click="play"></paper-icon-button>
-                            </template>
-                        </dom-if>
-                        <dom-if if="[[_isPlaying]]">
-                            <template>
-                                <paper-icon-button icon="av:pause-circle-outline" on-click="stop"></paper-icon-button>
-                            </template>
-                        </dom-if>
-                    </section>
-                </div>
-            </section>
+            <player-component on-battery-using="somethingIsUsingBattery"></player-component>
         </div>
     </template>
 
@@ -125,29 +97,13 @@
               type: Number,
               value: 60,
               observer: '_setClassOfBattery'
-            },
-            _isPlaying: {
-              type: Boolean,
-              value: false,
-              observer: '_manageCharging'
             }
           };
         }
 
-        play() {
-          this.dispatchEvent(new CustomEvent('phone-playing'));
-          this.set('_isPlaying', true);
-          const interval = setInterval(() => {
-            if (this.batteryStatus > 0) {
-              this.set('batteryStatus', this.batteryStatus - 1);
-            }
-            localStorage.setItem('playing', `${interval}`);
-          }, 1000);
-        }
-
-        stop() {
-          this.set('_isPlaying', false);
-          clearInterval(localStorage.getItem('playing'));
+        somethingIsUsingBattery(event) {
+          const porcentageLess = event.detail;
+          this.set('batteryStatus', this.batteryStatus - porcentageLess);
         }
 
         _setClassOfBattery() {

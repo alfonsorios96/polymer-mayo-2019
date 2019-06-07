@@ -1,0 +1,75 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<dom-module id="player-component">
+  <template>
+    <style>
+      #player {
+                border: 1px solid black;
+            }
+    </style>
+
+<section>
+  <div id="player">
+      <section class="player-title">
+          <h3>Take Me To Church - Hozier</h3>
+      </section>
+      <section class="player-actions">
+          <dom-if if="[[!_isPlaying]]">
+              <template>
+                  <paper-icon-button icon="av:play-circle-outline" on-click="play"></paper-icon-button>
+              </template>
+          </dom-if>
+          <dom-if if="[[_isPlaying]]">
+              <template>
+                  <paper-icon-button icon="av:pause-circle-outline" on-click="stop"></paper-icon-button>
+              </template>
+          </dom-if>
+      </section>
+  </div>
+</section>
+  </template>
+
+  <script>
+    /**
+     * `player-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PlayerComponent extends Polymer.Element {
+      static get is() { return 'player-component'; }
+      static get properties() {
+        return {
+          _isPlaying: {
+              type: Boolean,
+              value: false
+            }
+        };
+      }
+
+      play() {
+          this.dispatchEvent(new CustomEvent('phone-playing'));
+          this.set('_isPlaying', true);
+          const interval = setInterval(() => {
+            this.dispatchEvent(new CustomEvent('battery-using', {
+              bubbles: false,
+              composed: false,
+              detail: 2
+            }));
+          }, 1000);
+          localStorage.setItem('uid', `${interval}`);
+        }
+
+        stop() {
+          this.set('_isPlaying', false);
+          clearInterval(localStorage.getItem('uid'));
+        }
+    }
+
+    window.customElements.define(PlayerComponent.is, PlayerComponent);
+  </script>
+</dom-module>
