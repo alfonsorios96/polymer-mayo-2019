@@ -11,6 +11,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../phone-component.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -22,16 +23,31 @@
       <h3>Basic phone-component demo</h3>
       <demo-snippet>
         <template>
+          
+          <paper-button raised class="indigo" id="btnCharging" on-click="charging">Charging</paper-button>
           <phone-component></phone-component>
+
         </template>
       </demo-snippet>
     </div>
 
     <script>
-      const element = document.querySelector('phone-component');
-      element.addEventListener('phone-playing', event => {
-        console.log('play');
-      });
+      const charging = document.querySelector('phone-component');
+      
+      // charging.addEventListener('phone-charging', event => {
+      //   console.log(event.detail);
+      // });
+      charging.addEventListener('click', event => {
+        console.log('cargandooo');
+      })
+
+
+
+
+
+
+
+
     </script>
   </body>
 </html>
