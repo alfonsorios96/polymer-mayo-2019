@@ -1,0 +1,49 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      
+    </style>
+    <div class="container">
+      <div class="header">
+
+      </div>
+      <div class="body">
+        <div class="malify">
+          <div class="header">
+
+          </div>
+          <div class="bodyMalify">
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'phone-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>
