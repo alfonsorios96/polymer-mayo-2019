@@ -37,35 +37,35 @@
       }
     </style>
 
-      <div class="phone">
-        <section class="header">
-          <div class="battery" id="battery">
-            <p>[[batteryStatus]]</p>
+    <div class="phone">
+      <section class="header">
+        <div class="battery" id="battery">
+          <p>[[batteryStatus]]</p>
+        </div>
+        <div class="signal">
+          <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+        </div>
+      </section>
+      <section class="body">
+        <div class="player" id="player">
+          <div class="player-header">
+            <h3>Title</h3>
           </div>
-          <div class="signal">
-            <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+          <div class="player-body">
+            <dom-if if="[[!_isPlaying]]">
+              <template>
+                <paper-button raised class="indigo" on-click="play">play</paper-button>
+              </template>
+            </dom-if>
+            <dom-if if="[[_isPlaying]]">
+              <template>
+                <paper-button raised class="indigo" on-click="stop">stop</paper-button>
+              </template>
+            </dom-if>
           </div>
-        </section>
-        <section class="body">
-          <div class="player" id="player">
-            <div class="player-header">
-              <h3>Title</h3>
-            </div>
-            <div class="player-body">
-              <dom-if if="[[!_isPlaying]]">
-                <template>
-                  <paper-button raised class="indigo" on-click="play">play</paper-button>
-                </template>
-              </dom-if>
-              <dom-if if="[[_isPlaying]]">
-                <template>
-                  <paper-button raised class="indigo" on-click="stop">stop</paper-button>
-                </template>
-              </dom-if>
-            </div>
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
+    </div>
 
   </template>
 
