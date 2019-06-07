@@ -1,151 +1,192 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<!-- Probando Paper elements -->
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-badge/paper-badge.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+
 
 <dom-module id="mayo-modal">
     <template>
         <style>
-            :host {
-                display: block;
-            }
-
             body {
-                padding: 0;
-                margin: 0;
                 box-sizing: border-box;
             }
 
-            .wrapper {
-                background-color: rgba(0, 0, 0, 0.6);
+            .modal-opacity {
+                background-color: rgba(0, 0, 0, 0.4);
                 width: 100vw;
-                height: 100vh;
+                height: 100%;
                 position: absolute;
                 top: 0;
                 left: 0;
-                display: none;
-
+                z-index: 1;
             }
 
-            .modal-content {
-                background-color: rgba(127, 255, 212, 0.7);
-                min-width: 320px;
-                width: 50vw;
-                position: absolute;
-                left: 0;
+            .modal-container {
+                width: 80%;
+                min-width: 300px;
+                min-height: 50%;
                 height: 50vh;
-                top: 0;
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
+                background-color: #fefefe;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                -webkit-animation-name: animatetop;
+                -webkit-animation-duration: 1s;
+                animation-name: animatetop;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
 
-            .modal-content .header {
-                background-color: #d57fff;
-                padding: 0 10px;
+            .modal-header {
+                width: 100%;
                 height: 20%;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                padding: 16px 0;
+                color: black;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center
             }
 
-            .modal-content .header h2 {
+            .modal-header h1 {
                 margin: 0;
             }
 
-            .modal-content .body {
-                background-color: bisque;
-                padding: 0 10px;
+            .modal-body {
+                width: 100%;
                 height: 80%;
+                padding: 16px 0;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                color: black;
+                text-align: center;
             }
 
-            button.close {
-                position: absolute;
-                right: 0;
-                top: 0;
-                border: 0;
-                background-color: transparent;
-                font-size: 2vh;
-                cursor: pointer;
+            .modal-body h3 {
+                margin: 0;
+                padding: 0 30px;
             }
 
-            .info {
-                background-color: aqua;
+            .modal-close {
+            cursor: pointer;
+            font-size: 28px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 10px;
+            line-height: 16px;
             }
 
-            .success {
-                background-color: greenyellow;
+            .modal-close:hover {
+                font-size: 35px;
             }
 
-            .warning {
-                background-color: orange;
+            .success .modal-container {
+                background-color: #8FC0A9;
             }
 
-            .error {
-                background-color: red;
+            .warning .modal-container {
+                background-color: #E88D67;
             }
 
+            .info .modal-container {
+                background-color: #2F4858;
+            }
+
+            .error .modal-container {
+                background-color: #A44A3F;
+            }
         </style>
-
-
         <dom-if if="[[_isOpened]]">
             <template>
-                <div class$="wrapper container [[type]]" id="wrapper">
-                    <div class="modal-content">
-                        <div class="header">
-                            <h2>[[title]]</h2>
-                            <button class="close" id="close-modal" on-click="hide">X</button>
+                <div class$="modal-opacity [[type]]" name="Modal">
+                    <div class="modal-container" id='modal'>
+                        <span class="modal-close" on-click="hide">&times;</span>
+                        <div id="titleDiv" class="modal-header">
+                            <h1>[[title]]</h1>
                         </div>
-                        <div class="body">[[body]]</div>
+                        <div id="bodyDiv" class="modal-body">
+                            <h3>[[body]]</h3>
+                        </div>
                     </div>
                 </div>
             </template>
         </dom-if>
 
-    </template>
+        <br>
+        <div>
+            <paper-input always-float-label label="Floating label"></paper-input>
+            <paper-input label="username">
+                <iron-icon icon="mail" slot="prefix"></iron-icon>
+                <div slot="suffix">@email.com</div>
+            </paper-input>
+            <br>
+            <paper-radio-button>Unchecked</paper-radio-button>
+            <paper-radio-button checked>Checked</paper-radio-button>
+            <paper-radio-button disabled>Disabled</paper-radio-button>
+        </div>
+        <br>
+        <div>
+            <paper-button class="pink">link</paper-button>
+            <br>
+            <paper-button raised class="indigo">raised</paper-button>
+            <br>
+            <paper-button toggles raised class="green">toggles</paper-button>
+            <br>
+            <paper-button disabled class="disabled">disabled</paper-button>
+        </div>
 
+    </template>
     <script>
+    /**
+        * `mayo-modal`
+        * 
+        *
+        * @customElement
+        * @polymer
+        * @demo demo/index.html
+        */
         class MayoModal extends Polymer.Element {
             static get is() { return 'mayo-modal'; }
-
             static get properties() {
                 return {
                     delay: {
                         type: Number,
-                        value: '1000'
+                        value: 5000
                     },
-
                     title: {
                         type: String,
                         value: ''
                     },
-
                     body: {
                         type: String,
                         value: ''
                     },
-
-                    // PROPIEDADES = Estados _ es privada para que no esta  
                     _isOpened: {
                         type: Boolean,
                         value: false
                     },
-
                     type: {
                         type: String,
-                        value: ''
+                        value: 'info',
+                        observer: '_typeChanged'
                     }
                 };
             }
 
             show() {
                 this.set('_isOpened', true);
-
                 this.dispatchEvent(new CustomEvent('modal-opened', {
                     bubbles: false,
                     composed: false
                 }));
-
-                // const modal = this.shadowRoot.querySelector('#wrapper');
-                // modal.style.display = "block";
-
-                // this.modalOpened = true;
-                // this.set('modalOpened', true);
 
                 setTimeout(() => {
                     this.hide();
@@ -154,14 +195,19 @@
 
             hide() {
                 this.set('_isOpened', false);
-
                 this.dispatchEvent(new CustomEvent('modal-closed', {
                     bubbles: false,
                     composed: false
                 }));
+            }
 
-                // const modal = this.shadowRoot.querySelector('#wrapper');
-                // modal.style.display = "none";
+            _typeChanged(){
+                const titleDiv = this.shadowRoot.querySelector('#titleDiv');
+                const bodyDiv = this.shadowRoot.querySelector('#bodyDiv');
+                if(titleDiv !== null && bodyDiv !== null) {
+                    titleDiv.classList.add(this.type);
+                    bodyDiv.classList.add(this.type);
+                }
             }
         }
 

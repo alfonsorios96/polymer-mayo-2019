@@ -1,11 +1,9 @@
 {
-  "name": "mayo-modal",
-  "main": "mayo-modal.html",
+  "name": "components-implement",
+  "main": "components-implement.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "paper-input": "PolymerElements/paper-input#^2.0.0",
-    "paper-badge": "PolymerElements/paper-badge#^2.0.1",
-    "paper-radio-button": "PolymerElements/paper-radio-button#^2.0.0",
     "paper-button": "PolymerElements/paper-button#^2.0.0"
   },
   "devDependencies": {

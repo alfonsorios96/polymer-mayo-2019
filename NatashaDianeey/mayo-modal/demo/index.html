@@ -8,22 +8,64 @@
 
         <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
 
+        <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
         <link rel="import" href="../mayo-modal.html">
+        <link rel="import" href="../../paper-input/paper-input.html">
+        <link rel="import" href="../../paper-button/paper-button.html">
+
+        <custom-style>
+            <style is="custom-style" include="demo-pages-shared-styles">
+                paper-button {
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    background-color: antiquewhite;
+                    border-radius: 16px;
+                    border: 0;
+                }
+                paper-button:hover {
+                    background-color: bisque;
+                }
+
+                paper-button:focus {
+                    outline: none;
+                }
+            </style>
+        </custom-style>
     </head>
     <body>
         <div class="vertical-section-container centered">
-            <button id="btn-Modal">Abrir modal</button>
-            <mayo-modal title="Title" body="Body" type="info"></mayo-modal>
-            <script>
-                const element = document.querySelector('mayo-modal');
-                element.addEventListener('modal-opened', event => console.log(event.detail));
-                element.addEventListener('modal-closed', event => console.log(event.detail));
-
-                const buttonModal = document.querySelector('button');
-                buttonModal.addEventListener('click', () => {
-                    element.show();
-                });
-            </script>
+            <h3>Basic mayo-modal demo</h3>
+            <demo-snippet>
+                <template>
+                    <dom-bind id="demo">
+                        <template>
+                            <paper-button raised class="indigo" class="open-modal" on-click="buttonClicked">Open modal</paper-button>
+                            <mayo-modal
+                                title="[[title]]"
+                                body="[[body]]"
+                                type="[[type]]"
+                                delay="[[delay]]">
+                            </mayo-modal>
+                        </template>
+                    </dom-bind>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            const demo = document.querySelector('#demo');
+                            demo.title = 'My title';
+                            demo.body = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+                            demo.type = 'error';
+                            demo.delay = 3000;
+                            demo.buttonClicked = () => {
+                                const element = document.querySelector('mayo-modal');
+                                element.show();
+                            };
+                        });
+                    </script>
+                    
+                </template>
+            </demo-snippet>
         </div>
     </body>
 </html>

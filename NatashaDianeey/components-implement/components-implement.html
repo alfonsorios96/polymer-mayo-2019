@@ -1,0 +1,43 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<!-- Probando Paper elements -->
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-badge/paper-badge.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+
+<dom-module id="components-implement">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `components-implement`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ComponentsImplement extends Polymer.Element {
+      static get is() { return 'components-implement'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'components-implement'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(ComponentsImplement.is, ComponentsImplement);
+  </script>
+</dom-module>
