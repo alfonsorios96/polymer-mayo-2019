@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="my-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <button>[[label]]!</button>
+  </template>
+
+  <script>
+    /**
+     * `my-button`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MyButton extends Polymer.Element {
+      static get is() { return 'my-button'; }
+      static get properties() {
+        return {
+          label: {
+            type: String,
+            value: ''
+          }
+        };
+      }
+    }
+
+    window.customElements.define(MyButton.is, MyButton);
+  </script>
+</dom-module>
