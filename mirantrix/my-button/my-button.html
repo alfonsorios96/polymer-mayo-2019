@@ -7,7 +7,7 @@
         display: block;
       }
     </style>
-    <button>[[label]]!</button>
+    <button on-click="buttonClicked">[[label]]!</button>
   </template>
 
   <script>
@@ -29,6 +29,12 @@
           }
         };
       }
+
+      buttonClicked(e) {
+        alert("Thank you for tapping");
+        this.dispatchEvent(new CustomEvent('button-clicked', {detail: {clicked: true}}))
+      }
+
     }
 
     window.customElements.define(MyButton.is, MyButton);

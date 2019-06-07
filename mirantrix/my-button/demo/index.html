@@ -26,5 +26,10 @@
         </template>
       </demo-snippet>
     </div>
+    <script>
+      document.querySelector('my-button').addEventListener('button-clicked', function (e) {
+          console.log(e.detail.clicked); // true
+      })
+  </script>
   </body>
 </html>
