@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+
+<dom-module id="player-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <header>
+      <span>[[title]]</span>
+    </header>
+    <section class="toggle">
+      <dom-if if="[[!playing]]">
+        <template>
+          <paper-button raised on-click="play">
+            <iron-icon icon="av:play-arrow"></iron-icon>
+          </paper-button>
+        </template>
+      </dom-if>
+      <dom-if if="[[playing]]">
+        <template>
+          <paper-button raised on-click="play">
+            <iron-icon icon="av:stop"></iron-icon>
+          </paper-button>
+        </template>
+      </dom-if>
+    </section>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `player-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PlayerComponent extends Polymer.Element {
+      static get is() { return 'player-component'; }
+      static get properties() {
+        return {
+          title: {
+            type: String,
+            value: 'Monster Talks'
+          },
+          playing: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+      play() {
+          this.dispatchEvent(new CustomEvent('phone-playing'));
+          this.set('_isPlaying', true);
+          const interval = setInterval(() => {
+            this.dispatchEvent(new CustomEvent('battery-using', {
+              bubbles: false,
+              composed: false,
+              detail: 2
+            }));
+          }, 1000);
+          localStorage.setItem('uid', `${interval}`);
+        }
+    }
+
+    window.customElements.define(PlayerComponent.is, PlayerComponent);
+  </script>
+</dom-module>
