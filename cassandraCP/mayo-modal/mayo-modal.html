@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
 
 <dom-module id="mayo-modal">
   <template>
@@ -14,6 +15,7 @@
         height: 100%; /* Full height */
         overflow: auto; /* Enable scroll if needed */
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        text-align: center;
         }
 
         /* Modal Content/Box */
@@ -24,25 +26,31 @@
           border: 1px solid #888;
           width: 80%; /* Could be more or less, depending on screen size */
         }
-        
-        div header{
-          background-color: #F3C3E4;
+        .info{
+          background-color: #C4E5FF;
         }
+        .success{
+          background-color: #67F59B;
+        }
+        .warning{
+          background-color: #D6A113;
+        }
+        .error{
+          background-color: #F14624;
+        }
+       
 
-        .bodyModal{
-          background-color: #FF6773;
-        }
+        
 
     </style>
-    <paper-button raised id="boton" on-click="show" class="indigo">Open</paper-button>
-    
-    <div id="myModal" class="modal">
-      <div class="modal-content"> 
+   
+    <div id="myModal" class="modal" on-click="hide">
+      <div id="modalContent" class$="modal-content [[typeProperty]]"> 
         <header>[[title]]</header> 
-        <body class="bodyModal">
+        <div class="bodyModal">
           <h4>[[body]]</h4>
-          <paper-button toggles raised id="botonClosed" on-click="hide" class="green">Close</paper-button>
-        </body>
+         
+        </div>
         
       </div>
     </div>
@@ -71,14 +79,12 @@
           },
           delay: {
             type: Number,
-            value: 1000
+            value: 5000
           },
           typeProperty: {
             type: String,
             value:'info',
-            observer: '_cambiarColor'
-            
-           
+            observer: '_changeBackground'            
           }
         };
       }
@@ -95,31 +101,32 @@
         }));
 
         //let semaforo = Math.random()%2 === 0? 
-       
+        setTimeout(()=>{
+        
+        
+        this.hide()
+        },this.delay);
       }
       hide() {
         const modal1 = this.shadowRoot.querySelector('#myModal');
-        const botonsito1 = this.shadowRoot.querySelector('#boton');
         modal1.style.display = "none"
         this.dispatchEvent(new CustomEvent('modal-closed', {
           bubbles: false,
           composed: false,
           detail: "modal cerrado"
         }));
+        
       }
-      cambiarColor(param){
-        const styleModal = this.shadowRoot.querySelector('#myModal');
-        switch(param){
-          case 'info' :styleModal.style.backgroundColor='#B8C5FC'
-          break;
-          case 'success' :styleModal.style.backgroundColor='#33A240'
-          break;
-          case 'error' :styleModal.style.backgroundColor='#EB5439'
-          break;
-          case 'warning' :styleModal.style.backgroundColor='#DCB833'
-          break;
-        }
+
+      _changeBackground(){
+        const titleDiv = this.shadowRoot.querySelector('#modalContent');
+        
+        if(titleDiv !== null) {
+          titleDiv.classList.add(this.typeProperty);
+          }
       }
+      
+      
     }
 
     window.customElements.define(MayoModal.is, MayoModal);
