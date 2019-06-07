@@ -1,0 +1,139 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../cs-toggle-icon-button/cs-toggle-icon-button.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+        text-align: center
+      }
+      .information{
+        background-color: red;
+        padding: 0 0 10% 0;
+      }
+      .information iron-icon{
+        float: right;
+      
+      }
+      .title-song{
+        background-color: yellow
+
+      }
+      .playPause{
+        background-color: yellowgreen
+
+      }
+      .musicTool{
+        padding: 10% 10% 10% 10%;
+        background-color: blueviolet
+      }
+      .ochenta{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+        
+      }
+      .cincuenta{
+        background-color: orangered;
+        width: 10%;
+        height: 5%;
+        
+      }
+      .veinte{
+        background-color: red;
+        
+        
+      }
+      .battery{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+      }
+    </style>
+  <div>
+  <section class="information">
+      <iron-icon  icon="device:signal-cellular-3-bar"></iron-icon>
+      <div class="battery">[[charging]]</div>
+     
+  </section>
+  <div class="musicTool">
+    
+    <section class="title-song">Title: Mi canción favorita del día</section>
+    <section class="playPause">
+        <cs-toggle-icon-button do-icon="av:play-arrow" done-icon="av:stop">
+        </cs-toggle-icon-button>
+    </section>
+  </div>
+</div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          charging: {
+            type: String,
+            value: '100%'
+          },
+        };
+      }
+      play(param){
+        if(param){
+          this.dispatchEvent(new CustomEvent('phone-playing', {
+            bubbles: false,
+            composed: false,
+            detail: 'música activa'
+          }));
+           return param=false;
+        }else {
+          param =this.stop(param)
+          return param;
+        }
+        
+        
+      }
+      stop(param){
+        this.dispatchEvent(new CustomEvent('phone-stop', {
+            bubbles: false,
+            composed: false,
+            detail: 'música detenida'
+          }));
+          return param=true;
+      }
+
+      chargingPhone(param){
+        if(param){
+          this.dispatchEvent(new CustomEvent('phone-charging', {
+            bubbles: false,
+            composed: false,
+            detail: 'teléfono conectado'
+          }));
+          return param=false;
+        }else{
+          this.dispatchEvent(new CustomEvent('phone-disconnected', {
+            bubbles: false,
+            composed: false,
+            detail: 'teléfono desconectado'
+          }));
+          return param=true;
+        }
+       }
+      
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>
