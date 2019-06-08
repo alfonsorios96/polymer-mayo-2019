@@ -1,0 +1,211 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+        border: 1px solid;
+      }
+      .phoneTitle {
+        padding: 20px;
+        border: 1px solid;
+      }
+      .phoneBody {
+        padding: 20px;
+        border: 1px solid;
+        height: 600px;
+      }
+      .applicationsBox {
+        height: 100%;
+      }
+      .appTitle {
+        border: 1px solid;
+        height: 20%;
+        text-align: center;
+      }
+      .appBody {
+        border: 1px solid;
+        height: 80%;
+        text-align: center;
+      }
+      .percentage {
+        padding: 3px;
+        float: right;
+        border: 1px solid;
+        width: 50px;
+        text-align: center;
+      }
+      .btn {
+        margin-top: 50px;
+        height: 200px;
+        width: 200px;
+      }
+    </style>
+
+
+    <div class="container">
+      <div class="phoneTitle">
+        <div class="percentage">[[_porcentage]]</div>
+      </div>
+
+      <div class="phoneBody">
+        <div class="applicationsBox">
+          <div class="appTitle">
+            <h1>[[title]]</h1>
+          </div>
+          <div class="appBody">
+            
+            <dom-if if="[[!_isPlaying]]">
+              <template>
+                <button class="btn" on-click="play">Play</button>
+              </template>
+            </dom-if>
+            <dom-if if="[[_isPlaying]]">
+              <template>
+                <button class="btn" on-click="stop">Stop</button>
+              </template>
+            </dom-if>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          _isPlaying: {
+            type: Boolean,
+            value: false
+          },
+          
+          title: {
+            type: String,
+            value: ''
+          },
+          
+          _porcentage: {
+            type: Number,
+            value: 20
+          },
+          
+          charging: {
+            type: Boolean,
+            value: false
+          },
+
+          unCharging: {
+            type: Boolean,
+            value: false
+          },
+
+          charge: {
+            type: Number,
+            value: 0
+          }
+
+        };
+      }
+
+      play() {
+        this._isPlaying = true;
+
+        if(this.charging){
+          this.stopCharge();
+        }
+
+        if(!this.charging){
+          this.unCharging = true;
+          this.unCharge();
+        }
+
+        this.dispatchEvent(new CustomEvent('phone-playing', {
+          bubbles: false,
+          composed: false,
+          detail: 'Is Playing' 
+        }));
+      }
+
+      stop() {
+        this._isPlaying = false;
+
+        if(this.charging){
+          this.startCharge();
+        }
+
+        if(!this.charging){
+          this.stopCharge();
+        }
+
+        this.dispatchEvent(new CustomEvent('phone-stoped', {
+          bubbles: false,
+          composed: false,
+          detail: 'Is stoped'
+        }));
+      }
+
+      startCharge() {
+        this.charging = true;
+
+        if(this._isPlaying){
+          this.stopCharge();
+        }
+        else{
+          if (this.charging) {
+            this._charge = setInterval(() => {
+              this._porcentage++;
+            }, 1000);
+          }
+        }
+      }
+
+      unCharge(){
+        this.charging = false;
+
+        if(!this._isPlaying){
+          this.stopCharge();
+        }
+        else{
+          if (this.unCharging) {
+            this._charge = setInterval(() => {
+              this._porcentage--;
+            }, 1000);
+          }
+        }
+      }
+
+      stopCharge(){
+        if(this._isPlaying && !this.charging){
+          clearInterval(this._charge);
+          this.unCharge();
+        }else{
+          clearInterval(this._charge);
+        }
+      }
+
+    }
+
+
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>

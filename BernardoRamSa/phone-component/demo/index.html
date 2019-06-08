@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>phone-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../phone-component.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic phone-component demo</h3>
+      <demo-snippet>
+        <template>
+
+          <dom-bind id="phone">
+            <template>
+
+              <button on-click="connectedClicked">Conectar</button>
+              <button on-click="disconnectedClicked">Desconectar</button>
+
+                <phone-component
+                charging = "[[charging]]"
+                title    = "[[title]]"
+              ></phone-component>
+
+            </template>
+          </dom-bind>
+
+          <dom-bind id="batery">
+              <template>
+  
+                  <batery-component></batery-component>
+  
+              </template>
+          </dom-bind>
+
+          <script>
+            
+            document.addEventListener('WebComponentsReady', () => {
+              //........................phone..........................
+              const component = document.querySelector('phone-component');
+              component.addEventListener('phone-playing', event => console.log(event.detail));
+              component.addEventListener('phone-stoped', event => console.log(event.detail));
+
+              const phone = document.querySelector('#phone');
+              phone.charging  = false;
+              phone.title     = 'Un Titulo';
+
+              phone.connectedClicked = () => {
+                phone.charging  = true;
+                const element = document.querySelector('phone-component');
+                element.startCharge();
+              };
+              phone.disconnectedClicked = () => {
+                phone.charging  = false;
+                const element = document.querySelector('phone-component');
+                element.stopCharge();
+              };
+
+            });
+
+          
+          </script>
+
+
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
