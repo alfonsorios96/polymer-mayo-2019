@@ -1,0 +1,93 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="battery-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      /*
+          Battery styling
+      */
+
+      #battery {
+          border: 1px solid black;
+          width: 70px;
+          display: flex;
+          justify-content: center;
+          color: black;
+      }
+
+      .low-battery {
+          background-color: red;
+          color: white;
+      }
+
+      .stable-battery {
+          background-color: yellow;
+          color: white;
+      }
+
+      .full-battery {
+          background-color: green;
+          color: white;
+      }
+    </style>
+    <section class="header">
+      <div id="battery">
+          <span>
+              [[batteryStatus]]%
+          </span>
+      </div>
+    </section>
+  </template>
+
+  <script>
+    /**
+     * `battery-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BatteryComponent extends Polymer.Element {
+      static get is() { return 'battery-component'; }
+      static get properties() {
+        return {
+          batteryStatus: {
+              type: Number,
+              value: 25,
+              observer: '_setClassOfBattery'
+          },
+        };
+      }
+
+      restBattery(e){
+        if (this.batteryStatus > 0) {
+          this.set('batteryStatus', this.batteryStatus - e.number);
+          console.log(this.batteryStatus);
+        }
+      }
+
+      //Styles
+      _setClassOfBattery() {
+        let batteryStatusClass = '';
+        if (this.batteryStatus < 20) {
+          batteryStatusClass = 'low-battery';
+        }
+        if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+          batteryStatusClass = 'stable-battery';
+        }
+        if (this.batteryStatus > 80) {
+          batteryStatusClass = 'full-battery';
+        }
+        this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+        this.$.battery.classList.add(batteryStatusClass);
+      }
+        
+    }
+
+    window.customElements.define(BatteryComponent.is, BatteryComponent);
+  </script>
+</dom-module>
