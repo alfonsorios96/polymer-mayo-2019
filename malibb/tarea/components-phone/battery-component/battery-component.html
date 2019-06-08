@@ -43,6 +43,8 @@
           ( this.battery>=20 ?( this.battery>=80 ?
           (this.battery>=100?'charging-full':'80'):'80'):'20'):'0';
       }
+
+      batteryUsing()
     }
 
     window.customElements.define(BatteryComponent.is, BatteryComponent);

@@ -19,7 +19,7 @@
         <iron-icon icon="device:signal-cellular-3-bar"></iron-icon>Signal
       </header>
       <div class="body">
-          <player-component on-battery-using="somethingIsUsingBattery"></player-component>
+          <player-component on-battery-using="usingBattery"></player-component>
       </div>
     </div>
   </template>
@@ -43,7 +43,13 @@
           }
         };
       }
+      usingBattery(event) {
+          const porcentageLess = event.detail;
+          this.set('batteryStatus', this.batteryStatus - porcentageLess);
+      }
+      method()
     }
+      
 
     window.customElements.define(PhoneComponent.is, PhoneComponent);
   </script>
