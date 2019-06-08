@@ -2,6 +2,8 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 
+<link rel="import" href="../../battery-component.html">
+
 <dom-module id="phone-component">
   <template>
     <style>
@@ -37,40 +39,35 @@
       }
     </style>
 
-      <div class="phone">
-        <section class="header">
-          <div class="battery" id="battery">
-            <p>[[batteryStatus]]</p>
+    <div class="phone">
+      <section class="header">
+        <div class="battery" id="battery">
+          <p>[[batteryStatus]]</p>
+        </div>
+        <div class="signal">
+          <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+        </div>
+      </section>
+      <section class="body">
+        <div class="player" id="player">
+          <div class="player-header">
+            <h3>Title</h3>
           </div>
-          <div class="signal">
-            <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+          <div class="player-body">
+            <dom-if if="[[!_isPlaying]]">
+              <template>
+                <paper-button raised class="indigo" on-click="play">play</paper-button>
+              </template>
+            </dom-if>
+            <dom-if if="[[_isPlaying]]">
+              <template>
+                <paper-button raised class="indigo" on-click="stop">stop</paper-button>
+              </template>
+            </dom-if>
           </div>
-        </section>
-        <section class="body">
-          <div class="player" id="player">
-            <div class="player-header">
-              <h3>Title</h3>
-            </div>
-            <div class="player-body">
-              <dom-if if="[[!_isPlaying]]">
-                <template>
-                  <paper-button raised class="indigo" on-click="play">play</paper-button>
-                </template>
-              </dom-if>
-              <dom-if if="[[_isPlaying]]">
-                <template>
-                  <paper-button raised class="indigo" on-click="stop">stop</paper-button>
-                </template>
-              </dom-if>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div class="control-charging">
-        <paper-button raised class="indigo" on-click="charging">Charging</paper-button>
-        <paper-button raised class="indigo" on-click="disconnected">Disconnected</paper-button>
-      </div>
+        </div>
+      </section>
+    </div>
 
   </template>
 
@@ -97,7 +94,7 @@
           },
           batteryStatus: {
             type: Number,
-            value: 60,
+            value: 50,
             observer: '_setClassOfBattery'
           },
           _isPlaying: {
@@ -108,10 +105,10 @@
         };
       }
 
-      play() {
+      play() {  
         this.dispatchEvent(new CustomEvent('phone-playing'));
         this.set('_isPlaying', true);
-
+        console.log('esta reproduciendo');
         const intervalTime = setInterval(() => {
           if (this.batteryStatus > 0) {
             this.set('batteryStatus', this.batteryStatus - 1);
@@ -123,18 +120,24 @@
       stop() {
         this.set('_isPlaying', false);
         clearInterval(localStorage.getItem('playing'));
+        console.log('stop a la reproduccion');
       }
 
-
-      charging() {
-        // this.dispatchEvent(new CustomEvent('phone-charging', {
-        //   bubbles: false,
-        //   composed: false,
-        //   detail: ''
-        // }));
-        // console.log('cargando');
+      connected() {
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+        const intervalTime = setInterval(() => {
+          if (this.batteryStatus > 0) {
+          this.set('batteryStatus', this.batteryStatus + 1);
+          }
+          localStorage.setItem('playing', `${intervalTime}`);
+        }, 1000);
       }
-      
+
+      disconnected() {
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+
+        clearInterval(localStorage.getItem('playing'));
+      }
 
       _setClassOfBattery() {
         let batteryStatusClass = '';

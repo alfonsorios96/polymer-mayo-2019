@@ -24,7 +24,9 @@
       <demo-snippet>
         <template>
           
-          <paper-button raised class="indigo" id="btnCharging" on-click="charging">Charging</paper-button>
+          <paper-button raised class="indigo" id="btnCharging" on-click="charging">Connected</paper-button>
+          <paper-button raised class="indigo" id="btnDisconnected" on-click="disconnected">Disconnected</paper-button>
+          
           <phone-component></phone-component>
 
         </template>
@@ -32,21 +34,25 @@
     </div>
 
     <script>
-      const charging = document.querySelector('phone-component');
+      const element = document.querySelector('phone-component');
       
-      // charging.addEventListener('phone-charging', event => {
-      //   console.log(event.detail);
-      // });
-      charging.addEventListener('click', event => {
+      // Botones de Conexion
+      const chargingBtn = document.querySelector('#btnCharging');
+      const disconnectedBtn = document.querySelector('#btnDisconnected');
+      
+      element.addEventListener('phone-charging', event => {
+        console.log(event.detail);
+      });
+
+      chargingBtn.addEventListener('click', event => {
         console.log('cargandooo');
-      })
+        element.connected();
+      });
 
-
-
-
-
-
-
+      disconnectedBtn.addEventListener('click', event => {
+        console.log('ya no esta cargando');
+        element.disconnected();
+      });
 
     </script>
   </body>

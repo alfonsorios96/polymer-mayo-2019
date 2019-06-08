@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>phone-component demo</title>
+    <title>battery-component demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../phone-component.html">
+    <link rel="import" href="../battery-component.html">
     <link rel="import" href="../../paper-button/paper-button.html">
 
     <custom-style>
@@ -20,24 +20,12 @@
   </head>
   <body>
     <div class="vertical-section-container centered">
-      <h3>Basic phone-component demo</h3>
+      <h3>Basic battery-component demo</h3>
       <demo-snippet>
         <template>
-          <phone-component></phone-component>
-          <paper-button id="cargando" raised>Conectar o desconectar</paper-button>
-          <paper-button id="descargando" raised>Desconectar</paper-button>
-          <script>
-          const element = document.querySelector('phone-component');
-          
-          element.addEventListener('phone-playing', event => {  });
-          element.addEventListener('phone-status-changed', event => {  });
-                
-          const cargando = document.querySelector('#cargando');
-          cargando.addEventListener('click',()=>{
-            element.statusChanged();
-          });
-
-          </script>
+          <paper-button raised class="indigo" id="btnCharging" on-click="charging">Connected</paper-button>
+          <paper-button raised class="indigo" id="btnDisconnected" on-click="disconnected">Disconnected</paper-button>
+          <battery-component></battery-component>
         </template>
       </demo-snippet>
     </div>
