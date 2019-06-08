@@ -1,0 +1,170 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<dom-module id="phone-component">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            #player {
+                border: 1px solid blue;
+                padding: 5px;
+            }
+            iron-icon {
+                --iron-icon-height: 32px;
+                --iron-icon-width: 32px;
+            }
+            paper-icon-button {
+                height: 40px;
+                width: 40px;
+            }
+            
+            .container {
+                border: 1px solid blue;
+                padding: 10px;
+            }
+            .header {
+                border: 1px solid blue;
+                padding: 5px;
+                margin-bottom: 15px;
+                display: flex;
+                justify-content: space-between;
+            }
+            /*
+                Battery styling
+            */
+            #battery {
+                border: 1px solid black;
+                width: 70px;
+                display: flex;
+                justify-content: center;
+                color: black;
+            }
+            .low-battery {
+                background-color: red;
+                color: white;
+            }
+            .stable-battery {
+                background-color: yellow;
+                color: white;
+            }
+            .full-battery {
+                background-color: green;
+                color: white;
+            }
+        </style>
+
+        <div class="container">
+            <section class="header">
+                <div id="battery">
+                    <span>
+                        <iron-icon icon="device:battery-full"></iron-icon>
+                        [[batteryStatus]]%
+                    </span>
+                </div>
+                <span><iron-icon icon="device:signal-cellular-4-bar"></iron-icon></span>
+            </section>
+            <section>
+                <div id="player">
+                    <section class="player-title" style="border: blue;">
+                        <h3>Take Me To Church - Hozier</h3>
+                    </section>
+                    <section class="player-actions">
+                        <dom-if if="[[!_isPlaying]]">
+                            <template>
+                                <paper-icon-button icon="av:play-circle-outline" on-click="play"></paper-icon-button>
+                            </template>
+                        </dom-if>
+                        <dom-if if="[[_isPlaying]]">
+                            <template>
+                                <paper-icon-button icon="av:pause-circle-outline" on-click="stop"></paper-icon-button>
+                            </template>
+                        </dom-if>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <script>
+      /**
+       * `phone-component`
+       *
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class PhoneComponent extends Polymer.Element {
+        static get is() {
+          return 'phone-component';
+        }
+        static get properties() {
+          return {
+            charging: {
+              type: Boolean,
+              value: false,
+              reflectToAttribute: true,
+              notify: true,
+              observer: '_Charging'
+            },
+            batteryStatus: {
+              type: Number,
+              value: 60,
+              observer: '_functionBattery'
+            },
+            _isPlaying: {
+              type: Boolean,
+              value: true,
+              observer: '_manageCharging'
+            }
+          };
+        }
+        play() {
+          this.dispatchEvent(new CustomEvent('phone-playing'));
+          this.set('_isPlaying', true);
+          const interval = setInterval(() => {
+            if (this.batteryStatus > 0) {
+              this.set('batteryStatus', this.batteryStatus - 1);
+            }
+            localStorage.setItem('playing', `${interval}`);
+          }, 1000);
+        }
+        stop() {
+          this.set('_isPlaying', false);
+          clearInterval(localStorage.getItem('playing'));
+        }
+        _functionBattery() {
+          let batteryStatusClass = '';
+          if (this.batteryStatus < 20) {
+            batteryStatusClass = 'low-battery';
+          }
+          if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+            batteryStatusClass = 'stable-battery';
+          }
+          if (this.batteryStatus > 80) {
+            batteryStatusClass = 'full-battery';
+          }
+          this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+          this.$.battery.classList.add(batteryStatusClass);
+        }
+        _Charging() {
+          if (this.charging) {
+            const interval = setInterval(() => {
+              if (this.batteryStatus < 100) {
+                this.set('batteryStatus', this.batteryStatus + 1);
+              }
+            }, 1000);
+            localStorage.setItem('charging', `${interval}`);
+          } else {
+            clearInterval(localStorage.getItem('charging'));
+          }
+        }
+      }
+      window.customElements.define(PhoneComponent.is, PhoneComponent);
+    </script>
+</dom-module>
