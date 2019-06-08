@@ -1,0 +1,60 @@
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<dom-module id="battery-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      label{
+        display: block;
+        background-color:green; 
+        width:5em;
+      }
+    </style>
+    <div class="container">
+      <div>
+        <label class="bateria">{{valor}}</label>
+        <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `battery-component`
+     * Simulacion de batería del telefono
+     *
+     device:signal-cellular-4-bar
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BatteryComponent extends Polymer.Element {
+      static get is() { return 'battery-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'battery-component'
+          },
+          valor:{
+            type: String,
+            value: ''
+          }
+        };
+      }
+
+
+
+      ready(){
+        super.ready();
+        this.valor = '100';
+      }
+    }
+
+    window.customElements.define(BatteryComponent.is, BatteryComponent);
+  </script>
+</dom-module>
