@@ -1,0 +1,79 @@
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<dom-module id="player-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div class="container">
+      <button on-click="cargarBateria">Cargar</button>
+      <button on-click="desenchufarBateria">Desenchufar</button>
+      <dom-if if="[[!isPlaying]]">
+        <template>
+          <button on-click="playMusic">Play</button>
+        </template>
+      </dom-if>
+      <dom-if if="[[isPlaying]]">
+        <template>
+          <button on-click="stopMusic">Stop</button>
+        </template>
+      </dom-if>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * Simulacion del reproductor del telefono
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PlayerComponent extends Polymer.Element {
+      static get is() { return 'player-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'player-component'
+          },
+          isPlaying:{
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      cargarBateria(){
+        /*setTimeout(()=>{
+          this.dispatchEvent(new CustomEvent(
+            'spotify-running',
+            {
+              bubbles:false,
+              composed:false,
+              detail:1
+            }))
+        },1000)*/
+      }
+
+      playMusic(){
+        this.isPlaying = true;
+      }
+
+      stopMusic(){
+        this.isPlaying = false;
+      }
+
+      desenchufarBateria(){
+        alert("Adios");
+      }
+    }
+
+    window.customElements.define(PlayerComponent.is, PlayerComponent);
+  </script>
+</dom-module>
