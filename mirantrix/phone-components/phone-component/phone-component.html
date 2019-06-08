@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import"  href="../battery-component/battery-component.html">
+<link rel="import"  href="../player-component/player-component.html">
+<link rel="import"  href="../charge-component/charge-component.html">
 
 <dom-module id="phone-component">
   <template>
@@ -6,8 +9,13 @@
       :host {
         display: block;
       }
+      
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    
+    <battery-component id="battery"></battery-component>
+    <player-component on-player-consumption ="playerDetail"></player-component>
+    <charge-component></charge-component>
+    
   </template>
 
   <script>
@@ -22,22 +30,19 @@
     class PhoneComponent extends Polymer.Element {
       static get is() { return 'phone-component'; }
       static get properties() {
-        return {
-          charging: {
+        return { 
+          prop: {
             type: String,
-            value: 'phone-component'
+            value: ""
           }
         };
       }
 
-      play(){
-
+      playerDetail(e) {
+        this.$.battery.restBattery(e.detail);
       }
 
-      stop() {
-        
-      }
-
+    
     }
 
     window.customElements.define(PhoneComponent.is, PhoneComponent);
