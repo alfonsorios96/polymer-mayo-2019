@@ -57,7 +57,7 @@
   <div>
   <section class="information">
       <iron-icon  icon="device:signal-cellular-3-bar"></iron-icon>
-      <div class="battery">[[charging]]</div>
+      <div id="batteryDiv" class="battery">[[charging]] %</div>
      
   </section>
   <div class="musicTool">
@@ -85,9 +85,11 @@
       static get properties() {
         return {
           charging: {
-            type: String,
-            value: '100%'
-          },
+            type: Number,
+            value: 0
+          }
+         
+         
         };
       }
       play(param){
@@ -115,22 +117,58 @@
       }
 
       chargingPhone(param){
+       
         if(param){
+           
           this.dispatchEvent(new CustomEvent('phone-charging', {
             bubbles: false,
             composed: false,
             detail: 'teléfono conectado'
           }));
-          return param=false;
+
+            const connected = setInterval(() => {
+            if (this.charging >= 0 && this.charging < 100) {
+              console.log('intervalo')
+              this.set('charging', this.charging + 1);
+              changedColor();
+            }
+           
+          }, 1000);
+          this.set('disconnected',connected);
+          param=false;
         }else{
+          
+          clearInterval(this.disconnected)
           this.dispatchEvent(new CustomEvent('phone-disconnected', {
             bubbles: false,
             composed: false,
             detail: 'teléfono desconectado'
           }));
-          return param=true;
+          this.disconnected = setInterval(() => {
+            if (this.charging > 0 && this.charging < 100) {
+              console.log('intervalo')
+              this.set('charging', this.charging -1);
+              changedColor( this.charging);
+            }
+           
+          }, 5000);
+          
+           param=true;
         }
+      
+        return param;
        }
+       
+      changedColor(param){
+        if(param > 80){
+          this.$.batteryDiv.classlist.add('ochenta');
+        }if (param >= 51 && this.charging < 80 ){
+          this.$.batteryDiv.classlist.add('cincuenta');
+        }else {
+          this.$.batteryDiv.classlist.add('veinte');
+        }
+      } 
+
       
     }
 
