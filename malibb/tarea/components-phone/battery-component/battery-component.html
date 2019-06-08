@@ -44,7 +44,12 @@
           (this.battery>=100?'charging-full':'80'):'80'):'20'):'0';
       }
 
-      batteryUsing()
+      _restChanging(quantity){
+        this.battery -=quantity;
+      }
+      _sumChanging(quantity){
+        this.battery +=quantity;
+      }
     }
 
     window.customElements.define(BatteryComponent.is, BatteryComponent);
