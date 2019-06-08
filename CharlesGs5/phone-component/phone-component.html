@@ -1,0 +1,85 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .phone{
+        border: 1px solid black;
+        height: 600px;
+      }
+
+      .signal{
+        background-color: #0b97c4;
+        height: 100px;
+        border: 1px solid black;
+        margin: 10px 10px 10px 10px;
+      }
+
+      .mainScreen{
+        border: 1px solid black;
+        margin: 10px 10px 10px 10px;
+        height: 200px;
+      }
+
+      .battery{
+        width: 100px;
+        justify-content: center;
+        border: 1px solid black;
+      }
+    </style>
+    <div class="phone">
+      <div class="signal">
+        <header>
+          <span class="battery">Hola</span>
+        </header>
+      </div>
+      <div class="mainScreen">
+        Hola 2
+        <div>
+          <button on-click="charging">Charge</button>
+          <button>Discharge</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          _isCharging: {
+            type: Boolean,
+            value: false
+          },
+          _isPlaying: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+      charging(){
+        this.set('_isCharging', true);
+        this.dispatchEvent(new CustomEvent('charging-phone',{
+          bubbles: false,
+          composed: false
+        }));
+        console.log('Charging');
+      }
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>

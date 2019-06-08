@@ -1,4 +1,12 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../player-component/player-component.html">
+<link rel="import" href="../battery-component/battery-component.html">
 
 <dom-module id="phone-component">
   <template>
@@ -7,15 +15,31 @@
     </style>
     <div class="container">
       <div class="header">
-
+        <iron-icon icon="device:device:battery-[[status]]"></iron-icon>Battery [[status]]
+        <iron-icon icon="device:signal-cellular-3-bar"></iron-icon>Signal
       </div>
       <div class="body">
         <div class="malify">
           <div class="header">
-
+            <span>[[title]]</span>
           </div>
           <div class="bodyMalify">
-
+              <div class="toggle">
+                <dom-if if="[[!playing]]">
+                <template>
+                    <paper-button raised on-click="play">
+                        <iron-icon icon="av:play-arrow" ></iron-icon>
+                    </paper-button>
+                </template>
+                </dom-if>
+                <dom-if if="[[playing]]">
+                    <template>
+                        <paper-button raised on-click="play">
+                            <iron-icon icon="av:stop"></iron-icon>
+                        </paper-button>
+                    </template>
+                    </dom-if>
+              </div>
           </div>
         </div>
 
@@ -36,13 +60,57 @@
       static get is() { return 'phone-component'; }
       static get properties() {
         return {
-          prop1: {
+          charging: {
+            type: Boolean,
+            value: true
+          },
+          title: {
             type: String,
-            value: 'phone-component'
+            value: 'Monster Talks'
+          },
+          playing: {
+            type: Boolean,
+            value: false
+          },
+          status:{
+            type:String,
+            string:''
+          },
+          battery: {
+            type: Number,
+            value: 120,
+            reflectToAttribute: true,
+            observer: '_batteryChanged'
           }
         };
       }
+
+      play(){
+        this.set('playing',(this.playing===true)?false:true);
+        if(this.playing===true)
+        setInterval(()=>this.battery--,500);
+      }
+
+      stop(){
+
+      }
+
+      statusChanged(){
+        this.dispatchEvent(new CustomEvent('phone-status-changed', {
+          bubbles: false,
+          composed: false
+        }));
+        if(this.charging===true){
+          setInterval(()=>this.battery++,1000);
+        }
+      }
+      _batteryChanged(){
+        this.status = this.battery>=0 ?
+          ( this.battery>=20 ?( this.battery>=80 ?
+          (this.battery>=100?'charging-full':'80'):'80'):'20'):'0';
+      }
     }
+  
 
     window.customElements.define(PhoneComponent.is, PhoneComponent);
   </script>
