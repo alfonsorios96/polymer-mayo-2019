@@ -11,7 +11,6 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../phone-component.html">
-    <link rel="import" href="../../paper-button/paper-button.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -24,20 +23,6 @@
       <demo-snippet>
         <template>
           <phone-component></phone-component>
-          <paper-button id="cargando" raised>Conectar o desconectar</paper-button>
-          <paper-button id="descargando" raised>Desconectar</paper-button>
-          <script>
-          const element = document.querySelector('phone-component');
-          
-          element.addEventListener('phone-playing', event => {  });
-          element.addEventListener('phone-status-changed', event => {  });
-                
-          const cargando = document.querySelector('#cargando');
-          cargando.addEventListener('click',()=>{
-            element.statusChanged();
-          });
-
-          </script>
         </template>
       </demo-snippet>
     </div>

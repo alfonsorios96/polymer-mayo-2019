@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/googleCloneWebPage.iml" filepath="$PROJECT_DIR$/.idea/googleCloneWebPage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/phone-component.iml" filepath="$PROJECT_DIR$/.idea/phone-component.iml" />
     </modules>
   </component>
 </project>

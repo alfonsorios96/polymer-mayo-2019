@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>phone-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../phone-component.html">
+    <link rel="import" href="../../iron-icons/notification-icons.html">
+    <link rel="import" href="../paper-button/paper-button.html">
+
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        .green{
+          align-items: center;
+          background-color: green;
+          padding: inherit;
+          border: 1px solid black;
+                 }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic phone-component demo</h3>
+    
+      <demo-snippet>
+        <template>
+            
+           <paper-button toggles raiser class="green">
+            <iron-icon  icon="notification:power"></iron-icon>
+            </paper-button>
+          <phone-component></phone-component>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <script>
+      let playParam=true;
+      let chargingParam=true;
+     const element = document.querySelector('phone-component');
+            element.addEventListener('phone-playing', event => {
+             
+              console.log(event.detail)
+              });
+            element.addEventListener('phone-stop', event => console.log(event.detail));
+            element.addEventListener('phone-disconnected', event => console.log(event.detail));
+            element.addEventListener('phone-charging', event => console.log(event.detail)); 
+    
+    const paperButton = document.querySelector('paper-button');
+          
+          paperButton.addEventListener('click', event => {
+            chargingParam=element.chargingPhone(chargingParam);
+              
+            });
+
+          element.addEventListener('click', event => {
+            
+            playParam= element.play(playParam);
+            
+           });
+     
+     
+    
+    </script>
+  </body>
+</html>
