@@ -4,6 +4,7 @@
 <link rel="import" href="../iron-icons/device-icons.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../battery-component/battery-component.html">
+<link rel="import" href="../player-component/player-component.html">
 
 <dom-module id="phone-component">
   <template>
@@ -25,18 +26,18 @@
         float: right;
       
       }
-      .title-song{
+       /*.title-song{
         background-color: yellow
 
       }
-      .playPause{
+     .playPause{
         background-color: yellowgreen
 
       }
       .musicTool{
         padding: 10% 10% 10% 10%;
         background-color: blueviolet
-      }/*
+      }
       .ochenta{
         background-color: green;
         width: 10%;
@@ -63,14 +64,15 @@
     <!--  <div id="battery" class="battery">[[charging]] %</div>-->
     <battery-component id="batteryComponent" >[[charging]] %</battery-component>
   </section>
-  <div class="musicTool">
+    <player-component id="playerComponent" on-click="player"></player-component>
+ <!-- <div class="musicTool">
     
     <section class="title-song">Title: Mi canción favorita del día</section>
     <section class="playPause" on-click="play">
         <cs-toggle-icon-button do-icon="av:play-arrow" done-icon="av:stop">
         </cs-toggle-icon-button>
     </section>
-  </div>
+  </div>-->
 </div>
   </template>
 
@@ -91,17 +93,22 @@
             type: Number,
             value: 50,
             observer: '_changedColor'
-          },*/
+          },
           playProp: {
             type: Boolean,
             value: true,
             observer:'colorBattery'
-          }
+          }*/
          
          
         };
       }
-      play(){
+      player(){
+        let playReturn= true;
+        playReturn = this.$.playerComponent.play();
+        this.chargingBattery(playReturn)
+      }
+      /*play(){
         
         if(this.playProp){
           this.dispatchEvent(new CustomEvent('phone-playing', {
@@ -126,7 +133,7 @@
             detail: 'música detenida'
           }));
           return param=true;
-      }
+      }*/
       chargingBattery(parameter){
          let param=parameter
          let evento = this.shadowRoot.querySelector('battery-component');
