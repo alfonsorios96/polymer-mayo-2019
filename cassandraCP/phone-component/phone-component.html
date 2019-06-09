@@ -11,8 +11,13 @@
         display: block;
         text-align: center
       }
+      .battery{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+      }
       .information{
-        background-color: red;
+        background-color: grey;
         padding: 0 0 10% 0;
       }
       .information iron-icon{
@@ -38,32 +43,29 @@
         
       }
       .cincuenta{
-        background-color: orangered;
+        background-color: #B024F1;
         width: 10%;
         height: 5%;
         
       }
       .veinte{
         background-color: red;
-        
-        
-      }
-      .battery{
-        background-color: green;
         width: 10%;
         height: 5%;
+        
       }
+      
     </style>
   <div>
   <section class="information">
       <iron-icon  icon="device:signal-cellular-3-bar"></iron-icon>
-      <div id="batteryDiv" class="battery">[[charging]] %</div>
+      <div id="battery" class="battery">[[charging]] %</div>
      
   </section>
   <div class="musicTool">
     
     <section class="title-song">Title: Mi canción favorita del día</section>
-    <section class="playPause">
+    <section class="playPause" on-click="play">
         <cs-toggle-icon-button do-icon="av:play-arrow" done-icon="av:stop">
         </cs-toggle-icon-button>
     </section>
@@ -86,23 +88,32 @@
         return {
           charging: {
             type: Number,
-            value: 0
+            value: 50,
+            observer: '_changedColor'
+          },
+          playProp: {
+            type: Boolean,
+            value: true,
+            observer:'_changedColor'
           }
          
          
         };
       }
-      play(param){
-        if(param){
+      play(){
+        
+        if(this.playProp){
           this.dispatchEvent(new CustomEvent('phone-playing', {
             bubbles: false,
             composed: false,
             detail: 'música activa'
           }));
-           return param=false;
+            this.playProp=false;
+            this.chargingPhone(false)
         }else {
-          param =this.stop(param)
-          return param;
+          this.playProp =this.stop(this.playProp)
+          this.playProp= true;
+          this.chargingPhone(false)
         }
         
         
@@ -130,10 +141,11 @@
             if (this.charging >= 0 && this.charging < 100) {
               console.log('intervalo')
               this.set('charging', this.charging + 1);
-              changedColor();
+             
             }
            
-          }, 1000);
+          }, 2000);
+          
           this.set('disconnected',connected);
           param=false;
         }else{
@@ -148,24 +160,28 @@
             if (this.charging > 0 && this.charging < 100) {
               console.log('intervalo')
               this.set('charging', this.charging -1);
-              changedColor( this.charging);
+            
             }
            
-          }, 5000);
+          }, 8000);
           
            param=true;
         }
-      
+       
         return param;
        }
        
-      changedColor(param){
-        if(param > 80){
-          this.$.batteryDiv.classlist.add('ochenta');
-        }if (param >= 51 && this.charging < 80 ){
-          this.$.batteryDiv.classlist.add('cincuenta');
-        }else {
-          this.$.batteryDiv.classlist.add('veinte');
+      _changedColor(){
+        console.log(this.charging)
+        if(this.charging > 80){
+          this.$.battery.classList.remove( 'cincuenta', 'veinte');
+          this.$.battery.classList.add('ochenta');
+        }if (this.charging >= 21 && this.charging < 80 ){
+          this.$.battery.classList.remove('ochenta', 'veinte');
+          this.$.battery.classList.add('cincuenta');
+        }if(this.charging > 0 && this.charging < 21 ) {
+         this.$.battery.classList.remove('ochenta', 'cincuenta');
+          this.$.battery.classList.add('veinte');
         }
       } 
 
