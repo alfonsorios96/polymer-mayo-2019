@@ -3,7 +3,6 @@
 <link rel="import" href="../iron-icons/av-icons.html">
 <link rel="import" href="../iron-icons/device-icons.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../battery-component/battery-component.html">
 
 <dom-module id="phone-component">
   <template>
@@ -61,7 +60,7 @@
   <section class="information">
       <iron-icon  icon="device:signal-cellular-3-bar"></iron-icon>
     <!--  <div id="battery" class="battery">[[charging]] %</div>-->
-    <battery-component id="batteryComponent" >[[charging]] %</battery-component>
+     
   </section>
   <div class="musicTool">
     
@@ -95,7 +94,7 @@
           playProp: {
             type: Boolean,
             value: true,
-            observer:'colorBattery'
+            observer:'_changedColor'
           }
          
          
@@ -126,21 +125,6 @@
             detail: 'música detenida'
           }));
           return param=true;
-      }
-      chargingBattery(parameter){
-         let param=parameter
-         let evento = this.shadowRoot.querySelector('battery-component');
-         evento.addEventListener('phone-disconnected', event => console.log(event.detail));
-         evento.addEventListener('phone-charging', event => console.log(event.detail)); 
-         //console.log(evento)   
-       param= this.$.batteryComponent.chargingPhone(param)
-       
-    
-        return param
-      }
-      colorBattery(){
-          this.$.batteryComponent._changedColor()
-       
       }
 
      /* chargingPhone(param){

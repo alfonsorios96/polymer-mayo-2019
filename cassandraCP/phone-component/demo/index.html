@@ -44,19 +44,20 @@
     <script>
       let playParam=true;
       let chargingParam=true;
+      
      const element = document.querySelector('phone-component');
             element.addEventListener('phone-playing', event => {
              
               console.log(event.detail)
               });
             element.addEventListener('phone-stop', event => console.log(event.detail));
-            element.addEventListener('phone-disconnected', event => console.log(event.detail));
-            element.addEventListener('phone-charging', event => console.log(event.detail)); 
+            //element.addEventListener('phone-disconnected', event => console.log(event.detail));
+            //element.addEventListener('phone-charging', event => console.log(event.detail)); 
     
     const paperButton = document.querySelector('paper-button');
           
           paperButton.addEventListener('click', event => {
-            chargingParam=element.chargingPhone(chargingParam);
+           chargingParam=element.chargingBattery(chargingParam);
               
             });
 
