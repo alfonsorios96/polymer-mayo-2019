@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>phone-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../phone-component.html">
+    <!-- <link rel="import" href="../../paper-button/paper-button.html"> -->
+
+
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic phone-component demo</h3>
+      <demo-snippet>
+        <template>
+          <paper-button raised class="indigo" id="btnCharging" on-click="charging">Connected</paper-button>
+          <paper-button raised class="indigo" id="btnDisconnected" on-click="disconnected">Disconnected</paper-button>
+          
+          <phone-component></phone-component>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <script>
+      const element = document.querySelector('phone-component');
+      
+      // Botones de Conexion
+      const chargingBtn = document.querySelector('#btnCharging');
+      const disconnectedBtn = document.querySelector('#btnDisconnected');
+      
+      element.addEventListener('phone-charging', event => {
+        console.log(event.detail);
+      });
+
+      chargingBtn.addEventListener('click', event => {
+        console.log('cargandooo');
+        element.connected();
+      });
+
+      disconnectedBtn.addEventListener('click', event => {
+        console.log('ya no esta cargando');
+        element.disconnected();
+      });
+
+    </script>
+  </body>
+</html>
