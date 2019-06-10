@@ -1,0 +1,123 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
+        border: 1px solid;
+      }
+      .phoneTitle {
+        padding: 20px;
+        border: 1px solid;
+      }
+      .phoneBody {
+        padding: 20px;
+        border: 1px solid;
+        height: 600px;
+      }
+      .applicationsBox {
+        height: 100%;
+      }
+      .appTitle {
+        border: 1px solid;
+        height: 20%;
+        text-align: center;
+      }
+      .appBody {
+        border: 1px solid;
+        height: 80%;
+        text-align: center;
+      }
+      .btn {
+        margin-top: 50px;
+        height: 200px;
+        width: 200px;
+      }
+    </style>
+    
+
+      <div class="phoneBody">
+        <div class="applicationsBox">
+          <div class="appTitle">
+            <h1>[[title]]</h1>
+          </div>
+          <div class="appBody">
+            
+            <dom-if if="[[!_isPlaying]]">
+              <template>
+                <button class="btn" on-click="play">Play</button>
+              </template>
+            </dom-if>
+            <dom-if if="[[_isPlaying]]">
+              <template>
+                <button class="btn" on-click="stop">Stop</button>
+              </template>
+            </dom-if>
+
+          </div>
+        </div>
+      </div>
+
+
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {          
+          _isPlaying: {
+            type: Boolean,
+            value: false
+          },   
+          
+          title: {
+            type: String,
+            value: ''
+          },
+          
+
+        };
+      }
+
+      play() {
+        this._isPlaying = true;
+
+        this.dispatchEvent(new CustomEvent('phone-playing', {
+          bubbles: false,
+          composed: false,
+          detail: 'Is Playing'
+        }));
+      }
+
+      stop() {
+        this._isPlaying = false;
+
+        this.dispatchEvent(new CustomEvent('phone-stoped', {
+          bubbles: false,
+          composed: false,
+          detail: 'Is stoped'
+        }));
+      }
+
+    }
+
+
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>
