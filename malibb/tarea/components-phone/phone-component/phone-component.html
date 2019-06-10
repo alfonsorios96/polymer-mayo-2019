@@ -8,19 +8,40 @@
 <dom-module id="phone-component">
   <template>
     <style>
-      header {
+      header,footer {
         display: flex;
         justify-content: space-around;
+        margin: 1rem;
+      }
+      .container{
+        padding: 0;
+        margin:0;
+        display: flex;
+        flex-direction: column;
+        border: 0.1rem;
+      }
+      .body{
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     </style>
     <div class="container">
       <header>
-        <battery-component></battery-component>
-        <iron-icon icon="device:signal-cellular-3-bar"></iron-icon>Signal
+        <battery-component id="battery"></battery-component>
+        <span>
+          <iron-icon icon="device:signal-cellular-3-bar"></iron-icon>Signal
+        </span>
+        
       </header>
       <div class="body">
           <player-component on-battery-using="usingBattery"></player-component>
       </div>
+      <footer>         
+        <iron-icon icon="icons:home"></iron-icon>
+        <iron-icon icon="icons:radio-button-unchecked"></iron-icon>
+        <iron-icon icon="icons:home"></iron-icon>
+      </footer>
     </div>
   </template>
 
@@ -37,19 +58,44 @@
       static get is() { return 'phone-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'phone-component'
+          charging: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer:'_manageCharge'
           }
         };
       }
-      usingBattery(event) {
-          const porcentageLess = event.detail;
-          this.set('batteryStatus', this.batteryStatus - porcentageLess);
+      usingBattery(event){
+        this.$.battery.rest(event.detail);
       }
-      method(){
 
+    charge() {
+      if (!this.charging) {
+        this.set('charging', true);
+        this.$.battery.charging='-charging';
+      } 
+    }
+
+    unCharge(){
+      if(this.charging){
+        this.set('charging', false);
+        this.$.battery.charging='';
       }
+    }
+
+    _manageCharge(){
+      console.log(this.charging)
+      if(this.charging){
+        const interval = setInterval(() => {
+            this.$.battery.sum(1);
+        }, 2000);
+        localStorage.setItem('charging', `${interval}`);
+      }else{
+        clearInterval(localStorage.getItem('charging'));
+      }
+    }
+
     }
       
 
