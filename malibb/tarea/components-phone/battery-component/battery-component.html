@@ -10,7 +10,7 @@
         display: block;
       }
     </style>
-    <iron-icon icon="device:device:battery-[[status]]"></iron-icon>Battery [[status]]
+    <iron-icon icon="device:battery[[charging]]-[[status]]"></iron-icon>%[[batteryQuantity]]
   </template>
 
   <script>
@@ -26,25 +26,42 @@
       static get is() { return 'battery-component'; }
       static get properties() {
         return {
-          status:{
-            type:String,
-            string:''
+          status: {
+            type: String,
+            string: ''
           },
-          battery: {
+          batteryQuantity: {
             type: Number,
             value: 100,
             reflectToAttribute: true,
             observer: '_batteryChanged'
+          },
+          charging:{
+            type:String,
+            value:''
           }
         };
       }
-      _batteryChanged(){
-        this.status = this.battery>=0 ?
-          ( this.battery>=20 ?( this.battery>=80 ?
-          (this.battery>=100?'charging-full':'80'):'80'):'20'):'0';
+      _batteryChanged() {
+        this.status = this.batteryQuantity >= 0 ?
+          (this.batteryQuantity >= 20 ?
+            (this.batteryQuantity >= 80 ?
+              (this.batteryQuantity >= 100 ?
+                'full'
+                : '80')
+              : '60')
+            : '20')
+          : '0';
       }
 
-      batteryUsing()
+      rest(quantity) {
+        if (this.batteryQuantity > 1)
+          this.set('batteryQuantity', this.batteryQuantity - quantity);
+      }
+      sum(quantity) {
+        if (this.batteryQuantity < 100)
+          this.set('batteryQuantity', this.batteryQuantity + quantity);
+      }
     }
 
     window.customElements.define(BatteryComponent.is, BatteryComponent);
