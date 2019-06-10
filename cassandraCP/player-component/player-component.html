@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/av-icons.html">  
+<link rel="import" href="../cs-toggle-icon-button/cs-toggle-icon-button.html">
+
+<dom-module id="player-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+        text-align: center
+      }
+      .title-song{
+        background-color: yellow
+
+      }
+      .playPause{
+        background-color: yellowgreen
+
+      }
+      .musicTool{
+        padding: 10% 10% 10% 10%;
+        background-color: blueviolet
+      }
+
+    </style>
+     <div class="musicTool">
+    
+      <section class="title-song">Title: Mi canción favorita del día</section>
+      <section class="playPause" on-click="play">
+          <cs-toggle-icon-button do-icon="av:play-arrow" done-icon="av:stop">
+          </cs-toggle-icon-button>
+      </section>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `player-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PlayerComponent extends Polymer.Element {
+      static get is() { return 'player-component'; }
+      static get properties() {
+        return {
+          playProp: {
+            type: Boolean,
+            value: true,
+            observer:'colorBattery'
+          }
+        };
+      }
+      play(){
+        
+        if(this.playProp){
+          this.dispatchEvent(new CustomEvent('phone-playing', {
+            bubbles: false,
+            composed: false,
+            detail: 'música activa'
+          }));
+            this.playProp=false;
+            return false;
+        }else {
+          this.playProp =this.stop(this.playProp)
+          this.playProp= true;
+         return false;
+        }
+        
+        
+      }
+      stop(param){
+        this.dispatchEvent(new CustomEvent('phone-stop', {
+            bubbles: false,
+            composed: false,
+            detail: 'música detenida'
+          }));
+          return param=true;
+      }
+    }
+
+    window.customElements.define(PlayerComponent.is, PlayerComponent);
+  </script>
+</dom-module>

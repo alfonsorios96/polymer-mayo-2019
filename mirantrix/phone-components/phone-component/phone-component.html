@@ -1,0 +1,50 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import"  href="../battery-component/battery-component.html">
+<link rel="import"  href="../player-component/player-component.html">
+<link rel="import"  href="../charge-component/charge-component.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      
+    </style>
+    
+    <battery-component id="battery"></battery-component>
+    <player-component on-player-consumption ="playerDetail"></player-component>
+    <charge-component></charge-component>
+    
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return { 
+          prop: {
+            type: String,
+            value: ""
+          }
+        };
+      }
+
+      playerDetail(e) {
+        this.$.battery.restBattery(e.detail);
+      }
+
+    
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>

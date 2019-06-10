@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="bat-element">
+  <template>
+    <style>
+      .percentage {
+        padding: 3px;
+        float: right;
+        border: 1px solid;
+        width: 50px;
+        text-align: center;
+      }
+    </style>
+    
+    <div class="percentage">[[_porcentage]]</div>
+
+  </template>
+
+  <script>
+
+    class BatElement extends Polymer.Element {
+      static get is() { return 'bat-element'; }
+      static get properties() {
+        return {
+          _porcentage: {
+            type: Number,
+            value: 20
+          },
+          
+          charging: {
+            type: Boolean,
+            value: false
+          },
+
+          _charge: {
+            type: Number,
+            value: 0
+          },
+
+          consumer: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+      
+      startCharge() {
+        if(this.charging && this.consumer){
+          clearInterval(this._charge);
+        }
+        else if (this.charging) {
+            clearInterval(this._charge);
+            this._charge = setInterval(() => {
+              this._porcentage++;
+            }, 1000);
+          }
+
+      }
+
+      unCharge(){
+        if(this.charging && this.consumer){
+          clearInterval(this._charge);
+        }
+        else if (this.consumer) {
+            this._charge = setInterval(() => {
+              this._porcentage--;
+            }, 1000);
+          }
+      }
+
+      stopCharge(){
+        if(!this.charging){
+          clearInterval(this._charge);
+        }
+    }
+
+    }
+
+    window.customElements.define(BatElement.is, BatElement);
+  </script>
+</dom-module>

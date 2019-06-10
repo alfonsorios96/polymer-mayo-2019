@@ -1,0 +1,216 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../cs-toggle-icon-button/cs-toggle-icon-button.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../battery-component/battery-component.html">
+<link rel="import" href="../player-component/player-component.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+        text-align: center
+      }
+     /* .battery{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+      }*/
+      .information{
+        background-color: grey;
+        padding: 0 0 10% 0;
+      }
+      .information iron-icon{
+        float: right;
+      
+      }
+       /*.title-song{
+        background-color: yellow
+
+      }
+     .playPause{
+        background-color: yellowgreen
+
+      }
+      .musicTool{
+        padding: 10% 10% 10% 10%;
+        background-color: blueviolet
+      }
+      .ochenta{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+        
+      }
+      .cincuenta{
+        background-color: #B024F1;
+        width: 10%;
+        height: 5%;
+        
+      }
+      .veinte{
+        background-color: red;
+        width: 10%;
+        height: 5%;
+        
+      }*/
+      
+    </style>
+  <div>
+  <section class="information">
+      <iron-icon  icon="device:signal-cellular-3-bar"></iron-icon>
+    <!--  <div id="battery" class="battery">[[charging]] %</div>-->
+    <battery-component id="batteryComponent" >[[charging]] %</battery-component>
+  </section>
+    <player-component id="playerComponent" on-click="player"></player-component>
+ <!-- <div class="musicTool">
+    
+    <section class="title-song">Title: Mi canción favorita del día</section>
+    <section class="playPause" on-click="play">
+        <cs-toggle-icon-button do-icon="av:play-arrow" done-icon="av:stop">
+        </cs-toggle-icon-button>
+    </section>
+  </div>-->
+</div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          /*charging: {
+            type: Number,
+            value: 50,
+            observer: '_changedColor'
+          },
+          playProp: {
+            type: Boolean,
+            value: true,
+            observer:'colorBattery'
+          }*/
+         
+         
+        };
+      }
+      player(){
+        let playReturn= true;
+        playReturn = this.$.playerComponent.play();
+        this.chargingBattery(playReturn)
+      }
+      /*play(){
+        
+        if(this.playProp){
+          this.dispatchEvent(new CustomEvent('phone-playing', {
+            bubbles: false,
+            composed: false,
+            detail: 'música activa'
+          }));
+            this.playProp=false;
+            this.chargingPhone(false)
+        }else {
+          this.playProp =this.stop(this.playProp)
+          this.playProp= true;
+          this.chargingPhone(false)
+        }
+        
+        
+      }
+      stop(param){
+        this.dispatchEvent(new CustomEvent('phone-stop', {
+            bubbles: false,
+            composed: false,
+            detail: 'música detenida'
+          }));
+          return param=true;
+      }*/
+      chargingBattery(parameter){
+         let param=parameter
+         let evento = this.shadowRoot.querySelector('battery-component');
+         evento.addEventListener('phone-disconnected', event => console.log(event.detail));
+         evento.addEventListener('phone-charging', event => console.log(event.detail)); 
+         //console.log(evento)   
+       param= this.$.batteryComponent.chargingPhone(param)
+       
+    
+        return param
+      }
+      colorBattery(){
+          this.$.batteryComponent._changedColor()
+       
+      }
+
+     /* chargingPhone(param){
+       
+        if(param){
+           
+          this.dispatchEvent(new CustomEvent('phone-charging', {
+            bubbles: false,
+            composed: false,
+            detail: 'teléfono conectado'
+          }));
+
+            const connected = setInterval(() => {
+            if (this.charging >= 0 && this.charging < 100) {
+              console.log('intervalo')
+              this.set('charging', this.charging + 1);
+             
+            }
+           
+          }, 2000);
+          
+          this.set('disconnected',connected);
+          param=false;
+        }else{
+          
+          clearInterval(this.disconnected)
+          this.dispatchEvent(new CustomEvent('phone-disconnected', {
+            bubbles: false,
+            composed: false,
+            detail: 'teléfono desconectado'
+          }));
+          this.disconnected = setInterval(() => {
+            if (this.charging > 0 && this.charging < 100) {
+              console.log('intervalo')
+              this.set('charging', this.charging -1);
+            
+            }
+           
+          }, 8000);
+          
+           param=true;
+        }
+       
+        return param;
+       }
+       
+      _changedColor(){
+        console.log(this.charging)
+        if(this.charging > 80){
+          this.$.battery.classList.remove( 'cincuenta', 'veinte');
+          this.$.battery.classList.add('ochenta');
+        }if (this.charging >= 21 && this.charging < 80 ){
+          this.$.battery.classList.remove('ochenta', 'veinte');
+          this.$.battery.classList.add('cincuenta');
+        }if(this.charging > 0 && this.charging < 21 ) {
+         this.$.battery.classList.remove('ochenta', 'cincuenta');
+          this.$.battery.classList.add('veinte');
+        }
+      } */
+
+      
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>
