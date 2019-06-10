@@ -11,9 +11,20 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../phone-component.html">
+    <link rel="import" href="../../bat-element/bat-element.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
+        .container {
+          display: flex;
+          justify-content: space-evenly;
+          flex-direction: column;
+          border: 1px solid;
+        }
+        .phoneTitle {
+          padding: 20px;
+          border: 1px solid;
+        }
       </style>
     </custom-style>
   </head>
@@ -29,44 +40,59 @@
               <button on-click="connectedClicked">Conectar</button>
               <button on-click="disconnectedClicked">Desconectar</button>
 
-                <phone-component
-                charging = "[[charging]]"
-                title    = "[[title]]"
-              ></phone-component>
+              <div class="container">
+                  <div class="phoneTitle">
+                    <bat-element 
+                      consumer  = "[[consumer]]" 
+                      charging    = "[[charging]]"
+                    ></bat-element>
+                  </div>
+
+                  <phone-component
+                    title    = "[[title]]"
+                  ></phone-component>
+
+              </div>
 
             </template>
-          </dom-bind>
-
-          <dom-bind id="batery">
-              <template>
-  
-                  <batery-component></batery-component>
-  
-              </template>
           </dom-bind>
 
           <script>
             
             document.addEventListener('WebComponentsReady', () => {
-              //........................phone..........................
-              const component = document.querySelector('phone-component');
-              component.addEventListener('phone-playing', event => console.log(event.detail));
-              component.addEventListener('phone-stoped', event => console.log(event.detail));
 
-              const phone = document.querySelector('#phone');
+              const phone       = document.querySelector('#phone');
+              const application = document.querySelector('phone-component');
+
               phone.charging  = false;
               phone.title     = 'Un Titulo';
 
+              //METHODS
               phone.connectedClicked = () => {
                 phone.charging  = true;
-                const element = document.querySelector('phone-component');
-                element.startCharge();
+                const battery   = document.querySelector('bat-element');
+                battery.startCharge();
               };
               phone.disconnectedClicked = () => {
                 phone.charging  = false;
-                const element = document.querySelector('phone-component');
-                element.stopCharge();
+                const battery   = document.querySelector('bat-element');
+                battery.stopCharge();
               };
+              
+              //EVENTS
+              application.addEventListener('phone-playing', event => {
+                const battery = document.querySelector('bat-element');
+
+                battery.consumer = true;
+                battery.unCharge();
+
+              });
+              application.addEventListener('phone-stoped', event => {
+                const battery = document.querySelector('bat-element');
+
+                battery.consumer = false;
+                battery.startCharge();
+              });
 
             });
 
