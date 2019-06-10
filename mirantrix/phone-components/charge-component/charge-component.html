@@ -1,0 +1,46 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="charge-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <section class="charging-actions">
+      <dom-if if="[[!_isCharging]]">
+          <template>
+              <button on-click="charge">Charge</button>
+          </template>
+      </dom-if>
+      <dom-if if="[[_isCharging]]">
+          <template>
+              <button on-click="disconect">Disconect</button>
+          </template>
+      </dom-if>
+    </section>
+  </template>
+  <script>
+    /**
+     * `charge-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ChargeComponent extends Polymer.Element {
+      static get is() { return 'charge-component'; }
+      static get properties() {
+        return {
+          _isCharging: {
+            type: Boolean,
+            value: true
+          }
+        };
+      }
+    }
+
+    window.customElements.define(ChargeComponent.is, ChargeComponent);
+  </script>
+</dom-module>

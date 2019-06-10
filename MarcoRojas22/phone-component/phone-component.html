@@ -1,0 +1,72 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="./battery-component.html">
+<link rel="import" href="./player-component.html">
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <battery-component id="battery"></battery-component>
+    <player-component on-spotify-running="playerIsRunning" on-spotify-stoped="playerStoped" id="player"
+                      on-bateria-on="bateriaOn" on-bateria-off="bateriaOff"></player-component>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * Simulacion de telefono
+     *
+     * @customElement
+
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { return 'phone-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'phone-component'
+          }
+        };
+      }
+
+      playerIsRunning(e){
+        const player = setInterval(()=>{
+           this.$.battery.restarBateria(e.detail);
+           localStorage.setItem('player', player);
+        },1000);
+      }
+
+       playerStoped(e){
+        clearInterval(localStorage.getItem('player'));
+      }
+
+      bateriaOn(e){
+        const cargaBateria = setInterval(()=>{
+          this.$.battery.sumarBateria(e.detail);
+          clearInterval(localStorage.getItem('descargaBateria'));
+          localStorage.setItem('cargaBateria', cargaBateria);
+        },1000);
+        //clearInterval(localStorage.getItem('descargaBateria'));
+        //console.log(localStorage.getItem('valorDescarga'));
+      }
+
+      bateriaOff(e){
+        const descargaBateria = setInterval(()=>{
+          this.$.battery.restarBateria(e.detail);
+          clearInterval(localStorage.getItem('cargaBateria'));
+          localStorage.setItem('descargaBateria', descargaBateria);
+        },1000);
+        
+        //clearInterval(localStorage.getItem('valorCarga'));
+        //console.log(localStorage.getItem('valorCarga'));
+      }
+    }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>

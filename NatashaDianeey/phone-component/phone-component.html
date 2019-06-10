@@ -2,6 +2,8 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 
+<link rel="import" href="../../battery-component.html">
+
 <dom-module id="phone-component">
   <template>
     <style>
@@ -103,7 +105,7 @@
         };
       }
 
-      play() {
+      play() {  
         this.dispatchEvent(new CustomEvent('phone-playing'));
         this.set('_isPlaying', true);
         console.log('esta reproduciendo');
@@ -121,11 +123,8 @@
         console.log('stop a la reproduccion');
       }
 
-
-
       connected() {
         this.dispatchEvent(new CustomEvent('phone-playing'));
-
         const intervalTime = setInterval(() => {
           if (this.batteryStatus > 0) {
           this.set('batteryStatus', this.batteryStatus + 1);
@@ -139,7 +138,6 @@
 
         clearInterval(localStorage.getItem('playing'));
       }
-      
 
       _setClassOfBattery() {
         let batteryStatusClass = '';

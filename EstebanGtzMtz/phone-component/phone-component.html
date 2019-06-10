@@ -1,0 +1,206 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="phone-component">
+    <template>
+    <style>
+      :host {
+        display: block;
+        height: 80%;
+      }
+
+      .container {
+        border: 1px solid black;
+        width: 99.5%;
+        height: 225px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .header {
+        border: 1px solid red;
+        width: 550px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .playButton {
+        background-color: darkred;
+        color: white;
+      }
+
+      .battery {
+        border: 1px solid yellow;
+        width: 60px;
+        height: 40px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .signalIcon {
+        border: 1px solid green;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .player {
+        border: 1px solid blue;
+        width: 550px;
+        height: 100px;
+        display: flex;
+        margin-top: 25px;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .playIcon {
+        border: 1px solid green;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .low-battery {
+        background-color: darkred;
+        color: white;
+      }
+
+      .good-battery-level {
+        background-color: yellow;
+        color: white;
+      }
+
+      .full-battery {
+        background-color: green;
+        color: white;
+      }
+    </style>
+
+    <div class="container">
+      <section>
+        <span class="header">
+          <span class="battery">
+            <iron-icon icon="device:battery-full"></iron-icon>
+            [[batteryState]]%
+          </span>
+          <span class="signalIcon">
+            <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+          </span>
+        </span>
+      </section>
+
+      <section>
+        <span class="player">
+          <section class="music-title">
+            <h3>Nookie - Limp Bizkit</h3>
+          </section>
+          <section class="play-pause-actions">
+            <dom-if if="![[_isPlaying]]">
+              <template class="playIcon">
+                <iron-icon icon="av:play-circle-filled" on-click="play"></iron-icon>
+              </template>
+    </dom-if>
+    <dom-if if="[[_isPlaying]]">
+        <template class="playIcon">
+                <iron-icon icon="av:pause-circle-filled" on-click="stop"></iron-icon>
+              </template>
+    </dom-if>
+
+    </section>
+    </span>
+    </section>
+    <paper-button class="playButton" on-click="playingMusic">PLAY</paper-button>
+    </div>
+    </template>
+
+    <script>
+        class PhoneComponent extends Polymer.Element {
+            static get is() {
+                return 'phone-component';
+            }
+            static get properties() {
+                return {
+                    charging: {
+                        type: Boolean,
+                        value: false,
+                        refletToAttribute: true,
+                        notify: true,
+                        observer: '_charging'
+                    },
+                    batteryState: {
+                        type: Number,
+                        value: 60,
+                        observer: '_battery'
+                    },
+                    _isPlaying: {
+                        type: Boolean,
+                        value: false,
+                        observer: '_charging'
+                    }
+                };
+                console.log(this.$)
+
+            }
+
+            play() {
+                this.dispatchEvent(new CustomEvent('playingMusic'));
+                this.set(_isPlaying, true);
+                const interval = setInterval(() => {
+                    if (this.batteryState > 0) {
+                        this.set('bateryState', this.batteryState - 1);
+                    }
+                    localStorage.setItem('playingMusic', `${interval}`);
+                }, 1000);
+            }
+
+            stop() {
+                this.set(_isPlaying, false);
+                clearInterval(localStorage.getItem('playingMusic'));
+            }
+
+            _battery() {
+                let statusBattery = '';
+                if (this.batteryState < 15) {
+                    statusBattery = 'lower-battery'
+                }
+                if (this.batteryState >= 16 && this.batteryState <= 80) {
+                    statusBattery = 'good-battery-level'
+                }
+                if (this.batteryState > 80) {
+                    statusBattery = 'full-battery'
+                }
+                console.log(this)
+                this.$.batteryState.classList.remove('low-battery', 'good-battery-level', 'full-battery');
+                //this.$.battery.classList.add(statusBattery);
+            }
+
+            _charging() {
+                if (this.charging) {
+                    const interval = setInterval(() => {
+                        if (this.batteryState < 100) {
+                            this.set('bateryState', this.batteryState + 1);
+                        }
+                    }, 1000);
+                    localStorage.setItem('charging', `${interval}`);
+                } else {
+                    clearInterval(localStorage.getItem('charging'));
+                }
+            }
+        }
+
+
+        window.customElements.define(PhoneComponent.is, PhoneComponent);
+    </script>
+</dom-module>

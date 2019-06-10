@@ -1,0 +1,124 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="battery-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .battery{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+      }
+      
+      .ochenta{
+        background-color: green;
+        width: 10%;
+        height: 5%;
+        
+      }
+      .cincuenta{
+        background-color: #B024F1;
+        width: 10%;
+        height: 5%;
+        
+      }
+      .veinte{
+        background-color: red;
+        width: 10%;
+        height: 5%;
+        
+      }
+    </style>
+    
+    <div id="battery" class="battery">[[charging]] %</div>
+  </template>
+
+  <script>
+    /**
+     * `battery-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BatteryComponent extends Polymer.Element {
+      static get is() { return 'battery-component'; }
+      static get properties() {
+        return {
+          charging: {
+            type: Number,
+            value: 50,
+            observer: '_changedColor'
+          },
+        };
+      }
+
+      chargingPhone(param){
+       
+       if(param){
+          
+         this.dispatchEvent(new CustomEvent('phone-charging', {
+           bubbles: false,
+           composed: false,
+           detail: 'teléfono conectado'
+         }));
+
+           const connected = setInterval(() => {
+           if (this.charging >= 0 && this.charging < 100) {
+             console.log('intervalo')
+             this.set('charging', this.charging + 1);
+            
+           }
+          
+         }, 2000);
+         
+         this.set('disconnected',connected);
+         param=false;
+       }else{
+         
+         clearInterval(this.disconnected)
+         this.dispatchEvent(new CustomEvent('phone-disconnected', {
+           bubbles: false,
+           composed: false,
+           detail: 'teléfono desconectado'
+         }));
+         this.disconnected = setInterval(() => {
+           if (this.charging > 0 && this.charging < 100) {
+             console.log('intervalo')
+             this.set('charging', this.charging -1);
+           
+           }
+          
+         }, 8000);
+         
+          param=true;
+       }
+      
+       return param;
+      }
+      
+     _changedColor(){
+       console.log(this.charging)
+       if(this.charging > 80){
+         this.$.battery.classList.remove( 'cincuenta', 'veinte');
+         this.$.battery.classList.add('ochenta');
+       }if (this.charging >= 21 && this.charging < 80 ){
+         this.$.battery.classList.remove('ochenta', 'veinte');
+         this.$.battery.classList.add('cincuenta');
+       }if(this.charging > 0 && this.charging < 21 ) {
+        this.$.battery.classList.remove('ochenta', 'cincuenta');
+         this.$.battery.classList.add('veinte');
+       }
+     } 
+
+     
+   
+
+    }
+
+    window.customElements.define(BatteryComponent.is, BatteryComponent);
+  </script>
+</dom-module>
