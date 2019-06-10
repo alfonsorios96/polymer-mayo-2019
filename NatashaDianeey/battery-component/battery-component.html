@@ -7,7 +7,16 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    
+    <section class="header">
+      <div class="battery" id="battery">
+        <p>[[batteryStatus]]</p>
+      </div>
+      <div class="signal">
+        <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
+      </div>
+    </section>
+
   </template>
 
   <script>
@@ -29,6 +38,38 @@
           }
         };
       }
+
+      connected() {
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+        const intervalTime = setInterval(() => {
+          if (this.batteryStatus > 0) {
+          this.set('batteryStatus', this.batteryStatus + 1);
+          }
+          localStorage.setItem('playing', `${intervalTime}`);
+        }, 1000);
+      }
+
+      disconnected() {
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+
+        clearInterval(localStorage.getItem('playing'));
+      }
+
+      _setClassOfBattery() {
+        let batteryStatusClass = '';
+        if (this.batteryStatus < 20) {
+          batteryStatusClass = 'low-battery';
+        }
+        if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+          batteryStatusClass = 'stable-battery';
+        }
+        if (this.batteryStatus > 80) {
+          batteryStatusClass = 'full-battery';
+        }
+        this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+        this.$.battery.classList.add(batteryStatusClass);
+      }
+
     }
 
     window.customElements.define(BatteryComponent.is, BatteryComponent);

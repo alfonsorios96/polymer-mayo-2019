@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
 
 <dom-module id="player-component">
   <template>
@@ -7,7 +8,26 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+    <section class="body">
+      <div class="player" id="player">
+        <div class="player-header">
+          <h3>Title</h3>
+        </div>
+        <div class="player-body">
+          <dom-if if="[[!_isPlaying]]">
+            <template>
+              <paper-button raised class="indigo" on-click="play">play</paper-button>
+            </template>
+          </dom-if>
+          <dom-if if="[[_isPlaying]]">
+            <template>
+              <paper-button raised class="indigo" on-click="stop">stop</paper-button>
+            </template>
+          </dom-if>
+        </div>
+      </div>
+
   </template>
 
   <script>
@@ -26,9 +46,46 @@
           prop1: {
             type: String,
             value: 'player-component'
+          },
+          _isPlaying: {
+            type: Boolean,
+            value: false,
+            observer: '_manageCharging'
           }
         };
       }
+
+      play() {  
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+        this.set('_isPlaying', true);
+        console.log('esta reproduciendo');
+        const intervalTime = setInterval(() => {
+          if (this.batteryStatus > 0) {
+            this.set('batteryStatus', this.batteryStatus - 1);
+          }
+          localStorage.setItem('playing', `${intervalTime}`);
+        }, 1000);
+      }
+
+      stop() {
+        this.set('_isPlaying', false);
+        clearInterval(localStorage.getItem('playing'));
+        console.log('stop a la reproduccion');
+      }
+
+      _manageCharging() {
+        if (this.charging) {
+          const intervalTime = setInterval(() => {
+            if (this.batteryStatus < 100) {
+              this.set('batteryStatus', this.batteryStatus + 1);
+            }
+          }, 1000);
+          localStorage.setItem('charging', `${intervalTime}`);
+        } else {
+          clearInterval(localStorage.getItem('charging'));
+        }
+      }
+
     }
 
     window.customElements.define(PlayerComponent.is, PlayerComponent);
