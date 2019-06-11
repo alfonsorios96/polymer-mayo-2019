@@ -1,0 +1,56 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="plug-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    
+    <paper-button raised class="indigo" id="btnCharging" on-click="charging">Connected</paper-button>
+    <paper-button raised class="indigo" id="btnDisconnected" on-click="disconnected">Disconnected</paper-button>
+
+  </template>
+
+  <script>
+    /**
+     * `plug-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PlugComponent extends Polymer.Element {
+      static get is() { return 'plug-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'plug-component'
+          }
+        };
+      }
+
+      charging() {
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+        const intervalTime = setInterval(() => {
+        if (this.batteryStatus > 0) {
+        this.set('batteryStatus', this.batteryStatus + 1);
+        }
+        localStorage.setItem('playing', `${intervalTime}`);
+        }, 1000);
+      }
+
+      disconnected() {
+        this.dispatchEvent(new CustomEvent('phone-playing'));
+        clearInterval(localStorage.getItem('playing'));
+      }
+      
+    }
+
+    window.customElements.define(PlugComponent.is, PlugComponent);
+  </script>
+</dom-module>

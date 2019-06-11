@@ -7,6 +7,15 @@
       :host {
         display: block;
       }
+      .low-battery {
+        background-color: red;
+      }
+      .stable-battery {
+        background-color: orange;
+      }
+      .full-battery {
+        background-color: greenyellow;
+      }
     </style>
 
     <section class="body">
@@ -27,6 +36,7 @@
           </dom-if>
         </div>
       </div>
+    </section>
 
   </template>
 
@@ -43,26 +53,37 @@
       static get is() { return 'player-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'player-component'
-          },
+          // charging: {
+          //   type: Boolean,
+          //   value: false,
+          //   reflectToAttribute: true,
+          //   notify: true,
+          //   observer: '_manageCharging'
+          // },
+          // batteryStatus: {
+          //   type: Number,
+          //   value: 50,
+          //   observer: '_setClassOfBattery'
+          // },
           _isPlaying: {
             type: Boolean,
             value: false,
-            observer: '_manageCharging'
+            // observer: '_manageCharging'
           }
         };
       }
 
-      play() {  
-        this.dispatchEvent(new CustomEvent('phone-playing'));
+      play() {
         this.set('_isPlaying', true);
         console.log('esta reproduciendo');
         const intervalTime = setInterval(() => {
-          if (this.batteryStatus > 0) {
-            this.set('batteryStatus', this.batteryStatus - 1);
-          }
+          this.dispatchEvent(new CustomEvent('player', {
+            bubbles: false,
+            composed: false,
+            detail: {
+              number: 1
+            }
+          }));
           localStorage.setItem('playing', `${intervalTime}`);
         }, 1000);
       }
@@ -72,6 +93,21 @@
         clearInterval(localStorage.getItem('playing'));
         console.log('stop a la reproduccion');
       }
+
+      // _setClassOfBattery() {
+      //   let batteryStatusClass = '';
+      //   if (this.batteryStatus < 20) {
+      //     batteryStatusClass = 'low-battery';
+      //   }
+      //   if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+      //     batteryStatusClass = 'stable-battery';
+      //   }
+      //   if (this.batteryStatus > 80) {
+      //     batteryStatusClass = 'full-battery';
+      //   }
+      //   this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+      //   this.$.battery.classList.add(batteryStatusClass);
+      // }
 
       _manageCharging() {
         if (this.charging) {
@@ -85,7 +121,6 @@
           clearInterval(localStorage.getItem('charging'));
         }
       }
-
     }
 
     window.customElements.define(PlayerComponent.is, PlayerComponent);
