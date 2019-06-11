@@ -1,0 +1,64 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<dom-module id="lang-changed">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  <paper-dropdown-menu label="Languages" no-animations>
+    <paper-listbox slot="dropdown-content" selected="1">
+    <dom-repeat  items="[[languages]]" as="language">
+      <template >
+        <paper-item>[[language.value]]</paper-item>
+      </template>
+    </dom-repeat>
+  </paper-listbox>
+  </paper-dropdown-menu >
+
+
+</template>
+  
+  <script>
+    /**
+     * `lang-changed`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LangChanged extends Polymer.Element {
+      static get is() { return 'lang-changed'; }
+      static get properties() {
+        return {
+          languages: {
+            type: Array,
+            value: [
+              { key: "es",
+                value :"Español"
+              },
+              { key:"en",
+                value : "English"
+              }
+            ],
+            observer: '_changeLanguage'
+          },
+          locales: {
+            type: Map,
+            value: ()=>new Map()
+          }
+        };
+      }
+      _changeLanguage(){
+        
+      }
+    }
+    
+    window.customElements.define(LangChanged.is, LangChanged);
+  </script>
+</dom-module>
