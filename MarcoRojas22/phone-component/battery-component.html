@@ -12,13 +12,22 @@
         display: block;
         background-color:green; 
         width:5em;
+        font-weight: bold;
+        text-align: center;
       }
+      .container{
+        border: 1px solid black;
+        padding: 5px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+   
     </style>
     <div class="container">
-      <div>
-        <label class="bateria">{{valor}}</label>
+        <label id="bateria">{{valor}}%</label>
         <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
-      </div>
+      
     </div>
   </template>
 
@@ -41,17 +50,38 @@
             value: 'battery-component'
           },
           valor:{
-            type: String,
-            value: ''
+            type: Number,
+            value: 60,
+            observer:"_valueChanged"
           }
         };
       }
 
+      sumarBateria(numberValue){
+        if(this.valor<100)
+        this.set('valor', this.valor+numberValue);
+      }
 
+      restarBateria(numberValue){
+        if(this.valor>0)
+        this.set('valor', this.valor-numberValue);
+      }
+
+      estadoBateria(stateValue){
+      }
+
+      _valueChanged(){
+        if(this.valor>=30 && this.valor < 70)
+          this.$.bateria.style.backgroundColor = "yellow";
+        else if(this.valor < 30)
+          this.$.bateria.style.backgroundColor = "red";
+        else if(this.valor>=70)
+          this.$.bateria.style.backgroundColor = "green";
+      }
 
       ready(){
         super.ready();
-        this.valor = '100';
+        localStorage.clear();
       }
     }
 

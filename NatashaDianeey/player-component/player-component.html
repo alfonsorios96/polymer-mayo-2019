@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
 
 <dom-module id="player-component">
   <template>
@@ -6,8 +7,37 @@
       :host {
         display: block;
       }
+      .low-battery {
+        background-color: red;
+      }
+      .stable-battery {
+        background-color: orange;
+      }
+      .full-battery {
+        background-color: greenyellow;
+      }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+    <section class="body">
+      <div class="player" id="player">
+        <div class="player-header">
+          <h3>Title</h3>
+        </div>
+        <div class="player-body">
+          <dom-if if="[[!_isPlaying]]">
+            <template>
+              <paper-button raised class="indigo" on-click="play">play</paper-button>
+            </template>
+          </dom-if>
+          <dom-if if="[[_isPlaying]]">
+            <template>
+              <paper-button raised class="indigo" on-click="stop">stop</paper-button>
+            </template>
+          </dom-if>
+        </div>
+      </div>
+    </section>
+
   </template>
 
   <script>
@@ -23,11 +53,73 @@
       static get is() { return 'player-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'player-component'
+          // charging: {
+          //   type: Boolean,
+          //   value: false,
+          //   reflectToAttribute: true,
+          //   notify: true,
+          //   observer: '_manageCharging'
+          // },
+          // batteryStatus: {
+          //   type: Number,
+          //   value: 50,
+          //   observer: '_setClassOfBattery'
+          // },
+          _isPlaying: {
+            type: Boolean,
+            value: false,
+            // observer: '_manageCharging'
           }
         };
+      }
+
+      play() {
+        this.set('_isPlaying', true);
+        console.log('esta reproduciendo');
+        const intervalTime = setInterval(() => {
+          this.dispatchEvent(new CustomEvent('player', {
+            bubbles: false,
+            composed: false,
+            detail: {
+              number: 1
+            }
+          }));
+          localStorage.setItem('playing', `${intervalTime}`);
+        }, 1000);
+      }
+
+      stop() {
+        this.set('_isPlaying', false);
+        clearInterval(localStorage.getItem('playing'));
+        console.log('stop a la reproduccion');
+      }
+
+      // _setClassOfBattery() {
+      //   let batteryStatusClass = '';
+      //   if (this.batteryStatus < 20) {
+      //     batteryStatusClass = 'low-battery';
+      //   }
+      //   if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+      //     batteryStatusClass = 'stable-battery';
+      //   }
+      //   if (this.batteryStatus > 80) {
+      //     batteryStatusClass = 'full-battery';
+      //   }
+      //   this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+      //   this.$.battery.classList.add(batteryStatusClass);
+      // }
+
+      _manageCharging() {
+        if (this.charging) {
+          const intervalTime = setInterval(() => {
+            if (this.batteryStatus < 100) {
+              this.set('batteryStatus', this.batteryStatus + 1);
+            }
+          }, 1000);
+          localStorage.setItem('charging', `${intervalTime}`);
+        } else {
+          clearInterval(localStorage.getItem('charging'));
+        }
       }
     }
 

@@ -8,8 +8,9 @@
         display: block;
       }
     </style>
-    <battery-component></battery-component>
-    <player-component></player-component>
+    <battery-component id="battery"></battery-component>
+    <player-component on-spotify-running="playerIsRunning" on-spotify-stoped="playerStoped" id="player"
+                      on-bateria-on="bateriaOn" on-bateria-off="bateriaOff"></player-component>
   </template>
 
   <script>
@@ -18,6 +19,7 @@
      * Simulacion de telefono
      *
      * @customElement
+
      * @polymer
      * @demo demo/index.html
      */
@@ -30,6 +32,38 @@
             value: 'phone-component'
           }
         };
+      }
+
+      playerIsRunning(e){
+        const player = setInterval(()=>{
+           this.$.battery.restarBateria(e.detail);
+           localStorage.setItem('player', player);
+        },1000);
+      }
+
+       playerStoped(e){
+        clearInterval(localStorage.getItem('player'));
+      }
+
+      bateriaOn(e){
+        const cargaBateria = setInterval(()=>{
+          this.$.battery.sumarBateria(e.detail);
+          clearInterval(localStorage.getItem('descargaBateria'));
+          localStorage.setItem('cargaBateria', cargaBateria);
+        },1000);
+        //clearInterval(localStorage.getItem('descargaBateria'));
+        //console.log(localStorage.getItem('valorDescarga'));
+      }
+
+      bateriaOff(e){
+        const descargaBateria = setInterval(()=>{
+          this.$.battery.restarBateria(e.detail);
+          clearInterval(localStorage.getItem('cargaBateria'));
+          localStorage.setItem('descargaBateria', descargaBateria);
+        },1000);
+        
+        //clearInterval(localStorage.getItem('valorCarga'));
+        //console.log(localStorage.getItem('valorCarga'));
       }
     }
 
