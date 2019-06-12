@@ -2,6 +2,8 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
 
 <dom-module id="lang-changed">
   <template>
@@ -10,11 +12,15 @@
         display: block;
       }
     </style>
+
+<iron-ajax id="ajax" url="" handle-as="json" on-response="_handleResponse" debounce-duration="300">
+</iron-ajax>
+
   <paper-dropdown-menu label="Languages" no-animations>
-    <paper-listbox slot="dropdown-content" selected="1">
+    <paper-listbox slot="dropdown-content" selected="1" on-click="_langChangedIronAjax">
     <dom-repeat  items="[[languages]]" as="language">
       <template >
-        <paper-item>[[language.value]]</paper-item>
+        <paper-item on-click="_langChangedIronAjax">[[language.value]]</paper-item>
       </template>
     </dom-repeat>
   </paper-listbox>
@@ -45,8 +51,7 @@
               { key:"en",
                 value : "English"
               }
-            ],
-            observer: '_changeLanguage'
+            ]
           },
           locales: {
             type: Map,
@@ -54,10 +59,43 @@
           }
         };
       }
-      _changeLanguage(){
-        
+
+      _handleResponse() {
+          const payload = this.$.ajax.lastResponse;
+          console.log(payload.greet)
+          this.locales.set(this.langKey, payload);
+          this.dispatchEvent(new CustomEvent('lang-changeds', {
+          detail: `${payload.greet} ${payload.name}`
+         
+          }));
+        }
+
+        _langChangedIronAjax(event) {
+          const keyLang = event.model.language.key;
+          const valueLang = event.model.language.value;
+          const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+                
+          
+         
+          if (regexLocalKeys.test(keyLang)) {
+            if (this.locales.has(keyLang)) {
+              const kl = this.locales.get(keyLang)
+              this.locales.set(keyLang, this.locales.get(keyLang));
+              this.dispatchEvent(new CustomEvent('lang-changeds', {
+               
+
+                detail: `${kl.greet}  ${kl.name}`
+              }));
+            } else {
+              const ajax = this.shadowRoot.querySelector('#ajax');
+              ajax.url = `../demo/locales/${keyLang}.json`;
+              ajax.generateRequest();
+            }
+            this.set('langKey', keyLang)
+          }
+        }
       }
-    }
+
     
     window.customElements.define(LangChanged.is, LangChanged);
   </script>

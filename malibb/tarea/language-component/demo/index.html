@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>lang-changed demo</title>
+    <title>language-component demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../lang-changed.html">
+    <link rel="import" href="../language-component.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -19,25 +19,21 @@
   </head>
   <body>
     <div class="vertical-section-container centered">
-      <h3>Basic lang-changed demo</h3>
+      <h3>Basic language-component demo</h3>
       <demo-snippet>
         <template>
-          <lang-changed></lang-changed>
-          <h2></h2>
+          <language-component id="language"></language-component>
+          <p id="content-p"></p>
         </template>
+        <script>
+          const element = document.querySelector('#language');
+          const contentP=document.querySelector('#content-p'); 
+            element.addEventListener('lang-changed',({detail:content})=>{
+              console.log(`${content} `)     
+               contentP.innerText=`${JSON.stringify(content)}`;       
+          });   
+        </script>
       </demo-snippet>
     </div>
-    <script>
-    const result = document.querySelector('lang-changed');
-    const coment = document.querySelector('h2');
-      result.addEventListener('lang-changeds',event=>{
-        coment.innerHTML= JSON.stringify(event.detail);
-      });
-   
-   
-    
-
-    </script>
-
   </body>
 </html>
