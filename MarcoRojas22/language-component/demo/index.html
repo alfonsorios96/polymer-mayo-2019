@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>language-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../language-component.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Hola language-component demo</h3>
+      <p id="result"></p>
+      <demo-snippet>
+        <template>
+          <dom-bind id="demo">
+            <template>
+              <language-component languages="[[languages]]" on-lang-changed="langChanged" visible></language-component>
+            </template>
+          </dom-bind>
+          <script>
+            const demo = document.querySelector('#demo');
+            demo.languages = [
+            {
+              key: 'en',
+              value: 'English'
+            },
+            {
+              key: 'es',
+              value: 'Español'
+            }];
+            demo.langChanged = ({detail:locales}) => {
+              document.querySelector('#result').innerText = JSON.stringify(locales);
+            }
+            /*fetch('./locales/es.json')
+             .then((response) => {
+              return response.json();
+             })
+              .then((myJson) => {
+                //communication._readJson(myJson);
+               console.log(myJson);
+            });*/
+          </script>
+     
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
