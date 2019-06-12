@@ -1,4 +1,4 @@
-# \<app-component\>
+# \<langs-component\>
 
 
 
