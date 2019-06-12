@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>lang-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
+    <link rel="import" href="../lang-component.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic lang-component demo</h3>
+      <demo-snippet>
+        <template>
+          <dom-bind>
+            <template>
+              <lang-component languages="[[languages]]"></lang-component>
+            </template>
+          </dom-bind>
+          <script>
+          
+            const url = './locales/en.json';
+
+            fetch(url).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log(response));
+
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>

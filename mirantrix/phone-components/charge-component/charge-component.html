@@ -35,10 +35,30 @@
         return {
           _isCharging: {
             type: Boolean,
-            value: true
+            value: false
           }
         };
       }
+
+      charge(){
+        this.set('_isCharging', true);
+        this.dispatchEvent(new CustomEvent('power-data', {
+          bubbles: false,
+          composed: false,
+          detail: true
+        })); 
+      }
+
+      disconect(){
+        this.set('_isCharging', false);
+        this.dispatchEvent(new CustomEvent('power-data', {
+          bubbles: false,
+          composed: false,
+          detail: false
+        })); 
+      }
+
+      
     }
 
     window.customElements.define(ChargeComponent.is, ChargeComponent);

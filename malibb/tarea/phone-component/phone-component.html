@@ -104,6 +104,7 @@
           setInterval(()=>this.battery++,1000);
         }
       }
+      
       _batteryChanged(){
         this.status = this.battery>=0 ?
           ( this.battery>=20 ?( this.battery>=80 ?
