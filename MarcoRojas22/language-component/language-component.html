@@ -1,0 +1,130 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="bower_components/paper-item/paper-item.html">
+<link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<dom-module id="language-component">
+  <template>
+     <iron-ajax
+                id="ajax"
+                url=""
+                handle-as="json"
+                on-response="_handleResponse"
+                debounce-duration="300"></iron-ajax>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+
+    <paper-dropdown-menu label="Select language" no-animations="true">
+      <paper-listbox slot="dropdown-content" selected="0">
+        <dom-repeat items="[[languages]]" as="language">
+          <template>
+            <paper-item data-key="[[language.key]]" on-click="_langSelected">[[language.value]]</paper-item>
+          </template>
+        </dom-repeat>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </template>
+
+  <script>
+    /**
+     * `language-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LanguageComponent extends Polymer.Element {
+      static get is() { return 'language-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'language-component'
+          },
+          visible:{
+            type:Boolean,
+            value:true
+          },
+          languages:{
+            type:Array,
+            value:[]
+          },
+          lang: {
+            type: String,
+            value: '',
+            observer: '_langChangedIronAjax'
+            },
+          locales: {
+              type: Map,
+              value: () => new Map()
+          }
+
+        };
+      }
+
+      _readJson(myJson){
+        //console.log(myJson);
+      }
+
+       _cambio(event){
+        const key = event.model.key;
+        const language = event.model.language;
+      }
+
+      _langSelected(event) {
+          const key = event.model.language.key;
+          this.set('lang', key);
+        }
+        async _langChangedFetch() {
+          if (this.locales.has(this.lang)) {
+            this.dispatchEvent(new CustomEvent('lang-changed', {
+              detail: this.locales.get(this.lang)
+            }));
+          }
+          const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+          if (this.lang !== '' && regexLocalKeys.test(this.lang)) {
+            try {
+              const response = await fetch(`../demo/locales/${this.lang}.json`);
+              const payload = await response.json();
+              this.locales.set(this.lang, payload);
+              this.dispatchEvent(new CustomEvent('lang-changed', {
+                detail: payload
+              }));
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
+        _handleResponse() {
+          const payload = this.$.ajax.lastResponse;
+          this.locales.set(this.lang, payload);
+          this.dispatchEvent(new CustomEvent('lang-changed', {
+            detail: payload
+          }));
+        }
+        _langChangedIronAjax() {
+          const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+          if (regexLocalKeys.test(this.lang)) {
+            if (this.locales.has(this.lang)) {
+              this.locales.set(this.lang, this.locales.get(this.lang));
+              this.dispatchEvent(new CustomEvent('lang-changed', {
+                detail: this.locales.get(this.lang)
+              }));
+            } else {
+              const ajax = this.shadowRoot.querySelector('#ajax');
+              ajax.url = `../demo/locales/${this.lang}.json`;
+              ajax.generateRequest();
+            }
+          }
+        }
+    }
+
+    window.customElements.define(LanguageComponent.is, LanguageComponent);
+  </script>
+</dom-module>
