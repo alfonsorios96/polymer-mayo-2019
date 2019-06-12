@@ -13,8 +13,8 @@
     </style>
     
     <battery-component id="battery"></battery-component>
-    <player-component on-player-consumption ="playerDetail"></player-component>
-    <charge-component></charge-component>
+    <player-component on-player-consumption ="playerDetail" ></player-component>
+    <charge-component on-power-data ="powerStatus"></charge-component>
     
   </template>
 
@@ -40,6 +40,10 @@
 
       playerDetail(e) {
         this.$.battery.restBattery(e.detail);
+      }
+
+      powerStatus(e) {
+        this.$.battery.onOff(e.detail);
       }
 
     
