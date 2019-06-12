@@ -1,0 +1,99 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="./player-component.html">
+
+<dom-module id="battery-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #battery {
+        border: 1px solid black;
+        width: 70px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        color: black;
+        font:white;
+      }
+/*      .low-battery {
+        background-color: red;
+        color: white;
+      }
+      .stable-battery {
+        background-color: yellow;
+        color: white;
+      }
+      .full-battery {
+        background-color: green;
+        color: white;
+      }
+
+    
+*/       </style>
+<button on-click="cargando">[[prop1]]</button>
+<button on-click="desenchufado">[[prop2]]</button>
+    </template>
+
+    <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BatteryComponent extends Polymer.Element {
+      static get is() { 
+        return 'battery-component'; 
+      }
+          static get properties() {
+          return {
+            prop1: {
+            type: String,
+            value: 'cargando'
+          },
+          prop2: {
+            type: String,
+            value: 'quitar carga'
+          },
+            charging: {
+              type: Boolean,
+              value: true,
+            },
+          }
+        };
+
+        cargando(){
+            this.charging=true;
+            if(this.charging){
+                this.dispatchEvent(
+                    new CustomEvent('battery-sta',{
+                        bubbles: false,
+                        composed: false,
+                        detail:true
+                    })
+                );
+            }
+        }
+
+        desenchufado(){
+            this.charging=false;
+                this.dispatchEvent(
+                    new CustomEvent('inbattery-sta',{
+                        bubbles: false,
+                        composed: false,
+                        detail:false
+                    })
+                );
+            }
+        }
+
+    window.customElements.define(BatteryComponent.is, BatteryComponent);
+  </script>
+</dom-module>

@@ -60,14 +60,23 @@
               value: 25,
               observer: '_setClassOfBattery'
           },
+          charging: {
+            type: Boolean,
+            value: false
+          }
         };
       }
 
       restBattery(e){
-        if (this.batteryStatus > 0) {
+        if (this.batteryStatus > 0 && this.charging == false) {
           this.set('batteryStatus', this.batteryStatus - e.number);
           console.log(this.batteryStatus);
         }
+      }
+
+      onOff(e){
+        this.set('charging', e);
+        console.log(this.charging);
       }
 
       //Styles

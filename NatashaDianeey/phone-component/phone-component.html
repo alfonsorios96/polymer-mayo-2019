@@ -2,7 +2,9 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 
-
+<link rel="import" href="../battery-component/battery-component.html">
+<link rel="import" href="../player-component/player-component.html">
+<link rel="import" href="../plug-component/plug-component.html">
 
 
 <dom-module id="phone-component">
@@ -40,38 +42,13 @@
       }
     </style>
 
+    <plug-component></plug-component>
+
     <div class="phone">
-      <section class="header">
-        <div class="battery" id="battery">
-          <p>[[batteryStatus]]</p>
-        </div>
-        <div class="signal">
-          <iron-icon icon="device:signal-cellular-4-bar"></iron-icon>
-        </div>
-      </section>
-      <section class="body">
-        <div class="player" id="player">
-          <div class="player-header">
-            <h3>Title</h3>
-          </div>
-          <div class="player-body">
-            <dom-if if="[[!_isPlaying]]">
-              <template>
-                <paper-button raised class="indigo" on-click="play">play</paper-button>
-              </template>
-            </dom-if>
-            <dom-if if="[[_isPlaying]]">
-              <template>
-                <paper-button raised class="indigo" on-click="stop">stop</paper-button>
-              </template>
-            </dom-if>
-          </div>
-        </div>
-        
-       
 
+      <battery-component id="battery"></battery-component>
+      <player-component on-player="playerDetail"></player-component>
 
-      </section>
     </div>
 
   </template>
@@ -90,87 +67,91 @@
 
       static get properties() {
         return {
-          charging: {
-            type: Boolean,
-            value: false,
-            reflectToAttribute: true,
-            notify: true,
-            observer: '_manageCharging'
-          },
-          batteryStatus: {
-            type: Number,
-            value: 50,
-            observer: '_setClassOfBattery'
-          },
-          _isPlaying: {
-            type: Boolean,
-            value: false,
-            observer: '_manageCharging'
-          }
+          // charging: {
+          //   type: Boolean,
+          //   value: false,
+          //   reflectToAttribute: true,
+          //   notify: true,
+          //   observer: '_manageCharging'
+          // },
+          // batteryStatus: {
+          //   type: Number,
+          //   value: 50,
+          //   observer: '_setClassOfBattery'
+          // },
+          // _isPlaying: {
+          //   type: Boolean,
+          //   value: false,
+          //   observer: '_manageCharging'
+          // }
         };
       }
 
-      play() {  
-        this.dispatchEvent(new CustomEvent('phone-playing'));
-        this.set('_isPlaying', true);
-        console.log('esta reproduciendo');
-        const intervalTime = setInterval(() => {
-          if (this.batteryStatus > 0) {
-            this.set('batteryStatus', this.batteryStatus - 1);
-          }
-          localStorage.setItem('playing', `${intervalTime}`);
-        }, 1000);
+      playerDetail(e) {
+        this.$.battery.restBattery(e.detail);
       }
 
-      stop() {
-        this.set('_isPlaying', false);
-        clearInterval(localStorage.getItem('playing'));
-        console.log('stop a la reproduccion');
-      }
+      // play() {  
+      //   this.dispatchEvent(new CustomEvent('phone-playing'));
+      //   this.set('_isPlaying', true);
+      //   console.log('esta reproduciendo');
+      //   const intervalTime = setInterval(() => {
+      //     if (this.batteryStatus > 0) {
+      //       this.set('batteryStatus', this.batteryStatus - 1);
+      //     }
+      //     localStorage.setItem('playing', `${intervalTime}`);
+      //   }, 1000);
+      // }
 
-      connected() {
-        this.dispatchEvent(new CustomEvent('phone-playing'));
-        const intervalTime = setInterval(() => {
-          if (this.batteryStatus > 0) {
-          this.set('batteryStatus', this.batteryStatus + 1);
-          }
-          localStorage.setItem('playing', `${intervalTime}`);
-        }, 1000);
-      }
+      // stop() {
+      //   this.set('_isPlaying', false);
+      //   clearInterval(localStorage.getItem('playing'));
+      //   console.log('stop a la reproduccion');
+      // }
 
-      disconnected() {
-        this.dispatchEvent(new CustomEvent('phone-playing'));
+      // connected() {
+      //   this.dispatchEvent(new CustomEvent('phone-playing'));
+      //   const intervalTime = setInterval(() => {
+      //     if (this.batteryStatus > 0) {
+      //     this.set('batteryStatus', this.batteryStatus + 1);
+      //     }
+      //     localStorage.setItem('playing', `${intervalTime}`);
+      //   }, 1000);
+      // }
 
-        clearInterval(localStorage.getItem('playing'));
-      }
+      // disconnected() {
+      //   this.dispatchEvent(new CustomEvent('phone-playing'));
 
-      _setClassOfBattery() {
-        let batteryStatusClass = '';
-        if (this.batteryStatus < 20) {
-          batteryStatusClass = 'low-battery';
-        }
-        if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
-          batteryStatusClass = 'stable-battery';
-        }
-        if (this.batteryStatus > 80) {
-          batteryStatusClass = 'full-battery';
-        }
-        this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
-        this.$.battery.classList.add(batteryStatusClass);
-      }
+      //   clearInterval(localStorage.getItem('playing'));
+      // }
 
-      _manageCharging() {
-        if (this.charging) {
-          const intervalTime = setInterval(() => {
-            if (this.batteryStatus < 100) {
-              this.set('batteryStatus', this.batteryStatus + 1);
-            }
-          }, 1000);
-          localStorage.setItem('charging', `${intervalTime}`);
-        } else {
-          clearInterval(localStorage.getItem('charging'));
-        }
-      }
+      // _setClassOfBattery() {
+      //   let batteryStatusClass = '';
+      //   if (this.batteryStatus < 20) {
+      //     batteryStatusClass = 'low-battery';
+      //   }
+      //   if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+      //     batteryStatusClass = 'stable-battery';
+      //   }
+      //   if (this.batteryStatus > 80) {
+      //     batteryStatusClass = 'full-battery';
+      //   }
+      //   this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+      //   this.$.battery.classList.add(batteryStatusClass);
+      // }
+
+      // _manageCharging() {
+      //   if (this.charging) {
+      //     const intervalTime = setInterval(() => {
+      //       if (this.batteryStatus < 100) {
+      //         this.set('batteryStatus', this.batteryStatus + 1);
+      //       }
+      //     }, 1000);
+      //     localStorage.setItem('charging', `${intervalTime}`);
+      //   } else {
+      //     clearInterval(localStorage.getItem('charging'));
+      //   }
+      // }
     }
 
     window.customElements.define(PhoneComponent.is, PhoneComponent);

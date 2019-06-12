@@ -1,0 +1,74 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<dom-module id="lang-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+
+    <paper-dropdown-menu label="Seleccione su idioma" no-animations>
+      <paper-listbox slot="dropdown-content" selected="0">
+        <dom-repeat items="[[languages]]" as="language">
+          <template>
+            <paper-item data-key="[[language.key]]" on-click="_isLanguage">
+              [[language.value]]
+            </paper-item>
+          </template>
+        </dom-repeat>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+  </template>
+
+  <script>
+    /**
+     * `lang-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LangComponent extends Polymer.Element {
+      static get is() { return 'lang-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'lang-component'
+          },
+          languages: {
+            type: Array,
+            value: []
+          },
+          
+          lang:{
+            type: String,
+            value: '',
+            observer: '_langChanged'
+          } ,
+
+          _langChanged(event) {
+            const key = event.model.language.key;
+            this.set('lang', key);
+          },
+
+          async _langChanged() {
+            const response = await fetch(`./demo/locales/${this.key}.json`);
+            
+          }
+
+        };
+      }
+    }
+
+    window.customElements.define(LangComponent.is, LangComponent);
+  </script>
+</dom-module>

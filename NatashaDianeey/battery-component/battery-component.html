@@ -32,28 +32,42 @@
       static get is() { return 'battery-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'battery-component'
-          }
+          charging: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            notify: true,
+            // observer: '_manageCharging'
+          },
+          batteryStatus: {
+            type: Number,
+            value: 50,
+            observer: '_setClassOfBattery'
+          },
         };
       }
 
-      connected() {
-        this.dispatchEvent(new CustomEvent('phone-playing'));
-        const intervalTime = setInterval(() => {
-          if (this.batteryStatus > 0) {
-          this.set('batteryStatus', this.batteryStatus + 1);
-          }
-          localStorage.setItem('playing', `${intervalTime}`);
-        }, 1000);
+      restBattery(e){
+        if (this.batteryStatus > 0) {
+          this.set('batteryStatus', this.batteryStatus - e.number);
+          // console.log(this.batteryStatus);
+        }
       }
 
-      disconnected() {
-        this.dispatchEvent(new CustomEvent('phone-playing'));
+      // connected() {
+      //   this.dispatchEvent(new CustomEvent('phone-playing'));
+      //   const intervalTime = setInterval(() => {
+      //     if (this.batteryStatus > 0) {
+      //     this.set('batteryStatus', this.batteryStatus + 1);
+      //     }
+      //     localStorage.setItem('playing', `${intervalTime}`);
+      //   }, 1000);
+      // }
 
-        clearInterval(localStorage.getItem('playing'));
-      }
+      // disconnected() {
+      //   this.dispatchEvent(new CustomEvent('phone-playing'));
+      //   clearInterval(localStorage.getItem('playing'));
+      // }
 
       _setClassOfBattery() {
         let batteryStatusClass = '';
@@ -69,6 +83,19 @@
         this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
         this.$.battery.classList.add(batteryStatusClass);
       }
+
+      // _manageCharging() {
+      //   if (this.charging) {
+      //     const intervalTime = setInterval(() => {
+      //       if (this.batteryStatus < 100) {
+      //         this.set('batteryStatus', this.batteryStatus + 1);
+      //       }
+      //     }, 1000);
+      //     localStorage.setItem('charging', `${intervalTime}`);
+      //   } else {
+      //     clearInterval(localStorage.getItem('charging'));
+      //   }
+      // }
 
     }
 

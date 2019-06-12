@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>lang-changed demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../lang-changed.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic lang-changed demo</h3>
+      <demo-snippet>
+        <template>
+          <lang-changed></lang-changed>
+          <h2></h2>
+        </template>
+      </demo-snippet>
+    </div>
+    <script>
+    const result = document.querySelector('lang-changed');
+    const coment = document.querySelector('h2');
+      result.addEventListener('lang-changeds',event=>{
+        coment.innerHTML= JSON.stringify(event.detail);
+      });
+   
+   
+    
+
+    </script>
+
+  </body>
+</html>
