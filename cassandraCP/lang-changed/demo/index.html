@@ -23,8 +23,21 @@
       <demo-snippet>
         <template>
           <lang-changed></lang-changed>
+          <h2></h2>
         </template>
       </demo-snippet>
     </div>
+    <script>
+    const result = document.querySelector('lang-changed');
+    const coment = document.querySelector('h2');
+      result.addEventListener('lang-changeds',event=>{
+        coment.innerHTML= JSON.stringify(event.detail);
+      });
+   
+   
+    
+
+    </script>
+
   </body>
 </html>
