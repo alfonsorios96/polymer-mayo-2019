@@ -1,0 +1,6 @@
+{
+  "name": "all-components",
+  "short_name": "all-components",
+  "start_url": "/",
+  "display": "standalone"
+}
