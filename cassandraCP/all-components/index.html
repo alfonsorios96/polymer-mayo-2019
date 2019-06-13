@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <link rel="import" href="../paper-button/paper-button.html">
+    <link rel="import" href="../iron-icons/notification-icons.html">
+    
+        <style>
+          .green{
+            align-items: center;
+            background-color: green;          
+            border: 1px solid black;
+                   }
+        </style>
+   
+    <title>all-components</title>
+    <meta name="description" content="all-components description">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="/manifest.json">
+
+    <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="/src/all-components-app/all-components-app.html">
+  </head>
+  <body>
+      
+
+    <dom-bind>  
+      <template>
+        <paper-button toggles raiser class="green" on-ckick="buttonClicked">
+            <iron-icon  icon="notification:power"></iron-icon>
+        </paper-button>
+        <all-components-app></all-components-app>
+      </template>
+    </dom-bind>
+     
+  </body>
+  <script>
+    
+    document.addEventListener('chargingBattery', () => {
+                    const demo = document.querySelector('paper-button');
+                    demo.buttonClicked = () => {
+                    console.log('cualquier cosa')
+                    };
+                  });
+  </script>
+</html>
