@@ -19,22 +19,44 @@
     </custom-style>
   </head>
   <body>
+    <h3>Dictionary</h3>
+    <p id="result"></p>
+
     <div class="vertical-section-container centered">
       <h3>Basic lang-component demo</h3>
+
+      <!-- Primer paso: crear nuestro dropdown con dom bind  -->
       <demo-snippet>
         <template>
-          <dom-bind>
+          <dom-bind id="demo">
             <template>
-              <lang-component languages="[[languages]]"></lang-component>
+              <lang-component languages="[[languages]]" on-lang-cahnged="langChanged" lang="[[lang]]"></lang-component>
             </template>
           </dom-bind>
           <script>
-          
-            const url = './locales/en.json';
 
-            fetch(url).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => console.log(response));
+            const demo = document.querySelector('#demo');
+            demo.languages = [
+              {
+                key: 'en',
+                value: 'English'
+              }, 
+              {
+                key: 'es',
+                value: 'Español'
+              }, 
+            ]
+
+            demo.langChanged = ({detail: locales}) => {
+              document.querySelector('#result').innerText = JSON.stringify(locales);
+            };
+
+
+            // const url = './locales/en.json';
+
+            // fetch(url).then(res => res.json())
+            // .catch(error => console.error('Error:', error))
+            // .then(response => console.log(response));
 
           </script>
         </template>

@@ -1,0 +1,6 @@
+{
+  "name": "quiz-aplication",
+  "short_name": "quiz-aplication",
+  "start_url": "/",
+  "display": "standalone"
+}

@@ -1,0 +1,160 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-box/app-box.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<dom-module id="quiz-aplication">
+  <template>
+    <custom-style>
+      <style is="custom-style">
+        html, body {
+          margin: 0;
+          font-family: 'Roboto', 'Noto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+        }
+        app-toolbar {
+          background-color: #4285f4;
+          color: #fff;
+        }
+
+        paper-icon-button {
+          --paper-icon-button-ink-color: white;
+        }
+
+        paper-icon-button + [main-title] {
+          margin-left: 24px;
+        }
+        paper-progress {
+          display: block;
+          width: 100%;
+          --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+          --paper-progress-container-color: transparent;
+        }
+        app-header {
+          @apply --layout-fixed-top;
+          color: #fff;
+          --app-header-background-rear-layer: {
+            background-color: #ef6c00;
+          };
+        }
+        app-box {
+          margin-top: 64px;
+          display: flex;
+        }
+        app-drawer {
+          --app-drawer-scrim-background: rgba(0, 0, 100, 0.8);
+          --app-drawer-content-container: {
+            background-color: #B0BEC5;
+          }
+        }
+        sample-content {
+          padding-top: 64px;
+        }
+      </style>
+    </custom-style>
+    
+    <app-header reveals>
+      <app-toolbar>
+        <paper-icon-button icon="menu" ></paper-icon-button>
+        <div main-title>My app</div>
+      </app-toolbar>
+    </app-header>
+    <app-box >
+      
+      <app-location route="{{route}}"></app-location>
+      <app-route
+          route="{{route}}"
+          pattern="/:page"
+          data="{{routeData}}">
+      </app-route>
+      <app-route
+          route="{{subroute}}"
+          pattern="/:id"
+          data="{{subrouteData}}">
+      </app-route>
+
+      <aside>
+        <br><br>
+        <iron-pages select="{{data.template}}">
+          <!-- <paper-button raised class="indigo" on-click="newQuiz">Nueva encuesta</paper-button>
+          <paper-button raised class="indigo" on-click="chooseQui">Encuesta</paper-button> -->
+          <a href="newQuiz">Nueva encuesta</a>
+          <a href="quiz">Encuesta</a>
+        </iron-pages select="{{data.template}}">
+      </aside>
+
+      <main>
+        <h2>Hello [[prop1]]!</h2>
+
+        <form action="">
+          <paper-input always-float-label id="flavor" label="Opcion"></paper-input>
+          <paper-input always-float-label id="size" label="size"></paper-input>
+          <paper-button raised class="indigo" on-click="submit">send</paper-button>
+        </form>
+
+        <div id="result"></div>
+      </main>
+
+      
+    </app-box>
+
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QuizAplication extends Polymer.Element {
+      static get is() { return 'quiz-aplication'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'quiz-aplication'
+          }
+        };
+      }
+
+      submit() {
+        const user = {
+          size: this.$.size.value,
+          flavor: this.$.flavor.value
+        }
+        this.dispatchEvent(new CustomEvent('request', {
+          bubbles: false,
+          composed: false,
+          detail: 'user'
+        }));
+
+        // if(user.size === '' && user.flavor === '') {
+        //   console.log('No votaron');
+        // } else if(user.size === '') {
+        //   console.log('No hay tamaño');
+        // } else {
+        //   // var x = document.querySelector("result").innerHTML;
+        //   // x.user.size;
+        //   console.log(`The size is: ${user.size}, the flavor is:${user.flavor}`);
+        // }
+      }
+    }
+
+    window.customElements.define(QuizAplication.is, QuizAplication);
+  </script>
+</dom-module>
