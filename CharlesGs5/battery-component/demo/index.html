@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>battery-component demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../battery-component.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        .signal{
+          height: 100px;
+          border: 1px solid black;
+          margin: 10px 10px 10px 10px;
+        }
+
+        .battery{
+          display: inline-flex;
+          margin: 40px 0px 0px 10px;
+          padding: 5px 5px 5px 5px;
+          align-items: center;
+          border: 1px solid black;
+        }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic battery-component demo</h3>
+        <demo-snippet>
+          <template>
+            <dom-bind id="battery">
+              <battery-component></battery-component>
+            </dom-bind>
+          </template>
+          <script>
+          </script>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
