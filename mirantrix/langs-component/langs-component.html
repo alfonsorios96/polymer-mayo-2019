@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<dom-module id="langs-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>[[greeting]]</h2>
+    <paper-dropdown-menu label="Seleccione su idioma" no-animations>
+      <paper-listbox slot="dropdown-content" selected="1">
+        <dom-repeat items="[[langs]]" as="lang">
+          <template>
+            <paper-item on-click="_getLangKey">[[lang.value]]</paper-item>
+          </template>
+        </dom-repeat>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </template>
+
+  <script>
+    /**
+     * `langs-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LangsComponent extends Polymer.Element {
+      static get is() { return 'langs-component'; }
+      static get properties() {
+        return {
+          greeting: {
+            type: String,
+            value: ''
+          },
+          langs: {
+            type: Array,
+            value: []
+          },
+          langKey: {
+            type: String,
+            value: '',
+            observer: '_getDictionary'
+          },
+          dictionary: {
+            type: Map,
+            value: () => new Map()
+          }
+        };
+      }
+
+      _getLangKey(e) {
+        const key = e.model.lang.key;
+        this.set('langKey', key);
+        //console.log(this.langKey);
+      }
+
+      _getDictionary() {
+        fetch(`../demo/local/${this.langKey}.json`)
+        .then( response => response.json())
+        .then((payload) => {
+            this.set('dictionary', payload);
+            this.dispatchEvent(new CustomEvent('lang-changed', { detail: this.dictionary }));
+            //console.log(this.dictionary);
+          }
+        )
+        .catch(err => 
+          console.log('Fetch Error :', err));
+      }
+
+    }
+
+    window.customElements.define(LangsComponent.is, LangsComponent);
+  </script>
+</dom-module>

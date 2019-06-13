@@ -1,0 +1,6 @@
+{
+  "name": "poll",
+  "short_name": "poll",
+  "start_url": "/",
+  "display": "standalone"
+}
