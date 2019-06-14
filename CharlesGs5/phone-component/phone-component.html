@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../player-component/player-component.html">
+<link rel="import" href="../battery-component/battery-component.html">
+
 
 <dom-module id="phone-component">
   <template>
@@ -8,42 +11,24 @@
       }
 
       .phone{
-        border: 1px solid black;
+        border: 2px solid black;
         height: 600px;
       }
 
-      .signal{
-        background-color: #0b97c4;
-        height: 100px;
-        border: 1px solid black;
-        margin: 10px 10px 10px 10px;
-      }
-
       .mainScreen{
+        display: block;
         border: 1px solid black;
         margin: 10px 10px 10px 10px;
-        height: 200px;
+        height: 400px;
       }
 
-      .battery{
-        width: 100px;
-        justify-content: center;
-        border: 1px solid black;
-      }
+
     </style>
     <div class="phone">
-      <div class="signal">
-        <header>
-          <span class="battery">Hola</span>
-        </header>
-      </div>
+      <battery-component on-battery-using="charging"></battery-component>
       <div class="mainScreen">
-        Hola 2
-        <div>
-          <button on-click="charging">Charge</button>
-          <button>Discharge</button>
-        </div>
       </div>
+      <player-component></player-component>
     </div>
   </template>
 
@@ -60,10 +45,6 @@
       static get is() { return 'phone-component'; }
       static get properties() {
         return {
-          _isCharging: {
-            type: Boolean,
-            value: false
-          },
           _isPlaying: {
             type: Boolean,
             value: false
@@ -76,7 +57,9 @@
           bubbles: false,
           composed: false
         }));
-        console.log('Charging');
+        this.charge = setInterval(() => {
+          this._chargingLevel++;
+        }, 1000);
       }
     }
 

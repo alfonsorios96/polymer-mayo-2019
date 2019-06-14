@@ -1,0 +1,52 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="slot-component">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .container {
+                display: flex;
+                justify-content: space-between;
+            }
+        </style>
+        <div class="container">
+            <span>
+                <slot name="prefix"></slot>
+            </span>
+            <p>Placeholder</p>
+            <span>
+                <slot name="suffix"></slot>
+            </span>
+        </div>
+    </template>
+
+    <script>
+      /**
+       * `slot-component`
+       *
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class SlotComponent extends Polymer.Element {
+        static get is() {
+          return 'slot-component';
+        }
+
+        static get properties() {
+          return {
+            prop1: {
+              type: String,
+              value: 'slot-component'
+            }
+          };
+        }
+      }
+
+      window.customElements.define(SlotComponent.is, SlotComponent);
+    </script>
+</dom-module>

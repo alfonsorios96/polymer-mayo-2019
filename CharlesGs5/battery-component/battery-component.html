@@ -1,0 +1,77 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="battery-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .signal{
+        height: 100px;
+        border: 1px solid black;
+        margin: 10px 10px 10px 10px;
+      }
+
+      .battery{
+        display: inline-flex;
+        margin: 40px 0px 0px 10px;
+        padding: 5px 5px 5px 5px;
+        align-items: center;
+        border: 1px solid black;
+      }
+
+    </style>
+    <div class="signal">
+      <header>
+        <div class="battery">[[_chargingLevel]]%</div>
+      </header>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `battery-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BatteryComponent extends Polymer.Element {
+      static get is() { return 'battery-component'; }
+      static get properties() {
+        return {
+          _chargingLevel: {
+            type: Number,
+            value: 50
+          },
+          _isCharging: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+      charging(){
+        this.set('_isCharging', true);
+        this.dispatchEvent(new CustomEvent('charging-phone',{
+          bubbles: false,
+          composed: false
+        }));
+        this.charge = setInterval(() => {
+          this._chargingLevel++;
+        }, 1000);
+      }
+      discharge(){
+        this.set('_isCharging', false);
+        this.dispatchEvent(new CustomEvent('noCharging-phone',{
+          bubbles: false,
+          composed: false
+        }));
+        clearInterval(this.charge);
+      }
+    }
+
+    window.customElements.define(BatteryComponent.is, BatteryComponent);
+  </script>
+</dom-module>
