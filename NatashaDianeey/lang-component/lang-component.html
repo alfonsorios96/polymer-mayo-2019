@@ -53,20 +53,54 @@
             type: String,
             value: '',
             observer: '_langChanged'
-          } ,
-
-          _langChanged(event) {
-            const key = event.model.language.key;
-            this.set('lang', key);
           },
-
-          async _langChanged() {
-            const response = await fetch(`./demo/locales/${this.key}.json`);
-            
+          locales: {
+            type: Map,
+            value: () => new Map()
           }
-
         };
       }
+
+      _isLanguage(event) {
+        const key = event.model.language.key;
+        this.set('lang', key);
+      }
+
+      async _langChangedFetch() {
+        if (this.locales.has(this.lang)) {
+          console.log('lang')
+          // this.dispatchEvent(new CustomEvent('lang-changed', {
+          //   detail: this.locales.get(this.lang)
+          // }));
+        }
+        // const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+        // if (this.lang !== '' && regexLocalKeys.test(this.lang)) {
+        //   try {
+        //     const response = await fetch(`../demo/locales/${this.lang}.json`);
+        //     const payload = await response.json();
+        //     this.locales.set(this.lang, payload);
+        //     this.dispatchEvent(new CustomEvent('lang-changed', {
+        //       detail: payload
+        //     }));
+        //   } catch (error) {
+        //     console.error(error);
+        //   }
+        // }
+      }
+
+      _langChanged() {
+          console.log('Hola');
+          const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+
+          if(regexLocalKeys === '') {
+            console.log('No hay regaex')
+          } else {
+            console.log('si hay regaex')
+          }
+
+        }
+
+
     }
 
     window.customElements.define(LangComponent.is, LangComponent);

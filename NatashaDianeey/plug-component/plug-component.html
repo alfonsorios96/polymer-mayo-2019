@@ -30,22 +30,40 @@
           prop1: {
             type: String,
             value: 'plug-component'
-          }
+          },
+          batteryStatus: {
+            type: Number,
+            value: 50,
+            // observer: '_setClassOfBattery'
+          },
         };
       }
 
       charging() {
-        this.dispatchEvent(new CustomEvent('phone-playing'));
-        const intervalTime = setInterval(() => {
-        if (this.batteryStatus > 0) {
-        this.set('batteryStatus', this.batteryStatus + 1);
-        }
-        localStorage.setItem('playing', `${intervalTime}`);
-        }, 1000);
+        this.dispatchEvent(new CustomEvent('plug-component'));
+        console.log('charging');
+
+        console.log(this.batteryStatus);
+
+        const intervaleTimePlus = setInterval(() => {
+          this.set('batteryStatus', this.batteryStatus + 1);
+        });
+        console.log(intervaleTimePlus);
+
+
+
+        // const intervalTime = setInterval(() => {
+        
+        //   console.log(this.batteryStatus);
+        //   this.set('batteryStatus', this.batteryStatus + 1);
+        
+        // localStorage.setItem('playing', `${intervalTime}`);
+        // }, 1000);
       }
 
       disconnected() {
-        this.dispatchEvent(new CustomEvent('phone-playing'));
+        this.dispatchEvent(new CustomEvent('plug-component'));
+        console.log('disconnected');
         clearInterval(localStorage.getItem('playing'));
       }
       

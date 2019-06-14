@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="quiz-aplication">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QuizAplication extends Polymer.Element {
+      static get is() { return 'quiz-aplication'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'quiz-aplication'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(QuizAplication.is, QuizAplication);
+  </script>
+</dom-module>
