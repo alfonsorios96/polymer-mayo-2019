@@ -1,0 +1,29 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/poll-app/poll-app.html",
+  "fragments": [
+    "src/elements/poll-component.html",
+    "src/elements/poll-form.html",
+    "src/elements/poll-list.html"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "node_modules/@webcomponents/webcomponentsjs/**"
+  ],
+  "builds": [
+    {
+      "name": "es6",
+      "browserCapabilities": [
+        "es2015"
+      ],
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "bundle": true,
+      "addServiceWorker": true
+    }
+  ]
+}

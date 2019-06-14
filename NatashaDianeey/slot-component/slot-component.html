@@ -1,0 +1,60 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="./../
+
+
+/lib/utils/templatize.html">
+
+<dom-module id="slot-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <!-- Funcionalidad sencilla de un Slot -->
+    <slot name="repeat"></slot>
+  </template>
+
+  <script>
+    /**
+     * `slot-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SlotComponent extends Polymer.Element {
+      static get is() { return 'slot-component'; }
+      static get properties() {
+        return {
+          items: {
+            type: Array,
+            value: () => [{
+              label: 'Hi'
+            },
+            {
+              label: 'Hola'
+            }],
+            observer: "ready"
+          }
+        };
+      }
+
+      ready () {
+        super.ready();
+        const template = this.$.template;
+        const TemplateClass = Polymer.Templatize.templatize(template);
+        const instance = new TemplateClass({greeting: 'Hi'});
+
+
+        // this.shadowRoot.appendChild(instance.root);
+
+
+      }
+    }
+
+    window.customElements.define(SlotComponent.is, SlotComponent);
+  </script>
+</dom-module>
