@@ -1,0 +1,60 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<dom-module id="charge-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <dom-if if="[[!isActive]]">
+      <template>
+          <paper-button on-click="pushed" raised>Conectar</paper-button>
+      </template>
+    </dom-if>
+    <dom-if if="[[isActive]]">
+      <template>
+          <paper-button on-click="pushed" raised>Desconectar</paper-button>
+      </template>
+    </dom-if>
+  </template>
+
+  <script>
+    /**
+     * `charge-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ChargeComponent extends Polymer.Element {
+      static get is() { return 'charge-component'; }
+      static get properties() {
+        return {
+          isActive: {
+            type: Boolean,
+            value:false
+          }
+        };
+      }
+
+      pushed(){
+        console.log(this.isActive);
+        if (this.isActive) {
+          this.set('isActive', false);
+        }else{
+          this.set('isActive', true);
+        }
+        this.dispatchEvent(new CustomEvent('charge-changed'), {
+          bubbles: false,
+          composed: false,
+          detail: `${this.isActive}`
+        });
+        console.log(`${this.isActive}`)
+      }
+    }
+
+    window.customElements.define(ChargeComponent.is, ChargeComponent);
+  </script>
+</dom-module>

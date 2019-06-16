@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="slot-component">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .container {
+                display: flex;
+                justify-content: space-between;
+            }
+        </style>
+         <div class="container">
+            <slot name="repeat"></slot>
+           <dom-repeat id="repeat" items="[[items]]">
+                         
+           </dom-repeat>
+            
+        </div>
+    </template>
+
+    <script>
+      /**
+       * `slot-component`
+       *
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class SlotComponent extends Polymer.Element {
+        static get is() {
+          return 'slot-component';
+        }
+
+        static get properties() {
+          return {
+            items: {
+              type: Array,
+              value: ()=>[
+                {
+                  label:'hi'
+                },
+                {
+                  label:'hey'
+                }
+              ],
+              observer:"domHey"
+            }
+          };
+        }
+
+        domHey(){
+          const repeat = this.shadowRoot.querySelector("slot");
+          const nodes = repeat.assignedNodes();
+          const domRepeat = this.shadowRoot.querySelector("#repeat");
+          domRepeat.appendChild(nodes[0])
+          domRepeat.render();
+          // repeat.assignedSlot();
+        }
+      }
+
+      window.customElements.define(SlotComponent.is, SlotComponent);
+    </script>
+</dom-module>

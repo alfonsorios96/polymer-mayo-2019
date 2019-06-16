@@ -1,49 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>phone-component demo</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <title>phone-component demo</title>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../phone-component.html">
-    <link rel="import" href="../../paper-button/paper-button.html">
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
 
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style>
-  </head>
-  <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic phone-component demo</h3>
-      <demo-snippet>
-        <template>
-          <phone-component></phone-component>
-          <paper-button id="charged" raised>Conectar</paper-button>
-          <paper-button id="unCharged" raised>Desconectar</paper-button>
-          <script>
-          const element = document.querySelector('phone-component');
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../phone-component.html">
+  <link rel="import" href="../../paper-button/paper-button.html">
 
-          element.addEventListener('phone-charging',e=>{});
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </custom-style>
+</head>
 
-          const charged = document.querySelector('#charged');
-          charged.addEventListener('click', () => { 
-            element.charge();
-          });
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic phone-component demo</h3>
+    <demo-snippet>
+      <template>
+        <phone-component></phone-component>
+        <script>
+        </script>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
 
-          const unCharged = document.querySelector('#unCharged');
-          unCharged.addEventListener('click', (  ) => { 
-            element.unCharge();
-          });
-                
-          </script>
-        </template>
-      </demo-snippet>
-    </div>
-  </body>
 </html>

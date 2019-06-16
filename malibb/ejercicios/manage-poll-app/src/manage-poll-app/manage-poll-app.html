@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../elements/manage-poll-form.html">
+<link rel="import" href="../elements/manage-poll-list.html">
+
+<dom-module id="manage-poll-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div main-title>Encuestas</div>
+    <manage-poll-form></manage-poll-form>
+    <manage-poll-list></manage-poll-list>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class ManagePollApp extends Polymer.Element {
+      static get is() { return 'manage-poll-app'; }
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          routeData: Object,
+          subroute: Object,
+          rootPath: String,
+        };
+      }
+
+      _pageChanged(page) {
+        // Load page import on demand. Show 404 page if fails
+        const resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        Polymer.importHref(
+          resolvedPageUrl,
+          null,
+          this._showPage404.bind(this),
+          true);
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+    }
+
+    window.customElements.define(ManagePollApp.is, ManagePollApp);
+  </script>
+</dom-module>
