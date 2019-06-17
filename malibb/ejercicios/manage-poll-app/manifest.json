@@ -1,0 +1,6 @@
+{
+  "name": "manage-poll-app",
+  "short_name": "manage-poll-app",
+  "start_url": "/",
+  "display": "standalone"
+}

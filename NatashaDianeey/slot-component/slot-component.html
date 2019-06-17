@@ -1,0 +1,44 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<!-- <link rel="import" href="./bower_components/lib/utils/templatize.html"> -->
+
+<dom-module id="slot-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <!-- Funcionalidad sencilla de un Slot -->
+    <slot name="p-slot"></slot>
+
+    <template id="template">
+      <h1>Title</h1>
+      <h1>[[greeting]]</h1>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * `slot-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SlotComponent extends Polymer.Element {
+      static get is() { return 'slot-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'slot-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(SlotComponent.is, SlotComponent);
+  </script>
+</dom-module>

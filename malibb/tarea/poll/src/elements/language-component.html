@@ -1,0 +1,102 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<dom-module id="language-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-dropdown-menu no-animations >
+      <paper-listbox slot="dropdown-content" selected="1">
+          <dom-repeat items="[[languages]]" as="language">
+              <template>
+                  <paper-item on-click="_langSelected">[[language.value]]</paper-item>
+              </template>
+            </dom-repeat>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </template>
+
+  <script>
+    /**
+     * `language-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LanguageComponent extends Polymer.Element {
+      static get is() { return 'language-component'; }
+      static get properties() {
+        return {
+          languages: {
+            type: [],
+            value: [
+              {
+                key:'en',
+                value:'ENGLISH'
+              },
+              {
+                key:'al',
+                value:'ALEMÁN'
+              },
+              {
+                key:'ru',
+                value:'RUSO'
+              },
+              {
+                key:'por',
+                value:'PORTUGUES'
+              },
+              {
+                key:'su',
+                value:'SUECO'
+              }
+            ]
+          },
+          lang:{
+            type:String,
+            value:'',
+            observer:"_langChange",
+          },
+          locales:{
+            type: Map,
+            value:() => new Map
+          }
+        };
+      }
+
+      _langSelected(event){
+        const key = event.model.language.key;
+        this.set('lang', key);     
+        console.log(this.lang);
+      }
+
+      _langChange(){
+        if(this.lang != ''){
+        
+          fetch(`./locales/${this.lang}.json`)
+          .then((response)=>{
+            return response.json();
+          })
+          .then((language)=>{
+            this.locales.set(this.lang,language);
+            console.log(this.locales);
+            this.dispatchEvent(new CustomEvent('lang-changed',{
+              bubbles: false,
+              composed: false,
+              detail:this.locales.get(this.lang)
+            }));
+          })
+        }         
+      }
+    }
+
+    window.customElements.define(LanguageComponent.is, LanguageComponent);
+  </script>
+</dom-module>
