@@ -2,24 +2,12 @@
 
 <dom-module id="slot-component">
     <template>
-        <style>
-            :host {
-                display: block;
-            }
-
-            .container {
-                display: flex;
-                justify-content: space-between;
-            }
-        </style>
-        <div class="container">
-            <span>
-                <slot name="prefix"></slot>
-            </span>
-            <p>Placeholder</p>
-            <span>
-                <slot name="suffix"></slot>
-            </span>
+        <slot></slot>
+        <dom-repeat id="content" items="[[_items]]" as="item">
+            <template>
+                <iron-icon icon="[[item.icon]]"></iron-icon>
+            </template>
+        </dom-repeat>
         </div>
     </template>
 
@@ -39,11 +27,29 @@
 
         static get properties() {
           return {
-            prop1: {
-              type: String,
-              value: 'slot-component'
+            _items: {
+              type: Array,
+              value: () => [
+                {
+                  icon: 'menu'
+                },
+                {
+                  icon: 'clear'
+                },
+                {
+                  icon: 'mail'
+                }
+              ],
+              observer: '_templatize'
             }
           };
+        }
+
+        _templatize() {
+          const slot = this.shadowRoot.querySelector('slot').assignedNodes()[1];
+          const domRepeat = this.shadowRoot.querySelector('#content');
+          domRepeat.appendChild(slot);
+          domRepeat.render();
         }
       }
 

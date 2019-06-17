@@ -1,0 +1,116 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/google-chart/google-chart.html">
+
+
+<dom-module id="poll-component">
+    <template>
+        <style>
+            paper-dropdown-menu {
+                padding: 15px;
+            }
+
+            paper-card {
+                width: 400px;
+                margin: 5px;
+            }
+        </style>
+
+        <dom-if if="[[_voted]]">
+            <template>
+                <google-chart
+                        type="pie"
+                        options="[[chart.options]]"
+                        cols="[[chart.cols]]"
+                        rows="[[chart.rows]]">
+                </google-chart>
+            </template>
+        </dom-if>
+        <dom-if if="[[!_voted]]">
+            <template>
+                <paper-card heading="[[poll.topic]]">
+                    <paper-dropdown-menu id="options" label="Vota por tu elección" no-animations>
+                        <paper-listbox slot="dropdown-content">
+                            <dom-repeat items="[[poll.options]]" as="option">
+                                <template>
+                                    <paper-item>
+                                        [[option.label]]
+                                    </paper-item>
+                                </template>
+                            </dom-repeat>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                    <paper-button on-click="vote">
+                        Votar
+                    </paper-button>
+                </paper-card>
+            </template>
+        </dom-if>
+    </template>
+
+    <script>
+      /**
+       * @customElement
+       * @polymer
+       */
+      class PollComponent extends Polymer.Element {
+        static get is() {
+          return 'poll-component';
+        }
+
+        static get properties() {
+          return {
+            poll: {
+              type: Object,
+              value: {},
+              observer: '_pollChanged'
+            },
+            chart: {
+              type: Object,
+              value: {
+                options: {
+                  title: ''
+                },
+                cols: [],
+                rows: []
+              }
+            },
+            _voted: {
+              type: Boolean,
+              value: false
+            }
+          };
+        }
+
+        vote() {
+          const optionSelected = this.shadowRoot.querySelector('#options').value;
+          this.dispatchEvent(new CustomEvent('option-selected', {
+            bubbles: true,
+            composed: true,
+            detail: {
+              poll: this.poll,
+              voted: optionSelected
+            }
+          }));
+          this.set('_voted', true);
+        }
+
+        _pollChanged() {
+          this.set('chart', {
+            options: {
+              title: this.poll.topic
+            },
+            cols: [{"label": "Data", "type": "string"}, {"label": "Value", "type": "number"}],
+            rows: this.poll.options.map(poll => [poll.label, poll.rating])
+          });
+        }
+      }
+
+      window.customElements.define(PollComponent.is, PollComponent);
+    </script>
+</dom-module>
