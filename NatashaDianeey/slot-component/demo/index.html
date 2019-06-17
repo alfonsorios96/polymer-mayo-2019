@@ -11,8 +11,8 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../slot-component.html">
-    <link rel="import" href="../../iron-icons/iron-icons.html">
-    <link rel="import" href="../../iron-icon/iron-icon.html">
+  
+    <link rel="import" href="../../iron-component">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -22,18 +22,11 @@
   <body>
     <div class="vertical-section-container centered">
       <h3>Basic slot-component demo</h3>
-      <demo-snippet>
+      <dom-repeat>
         <template>
-          <slot-component>
-            <template slot="repeat">
-
-              <iron-icon icon="clear"></iron-icon>
-              [[item.label]] 
-
-            </template>
-          </slot-component>
+            
         </template>
-      </demo-snippet>
+      </dom-repeat>
     </div>
   </body>
 </html>
