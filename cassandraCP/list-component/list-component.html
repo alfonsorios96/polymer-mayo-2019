@@ -1,0 +1,58 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+
+<dom-module id="list-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <iron-ajax id="ajax" url="https://randomuser.me/api/" on-response="_handleResponse" handle-as="json"debounce-duration="300"></iron-ajax>
+    <iron-list items="[[data]]" as="item">
+      <template>
+        <div>
+          Name: [[item.name]]
+        </div>
+      </template>
+    </iron-list>
+  </template>
+
+  <script>
+    /**
+     * `list-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ListComponent extends Polymer.Element {
+      static get is() { return 'list-component'; }
+      static get properties() {
+        return {
+          data: {
+            type: Array,
+            value: ''
+          }
+        };
+      }
+      _handleResponse() {
+        const ajax = this.shadowRoot.querySelector('#ajax');
+         ajax.generateRequest();
+          const payload = this.$.ajax.lastResponse;
+          console.log(payload)
+          console.log( 'ajax.generateRequest()')
+         /* this.locales.set(this.langKey, payload);
+          this.dispatchEvent(new CustomEvent('lang-changeds', {
+          detail: `${payload.greet} ${payload.name}`
+         
+          }));*/
+        }
+    }
+
+    window.customElements.define(ListComponent.is, ListComponent);
+  </script>
+</dom-module>
