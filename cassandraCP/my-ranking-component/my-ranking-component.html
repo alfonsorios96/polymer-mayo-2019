@@ -1,0 +1,94 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="my-ranking-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      
+
+      .user-item {
+                display: flex;
+                justify-content: space-between;
+            }
+      .list{
+        max-height: 300px;
+
+        overflow: auto
+             }
+    </style>
+    <iron-ajax id="ajax"
+    auto
+    url='https://randomuser.me/api/?results=50'
+    handle-as="json"
+    on-response="responseSuccess"
+    debounce-duration="300"></iron-ajax>
+    <paper-listbox class="list">
+    <dom-repeat items="[[users]]" as="user">
+      <template>
+          <paper-item class="user-item">
+            <img src="[[user.picture]]">    
+           [[user.name]] 
+              <paper-button on-click="_vote">Votar</paper-button>
+      </template>
+  </dom-repeat>
+</paper-listbox>
+  </template>
+
+  <script>
+    /**
+     * `my-ranking-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MyRankingComponent extends Polymer.Element {
+      static get is() { return 'my-ranking-component'; }
+      static get properties() {
+        return {
+          users: {
+            type: Array,
+            value: () => []
+          }
+        };
+      }
+      responseSuccess() {
+          const data = this.$.ajax.lastResponse;
+          this.users = data.results.map(user => {
+            return {
+              name: `${user.name.first} ${user.name.last}`,
+              picture: user.picture.large,
+              votes: 0
+            };
+          });
+        }
+        _vote(event) {
+          const _element = event.model.user;
+          const index = this.users.indexOf(_element);
+          this.set(`users.${index}.votes`, _element.votes + 1);
+          this._usersChanged();
+        }
+        _usersChanged() {
+          const newOrder = this.users.sort((a, b) => b.votes - a.votes);
+          this.set('users', [...newOrder]);
+          this.dispatchEvent(new CustomEvent('order-changed', {
+            detail: {
+              first: this.users[0],
+              second: this.users[1],
+              third: this.users[2]
+            }
+          }));
+        }
+      }
+    
+
+    window.customElements.define(MyRankingComponent.is, MyRankingComponent);
+  </script>
+</dom-module>
