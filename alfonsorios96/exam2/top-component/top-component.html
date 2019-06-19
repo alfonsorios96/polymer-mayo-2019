@@ -1,0 +1,249 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-card/paper-card.html">
+
+<dom-module id="top-component">
+    <template>
+        <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .row {
+                display: flex;
+                justify-content: space-evenly;
+                margin: 20px;
+            }
+
+            .box {
+                margin: 10px;
+                width: 120px;
+                height: 200px;
+                position: relative;
+                border: 1px solid #BBB;
+                background: #EEE;
+            }
+
+            .first {
+                position: absolute;
+                left: -5px;
+                top: -5px;
+                z-index: 1;
+                overflow: hidden;
+                width: 50px;
+                height: 50px;
+                text-align: right;
+            }
+
+            .first span {
+                font-size: 8px;
+                font-weight: bold;
+                color: #FFF;
+                text-transform: uppercase;
+                text-align: center;
+                line-height: 20px;
+                transform: rotate(-45deg);
+                -webkit-transform: rotate(-45deg);
+                width: 100px;
+                display: block;
+                background: #79A70A;
+                background: linear-gradient(#C9BD16 0%, #A7A744 100%);
+                box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+                position: absolute;
+                top: 19px;
+                left: -21px;
+            }
+
+            .first span::before {
+                content: "";
+                position: absolute;
+                left: 0px;
+                top: 100%;
+                z-index: -1;
+                border-left: 3px solid #A7A744;
+                border-right: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                border-top: 3px solid #A7A744;
+            }
+
+            .first span::after {
+                content: "";
+                position: absolute;
+                right: 0px;
+                top: 100%;
+                z-index: -1;
+                border-left: 3px solid transparent;
+                border-right: 3px solid #A7A744;
+                border-bottom: 3px solid transparent;
+                border-top: 3px solid #A7A744;
+            }
+
+            .second {
+                position: absolute;
+                left: -5px;
+                top: -5px;
+                z-index: 1;
+                overflow: hidden;
+                width: 75px;
+                height: 75px;
+                text-align: right;
+            }
+
+            .second span {
+                font-size: 10px;
+                font-weight: bold;
+                color: #FFF;
+                text-transform: uppercase;
+                text-align: center;
+                line-height: 20px;
+                transform: rotate(-45deg);
+                -webkit-transform: rotate(-45deg);
+                width: 100px;
+                display: block;
+                background: #79A70A;
+                background: linear-gradient(#B6BAC9 0%, #808080 100%);
+                box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+                position: absolute;
+                top: 19px;
+                left: -21px;
+            }
+
+            .second span::before {
+                content: "";
+                position: absolute;
+                left: 0px;
+                top: 100%;
+                z-index: -1;
+                border-left: 3px solid #808080;
+                border-right: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                border-top: 3px solid #808080;
+            }
+
+            .second span::after {
+                content: "";
+                position: absolute;
+                right: 0px;
+                top: 100%;
+                z-index: -1;
+                border-left: 3px solid transparent;
+                border-right: 3px solid #808080;
+                border-bottom: 3px solid transparent;
+                border-top: 3px solid #808080;
+            }
+
+            .third {
+                position: absolute;
+                left: -5px;
+                top: -5px;
+                z-index: 1;
+                overflow: hidden;
+                width: 75px;
+                height: 75px;
+                text-align: right;
+            }
+
+            .third span {
+                font-size: 10px;
+                font-weight: bold;
+                color: #FFF;
+                text-transform: uppercase;
+                text-align: center;
+                line-height: 20px;
+                transform: rotate(-45deg);
+                -webkit-transform: rotate(-45deg);
+                width: 100px;
+                display: block;
+                background: #79A70A;
+                background: linear-gradient(#F79E05 0%, #8F5408 100%);
+                box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+                position: absolute;
+                top: 19px;
+                left: -21px;
+            }
+
+            .third span::before {
+                content: "";
+                position: absolute;
+                left: 0px;
+                top: 100%;
+                z-index: -1;
+                border-left: 3px solid #8F5408;
+                border-right: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                border-top: 3px solid #8F5408;
+            }
+
+            .third span::after {
+                content: "";
+                position: absolute;
+                right: 0px;
+                top: 100%;
+                z-index: -1;
+                border-left: 3px solid transparent;
+                border-right: 3px solid #8F5408;
+                border-bottom: 3px solid transparent;
+                border-top: 3px solid #8F5408;
+            }
+        </style>
+        <div class="container">
+            <div class="row">
+                <paper-card class="box" image="[[first.picture.large]]">
+                    <div class="first"><span>1st</span></div>
+                    <h2>[[first.name]]</h2>
+                </paper-card>
+            </div>
+            <div class="row">
+                <paper-card class="box" image="[[second.picture.large]]">
+                    <div class="second"><span>2nd</span></div>
+                    <h2>[[second.name]]</h2>
+                </paper-card>
+                <paper-card class="box" image="[[third.picture.large]]">
+                    <div class="third"><span>3rd</span></div>
+                    <h2>[[third.name]]</h2>
+                </paper-card>
+            </div>
+        </div>
+    </template>
+
+    <script>
+      /**
+       * `top-component`
+       *
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class TopComponent extends Polymer.Element {
+        static get is() {
+          return 'top-component';
+        }
+
+        static get properties() {
+          return {
+            first: {
+              type: Object,
+              value: () => {
+                return {};
+              }
+            },
+            second: {
+              type: Object,
+              value: () => {
+                return {};
+              }
+            },
+            third: {
+              type: Object,
+              value: () => {
+                return {};
+              }
+            }
+          };
+        }
+      }
+
+      window.customElements.define(TopComponent.is, TopComponent);
+    </script>
+</dom-module>
