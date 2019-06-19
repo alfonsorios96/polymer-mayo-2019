@@ -4,23 +4,27 @@
 <link rel="import" href="../iron-icons/device-icons.html">
 <link rel="import" href="../player-component/player-component.html">
 <link rel="import" href="../battery-component/battery-component.html">
+<link rel="import" href="../charge-component/charge-component.html">
 
 <dom-module id="phone-component">
   <template>
     <style>
-      header,footer {
+      header,
+      footer {
         display: flex;
         justify-content: space-around;
         margin: 1rem;
       }
-      .container{
+
+      .container {
         padding: 0;
-        margin:0;
+        margin: 0;
         display: flex;
         flex-direction: column;
         border: 0.1rem;
       }
-      .body{
+
+      .body {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -32,16 +36,18 @@
         <span>
           <iron-icon icon="device:signal-cellular-3-bar"></iron-icon>Signal
         </span>
-        
+
       </header>
       <div class="body">
-          <player-component on-battery-using="usingBattery"></player-component>
+        <player-component on-battery-using="usingBattery"></player-component>
       </div>
-      <footer>         
+      <footer>
         <iron-icon icon="icons:home"></iron-icon>
         <iron-icon icon="icons:radio-button-unchecked"></iron-icon>
         <iron-icon icon="icons:home"></iron-icon>
+         <charge-component on-charge-changed="phoneCharged"></charge-component>
       </footer>
+     
     </div>
   </template>
 
@@ -62,42 +68,49 @@
             type: Boolean,
             value: false,
             reflectToAttribute: true,
-            observer:'_manageCharge'
+            observer: '_manageCharge'
           }
         };
       }
-      usingBattery(event){
+      usingBattery(event) {
         this.$.battery.rest(event.detail);
       }
 
-    charge() {
-      if (!this.charging) {
-        this.set('charging', true);
-        this.$.battery.charging='-charging';
-      } 
-    }
+      phoneCharged(event){
+        if(event.detail==true){
+          this.charge();
+        }else{
+          this.unCharge();
+        }
 
-    unCharge(){
-      if(this.charging){
-        this.set('charging', false);
-        this.$.battery.charging='';
       }
-    }
+      charge() {
+        if (!this.charging) {
+          this.set('charging', true);
+          this.$.battery.charging = '-charging';
+        }
+      }
 
-    _manageCharge(){
-      console.log(this.charging)
-      if(this.charging){
-        const interval = setInterval(() => {
+      unCharge() {
+        if (this.charging) {
+          this.set('charging', false);
+          this.$.battery.charging = '';
+        }
+      }
+
+      _manageCharge() {
+        if (this.charging) {
+          const interval = setInterval(() => {
             this.$.battery.sum(1);
-        }, 2000);
-        localStorage.setItem('charging', `${interval}`);
-      }else{
-        clearInterval(localStorage.getItem('charging'));
+          }, 2000);
+          localStorage.setItem('charging', `${interval}`);
+        } else {
+          clearInterval(localStorage.getItem('charging'));
+        }
       }
-    }
 
     }
-      
+
 
     window.customElements.define(PhoneComponent.is, PhoneComponent);
   </script>

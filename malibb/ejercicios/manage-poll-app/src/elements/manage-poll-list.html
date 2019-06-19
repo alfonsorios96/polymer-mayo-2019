@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="manage-poll-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <h2>Hello List</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class ManagePollList extends Polymer.Element {
+      static get is() { return 'manage-poll-list'; }
+      static get properties() {
+        return {
+
+          
+        };
+      }
+    }
+
+    window.customElements.define(ManagePollList.is, ManagePollList);
+  </script>
+</dom-module>

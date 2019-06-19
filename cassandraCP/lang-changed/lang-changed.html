@@ -88,11 +88,18 @@
               }));
             } else {
               const ajax = this.shadowRoot.querySelector('#ajax');
-              ajax.url = `../demo/locales/${keyLang}.json`;
+              qwer
+              ajax.url = `${this.pathLocal}${keyLang}.json`;
               ajax.generateRequest();
             }
             this.set('langKey', keyLang)
           }
+        }
+        urlAjax(path){
+          const pathLocales = `${path}`;
+          this.set(`pathLocal`, pathLocales);
+          console.log(this.pathLocal)
+
         }
       }
 

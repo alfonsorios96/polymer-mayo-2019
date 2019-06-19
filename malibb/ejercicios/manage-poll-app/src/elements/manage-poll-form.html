@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<dom-module id="manage-poll-form">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <paper-card alt="Emmental">
+                <paper-input id="title" label="title"></paper-input>
+                <dom-repeat items="[[inputs]]" as="input">
+                    <template>
+                        <paper-input inpu="[[input]]"></paper-input>
+                    </template>
+                </dom-repeat>
+        </paper-card>
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class ManagePollForm extends Polymer.Element {
+            static get is() { return 'manage-poll-form'; }
+            static get properties() {
+                return {
+                    opcions: {
+                        type: Map,
+                        value: () => new Map
+                    },
+                    inputs: {
+                        type: [],
+                        value:['Opcion 1']
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(ManagePollForm.is, ManagePollForm);
+    </script>
+</dom-module>

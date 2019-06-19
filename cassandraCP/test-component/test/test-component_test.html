@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>test-component test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../test-component.html">
+  </head>
+  <body>
+
+    <test-fixture id="fixture1">
+      <template>
+        <test-component a="0" b="2"></test-component>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="fixture9">
+      <template>
+        <test-component></test-component>
+      </template>
+    </test-fixture>
+
+
+    <script>
+      suite('test-component', () => {
+
+        test('a,b >= 0', (done) => {
+      const test = fixture('fixture1');
+      test.addEventListener('rest-done', event => {
+        const c = event.detail;
+        assert.strictEqual('-2', c);
+        done();
+      });
+      test.rest();
+    });
+
+    test('a || b > Number.max_safe_integer + 1', ()=>{
+        const test = fixture('fixture9');
+        test.addEventListener('rest-done', event =>{
+        const a =  (Number.MAX_SAFE_INTEGER * Number.MAX_SAFE_INTEGER).toString();
+        test.a = a;
+        const c =event.detail;
+        let result = '8.112963841460666e+31';
+        //result = result.replace(',','');
+        //result = Number(result);
+        assert.strictEqual(result,c);
+      });
+      test.rest();
+    });
+
+
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="dom-repeat-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `dom-repeat-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class DomRepeatComponent extends Polymer.Element {
+      static get is() { return 'dom-repeat-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'dom-repeat-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(DomRepeatComponent.is, DomRepeatComponent);
+  </script>
+</dom-module>

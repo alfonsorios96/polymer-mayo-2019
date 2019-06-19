@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="my-slot-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `my-slot-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MySlotComponent extends Polymer.Element {
+      static get is() { return 'my-slot-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'my-slot-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(MySlotComponent.is, MySlotComponent);
+  </script>
+</dom-module>

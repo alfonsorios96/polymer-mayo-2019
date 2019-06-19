@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="quiz-multilanguage">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QuizMultilanguage extends Polymer.Element {
+      static get is() { return 'quiz-multilanguage'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'quiz-multilanguage'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(QuizMultilanguage.is, QuizMultilanguage);
+  </script>
+</dom-module>
