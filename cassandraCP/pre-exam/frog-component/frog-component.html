@@ -1,0 +1,108 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="frog-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div>
+
+        <p>[[saltos]] hacia [[direccion]]</p>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `frog-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FrogComponent extends Polymer.Element {
+      static get is() { return 'frog-component'; }
+      static get properties() {
+        return {
+          position: {
+            type: Number,
+            value: 0
+          },
+          direccion: {
+            type: String,
+            value: ''
+          },
+          saltos: {
+            type: Number,
+            value: 0
+          },
+          frogArray:{
+            type:Array,
+            value: ()=> []
+          },
+          stopped:{
+            type: Array,
+            value: ()=>[]
+          }
+        };
+      }
+
+      game(parameters) {
+        const array = parameters;
+        console.log(array)
+        
+        //for(let i=0 ; i <= movimientos ; i++){
+        const repeat =  setInterval(() => {
+          this.stopped=[...'FROG']
+          this.direccion = (Math.random() * 2) < 1 ? 'izquierda' : 'derecha'
+          this.saltos = (Math.random() * 2) < 1 ? 1 : 2
+          this.position = array.indexOf('Frog');
+
+          if (this.direccion === 'izquierda') {
+            
+            console.log(`${this.saltos} saltos hacia ${this.direccion}`);
+            if ((this.position - this.saltos) > 0) {
+              array[this.position - this.saltos] = 'Frog'
+              array[this.position] = '.'
+            } else {
+              //console.log('ups no hay mas rocas')   
+              array[this.position - (-this.saltos)] = 'Frog'
+              array[this.position] = '.'
+            }
+            console.log(array)
+            this.repeat();
+          } else {
+            console.log(`${this.saltos} saltos hacia ${this.direccion}`);
+            if ((this.position + this.saltos) >= array.length) {
+              array[this.position - this.saltos] = 'Frog'
+              array[this.position] = '.'
+            } else {
+              //  console.log('ups no har mas rocas')   
+              array[this.position + this.saltos] = 'Frog'
+              array[this.position] = '.'
+            }
+            console.log(array)
+          }
+         
+        }, 5000);
+      
+
+        //}
+        
+        return array;
+      }
+      repeat(){
+          const repeat = this.shadowRoot.querySelector('div');
+      
+          repeat.appendChild()
+          repeat.render();
+          // repeat.assignedSlot();
+        }
+      
+    }
+
+      window.customElements.define(FrogComponent.is, FrogComponent);
+  </script>
+</dom-module>

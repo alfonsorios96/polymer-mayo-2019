@@ -19,22 +19,40 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="fixture9">
+      <template>
+        <test-component></test-component>
+      </template>
+    </test-fixture>
+
 
     <script>
       suite('test-component', () => {
 
-        test('a && b >  0', () => {
-          
-        });
+        test('a,b >= 0', (done) => {
+      const test = fixture('fixture1');
+      test.addEventListener('rest-done', event => {
+        const c = event.detail;
+        assert.strictEqual('-2', c);
+        done();
+      });
+      test.rest();
+    });
 
-        test('setting a property on the element works', () => {
-          // Create a test fixture
-          const element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
-        });
+    test('a || b > Number.max_safe_integer + 1', ()=>{
+        const test = fixture('fixture9');
+        test.addEventListener('rest-done', event =>{
+        const a =  (Number.MAX_SAFE_INTEGER * Number.MAX_SAFE_INTEGER).toString();
+        test.a = a;
+        const c =event.detail;
+        let result = '8.112963841460666e+31';
+        //result = result.replace(',','');
+        //result = Number(result);
+        assert.strictEqual(result,c);
+      });
+      test.rest();
+    });
+
 
       });
     </script>
