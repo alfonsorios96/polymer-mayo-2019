@@ -22,6 +22,7 @@
         display: flex;
         flex-direction: column;
         border: 0.1rem;
+        justify-content: center;
       }
 
       .body {
@@ -45,9 +46,8 @@
         <iron-icon icon="icons:home"></iron-icon>
         <iron-icon icon="icons:radio-button-unchecked"></iron-icon>
         <iron-icon icon="icons:home"></iron-icon>
-         <charge-component on-charge-changed="phoneCharged"></charge-component>
       </footer>
-     
+      <charge-component on-charging="phoneCharged"></charge-component>
     </div>
   </template>
 
@@ -67,7 +67,6 @@
           charging: {
             type: Boolean,
             value: false,
-            reflectToAttribute: true,
             observer: '_manageCharge'
           }
         };
@@ -76,35 +75,34 @@
         this.$.battery.rest(event.detail);
       }
 
-      phoneCharged(event){
-        if(event.detail==true){
+      phoneCharged(event) {
+        if (event.detail === true) {
           this.charge();
-        }else{
+        } else {
           this.unCharge();
         }
-
       }
+
       charge() {
-        if (!this.charging) {
-          this.set('charging', true);
-          this.$.battery.charging = '-charging';
-        }
+        this.set('charging', true);
+        console.log(this.charging)
       }
 
       unCharge() {
-        if (this.charging) {
-          this.set('charging', false);
-          this.$.battery.charging = '';
-        }
+        this.set('charging', false);
+        console.log(this.charging)
       }
 
       _manageCharge() {
+        console.log(this.charging)
         if (this.charging) {
+          this.$.battery.charging = '-charging';
           const interval = setInterval(() => {
             this.$.battery.sum(1);
           }, 2000);
           localStorage.setItem('charging', `${interval}`);
         } else {
+          this.$.battery.charging = '';
           clearInterval(localStorage.getItem('charging'));
         }
       }
