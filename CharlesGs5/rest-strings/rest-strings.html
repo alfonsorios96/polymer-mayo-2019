@@ -1,0 +1,41 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="rest-strings">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `rest-strings`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class RestStrings extends Polymer.Element {
+      static get is() { return 'rest-strings'; }
+      static get properties() {
+        return {
+          a: {
+            type: Number,
+            value: 0
+          },
+
+          b: {
+            type: Number,
+            value: 0
+          }
+        };
+      }
+    }
+
+    window.customElements.define(RestStrings.is, RestStrings);
+  </script>
+</dom-module>

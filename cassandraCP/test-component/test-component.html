@@ -8,6 +8,7 @@
       }
     </style>
     <h2>Hello [[prop1]]!</h2>
+    <button on-click="rest"></button>
   </template>
 
   <script>
@@ -21,14 +22,36 @@
      */
     class TestComponent extends Polymer.Element {
       static get is() { return 'test-component'; }
+      
       static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'test-component'
-          }
-        };
-      }
+          return {
+            a: {
+              type: String,
+              value: ''
+            },
+            b: {
+              type: String,
+              value: ''
+            }
+          };
+        }
+
+      rest() {
+         this.a = Number(this.a)
+          this.b = Number(this.b);
+          this.dispatchEvent(new CustomEvent('rest-done', {
+            detail: (this.a - this.b).toString()
+          }));
+         
+    }
+   /* rest() {
+          this.a = Number.MAX_SAFE_INTEGER * Number.MAX_SAFE_INTEGER
+          console.log(this.a)
+            console.log( (this.a - this.b).toString())
+       
+
+         
+    }*/
     }
 
     window.customElements.define(TestComponent.is, TestComponent);
