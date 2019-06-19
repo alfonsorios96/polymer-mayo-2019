@@ -1,0 +1,73 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="list-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .container__list {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+
+
+    <dom-repeat items="[[users]]" as="user">
+      <template>
+        <div class="container__list">
+          <div>
+            [[user.value]]
+          </div>
+          <div>
+            Juan perez
+          </div>
+          <div>
+            <button on-click="_isVoted">
+              vote
+            </button>
+          </div>
+        </div>
+      </template>
+    </dom-repeat>
+
+    
+
+  </template>
+
+  <script>
+    /**
+     * `list-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ListComponent extends Polymer.Element {
+      static get is() { return 'list-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'list-component'
+          },
+          users: {
+            type: Array,
+            value: () => []
+          },
+          users: {
+            type: Number,
+            value: 14
+          },
+        };
+      }
+    }
+
+    window.customElements.define(ListComponent.is, ListComponent);
+  </script>
+</dom-module>

@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="top-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `top-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TopComponent extends Polymer.Element {
+      static get is() { return 'top-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'top-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(TopComponent.is, TopComponent);
+  </script>
+</dom-module>

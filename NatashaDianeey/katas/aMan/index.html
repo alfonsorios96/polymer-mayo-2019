@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Google</title>
+</head>
+<body>
+    <header>
+        <nav></nav>
+    </header>
+    <main>
+        <h2>
+            KATAS
+        </h2>
+        <p>Cada mañana, un hombre camina al trabajo, y cada tarde vuelve a casa.</p>
+
+        <p>Si está lloviendo por la mañana y tiene un paraguas en casa, toma un paraguas para el viaje 
+            para que no se moje y lo almacena en el trabajo. Del mismo modo, si está lloviendo por la 
+            tarde y tiene un paraguas en el trabajo, toma un paraguas para el viaje a casa.</p>
+            
+        <p>Dada una serie de condiciones climáticas, su tarea es calcular el número mínimo de paraguas 
+            que necesita para comenzar a fin de que nunca se moje. Puede comenzar con algunos paraguas 
+            en casa y otros en el trabajo, pero la salida es un solo número entero, el número total mínimo.</p>
+            
+        <p>La entrada es una matriz / lista de pronósticos meteorológicos de medio día consecutivos. 
+            Así que, por ejemplo el primer valor es el clima de la mañana del primer día y el segundo valor es 
+            el clima de la tarde del primer día. Las opciones son "despejado", "soleado", "nublado", "lluvioso", 
+            "ventoso" o "tormentas eléctricas".</p>
+            
+        <p>p.ej. Durante tres días, 6 valores:</p>
+
+        <h3>weather = ["rainy", "cloudy", "sunny", "sunny", "cloudy", "thunderstorms"]</h3>
+
+        <p>N.B. He never takes an umbrella if it is not raining.</p>
+
+        <p>Examples:</p>
+
+        <p>
+            minUmbrellas(["rainy", "clear", "rainy", "cloudy"])
+            <br>
+            // should return 2
+            <br>
+            // Because on the first morning, he needs an umbrella to take, and he leaves it at work.
+            <br>
+            // So on the second morning, he needs a second umbrella.
+
+            <br><br>
+            minUmbrellas(["sunny", "windy", "sunny", "clear"])
+            <br>
+            // should return 0
+            <br>
+            // Because it doesn't rain at all
+
+            <br><br>
+            minUmbrellas(["rainy", "rainy", "rainy", "rainy", "thunderstorms", "rainy"])
+            <br>
+            // should return 1
+            <br>
+            // Because he only needs 1 umbrella which he takes on every journey.
+            <br><br><br><br>
+        </p>
+
+    </main>
+    <footer>
+
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
