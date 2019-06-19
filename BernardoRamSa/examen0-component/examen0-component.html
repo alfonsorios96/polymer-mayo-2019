@@ -1,0 +1,141 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="examen0-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      div{
+        width: 100px;
+        height: 100px;
+        border: solid black;
+      }
+    </style>
+
+    <button on-click="changeRock">Start</button>
+
+    <div id="primero"></div>
+    <div id="segundo"></div>
+    <div id="tercero"></div>
+    <div id="cuarto"></div>
+    <div id="quinto"></div>
+
+
+  </template>
+
+  <script>
+    /**
+     * `examen0-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class Examen0Component extends Polymer.Element {
+      static get is() { return 'examen0-component'; }
+      static get properties() {
+        return {
+          rock: {
+            type: Number,
+            value: 1
+          },
+          jumps: {
+            type: Number,
+            value: 0
+          },
+          start: {
+            type: Boolean,
+            value: false
+          },
+          deReversaMami: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      changeRock(){
+
+        const element1 = this.shadowRoot.querySelector('#primero');
+        element1.innerText = 'FROG';
+
+        this.start = setInterval(()=>{
+
+          const element1 = this.shadowRoot.querySelector('#primero');
+          const element2 = this.shadowRoot.querySelector('#segundo');
+          const element3 = this.shadowRoot.querySelector('#tercero');
+          const element4 = this.shadowRoot.querySelector('#cuarto');
+          const element5 = this.shadowRoot.querySelector('#quinto');
+
+          this.jumps = Math.round(Math.abs(Math.random()*1+1));
+
+          if(this.deReversaMami === false){
+
+            if(this.rock > 5){
+              console.log("hola"+this.rock+"::"+this.jumps);
+              if(this.rock === 5 && this.jumps === 1){
+                this.rock = 4;
+                this.deReversaMami = true;
+              }
+              if(this.rock === 5 && this.jumps == 2){
+                this.rock = 3;
+                this.deReversaMami = true;
+              }
+              if(this.rock === 4 && this.jumps === 2){
+                this.rock = 4;
+                this.deReversaMami = true;
+              }
+              if(this.rock === 4 && this.jumps === 1){
+                this.rock = 5;
+                this.deReversaMami = true;
+              }
+            }
+
+            this.rock = this.rock + this.jumps;
+          }
+
+          if(this.deReversaMami === true){
+
+            if(this.rock < 1){
+              if(this.rock === 1 && this.jumps === 1){
+                this.rock = 2;
+                this.deReversaMami = false;
+              }
+              if(this.rock === 1 && this.jumps === 2){
+                this.rock = 3;
+                this.deReversaMami = false;
+              }
+              if(this.rock === 2 && this.jumps === 2){
+                this.rock = 2;
+                this.deReversaMami = false;
+              }
+              if(this.rock === 2 && this.jumps === 1){
+                this.rock = 1;
+                this.deReversaMami = false;
+              }
+            }
+
+            this.rock = this.rock - this.jumps;
+          }
+
+          this.rock === 1 ? element1.innerText = 'FROG': element1.innerText = '';
+          this.rock === 2 ? element2.innerText = 'FROG': element2.innerText = '';
+          this.rock === 3 ? element3.innerText = 'FROG': element3.innerText = '';
+          this.rock === 4 ? element4.innerText = 'FROG': element4.innerText = '';
+          this.rock === 5 ? element5.innerText = 'FROG': element5.innerText = '';
+
+          console.log(this.rock);
+          
+
+
+        }, 1000);
+    }
+
+
+    }
+
+    window.customElements.define(Examen0Component.is, Examen0Component);
+  </script>
+</dom-module>
