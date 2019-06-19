@@ -1,0 +1,71 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-form">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      .inputs{
+        border: 1px solid black;
+      }
+      .btns{
+        text-align: center;
+      }
+      .inputs{
+        text-align: center;
+      }
+      .card{
+        text-align: center;
+        margin-right: 25%;
+        margin-left: 25%;
+      }
+    </style>
+    
+    <div class="card">
+        <h1>Encuesta</h1>
+
+        <div class="form">
+            <paper-input id="nombre-encuesta" placeholder="Nombre de la encuesta"></paper-input>
+            <div class="inputs">
+                <paper-input id="input-1" placeholder="Opcion 1"></paper-input>
+    
+            </div>
+            <div class="btns">
+                <paper-icon-button on-click="_addInput" icon="icons:add-circle"></paper-icon-button>
+                <paper-icon-button on-click="_removeInput" icon="icons:remove-circle"></paper-icon-button>
+            </div>
+        </div>
+
+      </div>
+  </template>
+
+  <script>
+    class MyForm extends Polymer.Element {
+      static get is() { return 'my-form'; }
+
+      static get properties() {
+        return {
+          numInputs:{
+            type: Number,
+            value: 1
+          }
+
+        };
+      }
+      _addInput(){
+        const divInputs = this.shadowRoot.querySelector('.inputs');
+        divInputs.innerHTML = `<paper-input id="input-[[numInputs]]" placeholder="Pregunta 1"></paper-input>`;
+
+      }
+      _removeInput(){
+
+      }
+    }
+
+    window.customElements.define(MyForm.is, MyForm);
+  </script>
+</dom-module>
