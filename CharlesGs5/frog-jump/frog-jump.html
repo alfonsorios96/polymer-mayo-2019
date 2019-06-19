@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer-element.html" xmlns="http://www.w3.org/1999/html">
+
+<dom-module id="frog-jump">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      span{
+        display: inline-block;
+        width: 80px;
+        height: 50px;
+        background-color: #0b97c4;
+        justify-content: space-between;
+        border: 1px solid black;
+      }
+
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <div>
+      <span>[[Frog]]</span>
+      <span class="1"></span>
+      <span class="2"></span>
+      <span class="3"></span>
+      <span class="4"></span>
+      <span class="5"></span>
+      <p>
+        [[jumping]]
+      </p>
+    </div>
+    <div id="info">
+
+    </div>
+    <button on-click="jump">Saltar</button>
+  </template>
+
+  <script>
+    /**
+     * `frog-jump`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FrogJump extends Polymer.Element {
+      static get is() { return 'frog-jump'; }
+      static get properties() {
+        return {
+          jumping: {
+            type: Number,
+            value: 0
+          },
+          Frog: {
+            type: String,
+            value: 'FROG'
+          }
+        };
+      }
+      jump(){
+        let jumpedSpaces = 0;
+        const infoFrog = document.querySelector('#info');
+
+        this.jumping = setInterval(()=>{
+          this.jumping = Math.round(Math.random() * (2 - 1) + 1);
+
+          const spaces = [1, 2, 3, 4, 5];
+          if(jumpedSpaces < spaces.length){
+            jumpedSpaces += this.jumping;
+            console.log('VALOR SUMANDO +', jumpedSpaces);
+
+            console.log('SALTO HACIA LA DERECHA >>', this.jumping, 'ESPACIOS');
+
+          } else {
+            jumpedSpaces -= this.jumping;
+            console.log('VALOR RESTANDO -', jumpedSpaces);
+
+            console.log('SALTO HACIA LA IZQUIERDA <<', this.jumping, 'ESPACIOS');
+          }
+        }, 1000);
+      }
+    }
+
+    window.customElements.define(FrogJump.is, FrogJump);
+  </script>
+</dom-module>
