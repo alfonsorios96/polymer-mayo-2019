@@ -1,0 +1,55 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../paper-card/paper-card.html">
+
+<dom-module id="podium-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-card>
+
+      <h2>Hello [[prop1]]!</h2>
+      <paper-progress value="50"></paper-progress>
+      <h2>uer tiene el Primer Lugar</h2>
+    </paper-card>
+    <paper-card>
+
+      <h2>Hello [[prop1]]!</h2>
+      <paper-progress value="50"></paper-progress>
+      <h4>uer tiene el Segundo Lugar</h4>
+    </paper-card>
+    <paper-card>
+
+      <h2>Hello [[prop1]]!</h2>
+      <paper-progress value="50"></paper-progress>
+      <h6>uer tiene el Tercer Lugar</h6>
+    </paper-card>
+  </template>
+
+  <script>
+    /**
+     * `podium-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PodiumComponent extends Polymer.Element {
+      static get is() { return 'podium-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'podium-component'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PodiumComponent.is, PodiumComponent);
+  </script>
+</dom-module>
