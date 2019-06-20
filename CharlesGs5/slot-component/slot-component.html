@@ -1,0 +1,45 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="slot-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <dom-repeat id="content" items="[[elements]]" as="element">
+
+    </dom-repeat>
+  </template>
+
+  <script>
+    /**
+     * `slot-component`
+     *
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SlotComponent extends Polymer.Element {
+      static get is() { return 'slot-component'; }
+      static get properties() {
+        return {
+          elements: {
+            type: Array,
+            value: () => [{
+              label: 'Hola'
+            },
+            {
+              label: 'Adios'
+            }
+          ]}
+        };
+      }
+
+    }
+
+    window.customElements.define(SlotComponent.is, SlotComponent);
+  </script>
+</dom-module>
