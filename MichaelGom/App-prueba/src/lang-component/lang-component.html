@@ -1,0 +1,115 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<dom-module id="lang-component">
+    <template>
+        <iron-ajax
+                id="ajax"
+                url=""
+                handle-as="json"
+                on-response="_handleResponse"
+                debounce-duration="300">
+        </iron-ajax>
+
+        <dom-if if="[[visible]]">
+            <template>
+                <paper-dropdown-menu label="Seleccione su idioma" no-animations>
+                    <paper-listbox slot="dropdown-content" selected="1">
+                        <dom-repeat items="[[languages]]" as="language">
+                            <template>
+                                <paper-item on-click="_langSelected">[[language.value]]</paper-item>
+                            </template>
+                        </dom-repeat>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </template>
+        </dom-if>
+    </template>
+
+    <script>
+      /**
+       * `lang-component`
+       *
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class LangComponent extends Polymer.Element {
+        static get is() {
+          return 'lang-component';
+        }
+        static get properties() {
+          return {
+            visible: {
+              type: Boolean,
+              value: false
+            },
+            languages: {
+              type: Array,
+              value: []
+            },
+            lang: {
+              type: String,
+              value: '',
+              observer: '_langChangedIronAjax'
+            },
+            locales: {
+              type: Map,
+              value: () => new Map()
+            }
+          };
+        }
+        _langSelected(event) {
+          const key = event.model.language.key;
+          this.set('lang', key);
+        }
+        async _langChangedFetch() {
+          if (this.locales.has(this.lang)) {
+            this.dispatchEvent(new CustomEvent('lang-changed', {
+              detail: this.locales.get(this.lang)
+            }));
+          }
+          const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+          if (this.lang !== '' && regexLocalKeys.test(this.lang)) {
+            try {
+              const response = await fetch(`../demo/locales/${this.lang}.json`);
+              const payload = await response.json();
+              this.locales.set(this.lang, payload);
+              this.dispatchEvent(new CustomEvent('lang-changed', {
+                detail: payload
+              }));
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
+        _handleResponse() {
+          const payload = this.$.ajax.lastResponse;
+          this.locales.set(this.lang, payload);
+          this.dispatchEvent(new CustomEvent('lang-changed', {
+            detail: payload
+          }));
+        }
+        _langChangedIronAjax() {
+          const regexLocalKeys = new RegExp('[a-z]{2}', 'g');
+          if (regexLocalKeys.test(this.lang)) {
+            if (this.locales.has(this.lang)) {
+              this.locales.set(this.lang, this.locales.get(this.lang));
+              this.dispatchEvent(new CustomEvent('lang-changed', {
+                detail: this.locales.get(this.lang)
+              }));
+            } else {
+              const ajax = this.shadowRoot.querySelector('#ajax');
+              ajax.url = `../demo/locales/${this.lang}.json`;
+              ajax.generateRequest();
+            }
+          }
+        }
+      }
+      window.customElements.define(LangComponent.is, LangComponent);
+    </script>
+</dom-module>

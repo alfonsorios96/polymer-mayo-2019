@@ -1,0 +1,103 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../src/lang-component/lang-component.html">
+
+<dom-module id="my-view2">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <div class="circle">2</div>
+      <h3>Result</h3>
+<p id="result"></p>
+
+<div class="vertical-section-container centered">
+    <h3>lang-component demo not visible</h3>
+
+    <demo-snippet>
+        <template>
+            <dom-bind id="demo">
+                <template>
+                    <button on-click="langSelected">Español</button>
+                    <button on-click="langSelected">English</button>
+                    <lang-component languages="[[languages]]" on-lang-changed="langChanged" lang="[[lang]]"></lang-component>
+                </template>
+            </dom-bind>
+            <script>
+              const demo = document.querySelector('#demo');
+              demo.languages = [
+                {
+                  key: 'en',
+                  value: 'English'
+                },
+                {
+                  key: 'es',
+                  value: 'Español'
+                }
+              ];
+              demo.langChanged = ({detail: locales}) => {
+                document.querySelector('#result').innerText = JSON.stringify(locales);
+              };
+              demo.langSelected = (event) => {
+                demo.lang = event.currentTarget.innerText === 'English' ? 'en' : 'es';
+              };
+            </script>
+        </template>
+    </demo-snippet>
+</div>
+
+<div class="vertical-section-container centered">
+    <h3>lang-component demo visible</h3>
+    <demo-snippet>
+        <template>
+            <dom-bind id="demo2">
+                <template>
+                    <lang-component languages="[[languages]]" on-lang-changed="langChanged" visible></lang-component>
+                </template>
+            </dom-bind>
+            <script>
+              const demo2 = document.querySelector('#demo2');
+              demo2.languages = [
+                {
+                  key: 'en',
+                  value: 'English'
+                },
+                {
+                  key: 'es',
+                  value: 'Español'
+                }
+              ];
+              demo2.langChanged = ({detail: locales}) => {
+                document.querySelector('#result').innerText = JSON.stringify(locales);
+              };
+            </script>
+        </template>
+    </demo-snippet>
+</div>
+    </div>
+  </template>
+
+  <script>
+    class MyView2 extends Polymer.Element {
+      static get is() { return 'my-view2'; }
+    }
+
+    window.customElements.define(MyView2.is, MyView2);
+  </script>
+</dom-module>
