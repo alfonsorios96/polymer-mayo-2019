@@ -1,0 +1,122 @@
+<!--<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/iron-icons/device-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">-->
+
+<dom-module id="player-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container{
+        border: 1px solid black;
+                padding: 5px;
+                margin-bottom: 15px;
+                display: flex;
+                justify-content: space-between;
+      }
+    </style>
+    <div class="container">
+      <button on-click="cargarBateria" id="cargar">Cargar</button>
+      <button on-click="desenchufarBateria" id="desenchufar">Desenchufar</button>
+      <dom-if if="[[!isPlaying]]">
+        <template>
+          <button on-click="playMusic">Play</button>
+        </template>
+      </dom-if>
+      <dom-if if="[[isPlaying]]">
+        <template>
+          <div>
+            <button on-click="stopMusic">Stop</button>
+            <span>Underground - Austin Wintory</span>
+          </div>
+        </template>
+      </dom-if>
+    </div>
+  </template>
+
+  <script>
+
+    /**
+     * `phone-component`
+     * Simulacion del reproductor del telefono
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PlayerComponent extends Polymer.Element {
+      static get is() { return 'player-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'player-component'
+          },
+          isPlaying:{
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      cargarBateria(){
+        this.$.desenchufar.disabled = false;
+        this.$.cargar.disabled = true;
+        this.dispatchEvent(new CustomEvent(
+            'bateria-on',
+            {
+              bubbles:false,
+              composed:false,
+              detail:1,
+              cancelable:true
+            }));
+
+      }
+
+      desenchufarBateria(){
+         this.$.desenchufar.disabled = true;
+         this.$.cargar.disabled = false;
+         this.dispatchEvent(new CustomEvent(
+            'bateria-off',
+            {
+              bubbles:false,
+              composed:false,
+              detail:1,
+              cancelable:true
+            }));
+
+      }
+
+      playMusic(){
+        this.isPlaying = true;
+          this.dispatchEvent(new CustomEvent(
+            'spotify-running',
+            {
+              bubbles:false,
+              composed:false,
+              detail:1,
+              cancelable:true
+            }));
+      }
+
+      stopMusic(){
+        this.isPlaying = false;
+        this.dispatchEvent(new CustomEvent(
+          'spotify-stoped',
+          {
+            bubbles:false,
+            composed:false,
+            detail:true
+          }));
+      }
+
+      ready(){
+        super.ready();
+        this.$.desenchufar.disabled = true;
+      }
+    }
+
+    window.customElements.define(PlayerComponent.is, PlayerComponent);
+  </script>
+</dom-module>

@@ -1,0 +1,77 @@
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<dom-module id="top-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container{
+        border: 1px solid black;
+        padding: 5px;
+        margin-bottom: 15px;
+
+                
+      }
+      .firstPlace{
+        justify-content:center;
+        display: flex;
+      }
+      .secondPlaces{
+        justify-content: space-between;
+        display: flex;
+      }
+    </style>
+    <div class="container">
+        <div class="firstPlace">
+            <span>[[first.name]]</span>
+        </div>
+        <div class="secondPlaces">
+            <h1>[[second.name]]</h1>
+            <h1>[[third.name]]</h1>
+        </div>
+    </div>
+  </template>
+
+  <script>
+
+    /**
+     * `phone-component`
+     * Simulacion del reproductor del telefono
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TopComponent extends Polymer.Element {
+      static get is() { return 'top-component'; }
+      static get properties() {
+        return {
+          first:{
+            type: Object,
+            value: () =>{
+              return {};
+            }
+          },
+          second:{
+            type: Object,
+            value: () =>{
+              return {};
+            }
+          },
+          third:{
+            type: Object,
+            value: () =>{
+              return {};
+            }
+          }
+        };
+      }
+
+    }
+
+    window.customElements.define(TopComponent.is, TopComponent);
+  </script>
+</dom-module>

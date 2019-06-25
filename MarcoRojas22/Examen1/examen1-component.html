@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<dom-module id="examen1-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Examen 1 - Brackets</h2>
+    <paper-input value="{{entrada}}"></paper-input>
+    <paper-button on-click="_resultado">Click para desplegar</paper-button>
+  </template>
+
+  <script>
+    /**
+     * `examen1-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class Examen1Component extends Polymer.Element {
+      static get is() { return 'examen1-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'examen1-component'
+          },
+          entrada:{
+            type:String,
+            value:''
+          }
+        };
+      }
+
+      _resultado(){
+        let valor = this.entrada;
+        const matching = () => {
+          while (valor.includes('<>')) {
+            valor = valor.replace(/<>/g, '');
+            console.log(valor);
+          }
+          console.log(valor.length === 0);
+        };
+
+const result = matching();
+        /*let bandera = true;
+        let tamaño = valor.length;
+        let respaldo = [];
+        let respaldo2 ="";
+        let bandera2 = valor;
+        let bandera3 = valor;
+        if(tamaño == 0)
+          console.log(valor + " " + true)
+        else{
+          while(tamaño!=0){
+            tamaño = valor.length;
+            for(let i = 0; i < tamaño; i++){
+              if(tamaño == 1){
+                //console.log(false);
+                break;
+              }
+              else{
+                if(valor.charAt(i+1)!=undefined){
+                  if(valor.charAt(i) == '<' && valor.charAt(i+1) == '>'){
+                    respaldo.push(i);
+                    respaldo.push(i+1);
+                    i++;
+                    bandera = false;
+                  }          
+                }
+              }  
+            }
+            for(var i = 0; i < tamaño; i++){
+              if(!respaldo.includes(i)){
+                respaldo2 += valor.charAt(i);
+              }
+            }
+            console.log(respaldo2);
+            valor = respaldo2;
+            respaldo = [];
+            respaldo2 = "";
+            if(bandera == true){
+              console.log(false);
+              break;
+            }
+            else{
+              bandera = true;
+              if(valor != bandera3)
+                bandera = true;
+              else{
+                console.log(valor);
+                break;}
+              }   
+            }
+          }*/
+        }    
+      
+    }
+
+    window.customElements.define(Examen1Component.is, Examen1Component);
+  </script>
+</dom-module>

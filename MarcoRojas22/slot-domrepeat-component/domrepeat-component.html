@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="domrepeat-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container{
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+      <slot></slot>
+      <div class="container">
+        <dom-repeat id="content" items="[[_items]]" as="item">
+            <template>
+                <iron-icon icon="[[item.icon]]"></iron-icon>
+            </template>
+        </dom-repeat>
+      </div>
+  </template>
+
+  <script>
+    /**
+     * `domrepeat-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class DomrepeatComponent extends Polymer.Element {
+      static get is() { return 'domrepeat-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'domrepeat-component'
+          },
+          _items: {
+              type: Array,
+              value: () => [
+                {
+                  icon: 'menu'
+                },
+                {
+                  icon: 'clear'
+                },
+                {
+                  icon: 'mail'
+                },
+                {
+                  icon:'menu'
+                }
+              ],
+              observer: '_templatize'
+            }
+        };
+      }
+      _templatize() {
+          const slot = this.shadowRoot.querySelector('slot').assignedNodes()[1];
+          const domRepeat = this.shadowRoot.querySelector('#content');
+          domRepeat.appendChild(slot);
+          domRepeat.render();
+      }
+    }
+
+    window.customElements.define(DomrepeatComponent.is, DomrepeatComponent);
+  </script>
+</dom-module>

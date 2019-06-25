@@ -1,0 +1,75 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../components/battery-component.html">
+<link rel="import" href="../components/player-component.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <div class="circle">1</div>
+      <h1>View One</h1>
+        <battery-component id="battery"></battery-component>
+        <player-component on-spotify-running="playerIsRunning" on-spotify-stoped="playerStoped" id="player" on-bateria-on="bateriaOn" on-bateria-off="bateriaOff">
+        </player-component>
+    </div>
+  </template>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+      static get is() { return 'my-view1'; }
+
+      playerIsRunning(e){
+        const player = setInterval(()=>{
+           this.$.battery.restarBateria(e.detail);
+           localStorage.setItem('player', player);
+        },1000);
+      }
+
+       playerStoped(e){
+        clearInterval(localStorage.getItem('player'));
+      }
+
+      bateriaOn(e){
+        const cargaBateria = setInterval(()=>{
+          this.$.battery.sumarBateria(e.detail);
+          clearInterval(localStorage.getItem('descargaBateria'));
+          localStorage.setItem('cargaBateria', cargaBateria);
+        },1000);
+        //clearInterval(localStorage.getItem('descargaBateria'));
+        //console.log(localStorage.getItem('valorDescarga'));
+      }
+
+      bateriaOff(e){
+        const descargaBateria = setInterval(()=>{
+          this.$.battery.restarBateria(e.detail);
+          clearInterval(localStorage.getItem('cargaBateria'));
+          localStorage.setItem('descargaBateria', descargaBateria);
+        },1000);
+        
+        //clearInterval(localStorage.getItem('valorCarga'));
+        //console.log(localStorage.getItem('valorCarga'));
+      }
+
+    }
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>

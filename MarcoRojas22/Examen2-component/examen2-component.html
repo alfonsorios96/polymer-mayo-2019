@@ -1,0 +1,191 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<dom-module id="examen2-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #ranaButton{
+        background-color: chartreuse;
+      }
+      #rocas{
+        background-color: chocolate;
+      }
+      #iniciar{
+        background-color: aquamarine;
+      }
+      .container {
+                display: flex;
+                justify-content: space-between;
+            }
+            .cell {
+                border: 1px solid black;
+                padding: 5px;
+                width: 40px;
+                height: auto;
+            }
+            .logs {
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+      </style>
+        <div class="container">
+            <dom-repeat items="[[nodes]]" as="node">
+                <template>
+                    <div class="cell">
+                        <dom-if if="[[node]]">
+                            <template>
+                                [[node]]
+                            </template>
+                        </dom-if>
+                    </div>
+                </template>
+            </dom-repeat>
+        </div>
+        <div class="logs">
+            <ul>
+                <dom-repeat items="[[logs]]" as="log">
+                    <template>
+                        <li>[[log.date]] : frog moved [[log.move]] by [[log.steps]] steps</li>
+                    </template>
+                </dom-repeat>
+            </ul>
+        </div>
+   <!-- <h2>Examen 2</h2>
+    <div class = "vertical-section-container centered">
+      <dom-repeat items="{{objetos}}" as="objeto" id = "espacios">
+        <template>
+          <paper-button id = "{{objeto}}">
+            {{objeto}}
+          </paper-button>
+        </template>
+      </dom-repeat>
+    </div>
+    <paper-button id = "iniciar" on-click="_iniciarBrincos">
+      Iniciar
+    </paper-button> -->
+  </template>
+
+  <script>
+    /**
+     * `examen2-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class Examen2Component extends Polymer.Element {
+      static get is() { return 'examen2-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'examen2-component'
+          },
+          objetos:{
+            type: Array,
+            value:() => [
+              
+            ]
+          },
+          nodes: {
+              type: Array,
+              value: () => []
+            },
+            steps: {
+              type: Number,
+              value: 14
+            },
+            logs: {
+              type: Array,
+              value: () => []
+            }
+        };
+      }
+
+      /*ready(){
+        super.ready();
+        for(let i = 0; i < 6; i++){
+          if(i == 0)
+            this.objetos[i] = 'Rana';
+          else
+            this.objetos[i] = 'Roca';
+        }
+      }
+
+      _iniciarBrincos(){
+        let ranita = 0;
+          const interval  = setInterval(() =>{
+            //console.log("Hola");
+            const brincos = Math.random();
+            const direccion = Math.random();
+            if(brincos >= 0.5)
+              brincos = 2;
+            else
+              brincos = 1;
+            if(direccion >= 0.5)
+              direccion = -1;
+            else
+              direccion = 1;  
+
+            if(ranita == 0)
+              
+            console.log(Math.random());
+          }, 1000);
+        
+      }*/
+
+      connectedCallback() {
+          super.connectedCallback();
+          this.set('nodes.0', 'frog');
+          for (let i = 1; i < this.steps; i++) {
+            this.set(`nodes.${i}`, null);
+          }
+          setInterval(() => {
+            this.move();
+            this.shadowRoot.querySelector('.logs').scrollBy(0, 1000);
+          }, 1000);
+        }
+        move() {
+          let randomBite = Math.floor((Math.random() * 2));
+          const movement = randomBite === 0 ? 'right' : 'left';
+          randomBite = Math.floor((Math.random() * 2));
+          const steps = randomBite === 0 ? 1 : 2;
+          switch (movement) {
+            case 'left':
+              this._left(steps);
+              break;
+            case 'right':
+              this._next(steps);
+              break;
+          }
+          const current_datetime = new Date();
+          const formatted_date = current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds()
+          this.set('logs', [...this.logs, {
+            date: formatted_date,
+            move: movement,
+            steps
+          }]);
+        }
+        _left(steps) {
+          const currentPosition = this.nodes.indexOf('frog');
+          const nextPosition = currentPosition - steps;
+          this.set(`nodes.${currentPosition}`, null);
+          this.set(`nodes.${nextPosition < 0 ? currentPosition - nextPosition : nextPosition}`, 'frog');
+        }
+        _next(steps) {
+          const currentPosition = this.nodes.indexOf('frog');
+          const nextPosition = currentPosition + steps;
+          const overflow = this.nodes.length - 1 - nextPosition;
+          this.set(`nodes.${currentPosition}`, null);
+          this.set(`nodes.${overflow < 0 ? currentPosition + overflow : nextPosition}`, 'frog');
+        }
+    }
+
+    window.customElements.define(Examen2Component.is, Examen2Component);
+  </script>
+</dom-module>

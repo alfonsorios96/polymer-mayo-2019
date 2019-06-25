@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="slot-component">
+  <template>
+     <slot></slot>
+     <dom-repeat id="content" items="[[_items]]" as="item">
+         <template>
+             <iron-icon icon="[[item.icon]]"></iron-icon>
+         </template>
+     </dom-repeat>
+     </div>
+  </template>
+
+  <script>
+    /**
+     * `slot-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SlotComponent extends Polymer.Element {
+      static get is() { return 'slot-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'slot-component'
+          },
+          botones:{
+            type:Array,
+            value:()=>[
+              {
+                nombre:'clear'
+              },
+              {
+                nombre:'clear'
+              }
+            ],
+            observer: "cargarDatos"
+          }
+        };
+      }
+
+      cargarDatos(){
+        /*var template = Polymer.dom(this).querySelector('template');
+        // Prepare the template
+        this.templatize(template);
+        // Instance the template with an initial data model
+        var instance = this.stamp({myProp: 'initial'});
+        // Insert the instance's DOM somewhere, e.g. light DOM
+        Polymer.dom(this).appendChild(instance.root);
+        // Changing a property on the instance will propagate to bindings
+        // in the template
+        instance.myProp = 'new value';*/
+
+        const slot = this.shadowRoot.querySelector('slot').assignedNodes()[1];
+          const domRepeat = this.shadowRoot.querySelector('#content');
+          domRepeat.appendChild(slot);
+          domRepeat.render();
+      }
+    }
+
+    window.customElements.define(SlotComponent.is, SlotComponent);
+  </script>
+</dom-module>
