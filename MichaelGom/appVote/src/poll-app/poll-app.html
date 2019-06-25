@@ -1,0 +1,120 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../elements/poll-form.html">
+<link rel="import" href="../elements/poll-list.html">
+
+<dom-module id="poll-app">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container {
+                margin-top: 10%;
+            }
+        </style>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}"
+                   pattern="/:template"
+                   data="{{data}}"></app-route>
+        <app-drawer-layout responsive-width="1280px">
+            <app-drawer id="drawer" swipe-open slot="drawer">
+                <app-header-layout has-scrolling-region>
+                    <app-header fixed slot="header">
+                        <app-toolbar>
+                            Menu
+                        </app-toolbar>
+                    </app-header>
+
+                    <a href="register">Crear una encuesta</a>
+                    <a href="polls">Encuestas</a>
+                </app-header-layout>
+            </app-drawer>
+            <div class="pages">
+                <app-header fixed slot="header">
+                    <app-toolbar>
+                        Encuestas de Polymer-Mayo-2019
+                    </app-toolbar>
+                </app-header>
+                <iron-pages selected="{{data.template}}" attr-for-selected="page" fallback-selection="polls">
+                    <poll-form page="register" class="container" on-poll-saved="newPoll"></poll-form>
+                    <poll-list page="polls" polls="[[polls]]" on-option-selected="_optionSelected"></poll-list>
+                </iron-pages>
+            </div>
+
+        </app-drawer-layout>
+    </template>
+
+    <script>
+      /**
+       * @customElement
+       * @polymer
+       */
+      class PollApp extends Polymer.Element {
+        static get is() {
+          return 'poll-app';
+        }
+        static get properties() {
+          return {
+            polls: {
+              type: Array,
+              value: () => []
+            }
+          };
+        }
+        connectedCallback() {
+          super.connectedCallback();
+          const firebaseConfig = {
+            apiKey: "AIzaSyCeKP8bA17IsdM9ujP3E66sJtRciEn8SjI",
+            authDomain: "poll-polymer.firebaseapp.com",
+            databaseURL: "https://poll-polymer.firebaseio.com",
+            projectId: "poll-polymer",
+            storageBucket: "",
+            messagingSenderId: "198303706366",
+            appId: "1:198303706366:web:9a48da8201882793"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.database().ref('polls/').on('value', (snaptshot) => {
+            const response = snaptshot.val();
+            for (const key in response) {
+              const poll = response[key];
+              if (!this.polls.some(item => item.topic === poll.topic)) {
+                this.set('polls', [...this.polls, Object.assign(poll, {key})]);
+              }
+            }
+          });
+        }
+        newPoll(event) {
+          const poll = event.detail;
+          // const newPostKey = firebase.database().ref().child('polls').push().key;
+          // const database = firebase.database().ref(`polls/${newPostKey}`);
+          // database.set(poll);
+          // this.set('polls', [...this.polls, Object.assign(poll, {key})]);
+          this.set('polls', [...this.polls, poll]);
+          this.set('data.template', 'polls');
+        }
+        _optionSelected(event) {
+          const optionSelected = event.detail.voted;
+          const pollSelected = event.detail.poll;
+          for (const index in pollSelected.options) {
+            const _element = pollSelected.options[index];
+            if (optionSelected === _element.label) {
+              firebase.database().ref(`polls/${pollSelected.key}/options/${index}/rating`).set(_element.rating + 1);
+            }
+          }
+        }
+      }
+      window.customElements.define(PollApp.is, PollApp);
+    </script>
+</dom-module>

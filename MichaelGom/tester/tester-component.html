@@ -1,0 +1,55 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="./bower_components/paper-input/paper-input.html">
+<link rel="import" href="./bower_components/paper-button/paper-button.html">
+
+<dom-module id="tester-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-input label="a"></paper-input>
+    <paper-input label="b"></paper-input>
+    <paper-button on-click="rest"></paper-button>
+  </template>
+
+  <script>
+    /**
+     * `tester-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TesterComponent extends Polymer.Element {
+      static get is() { return 'tester-component'; }
+      static get properties() {
+        return {
+          numA:{
+            type: String,
+            value: ''
+          },
+          numB:{
+            type:String,
+            value: ''
+          }
+        };
+      }
+
+      rest() {
+          this.dispatchEvent(new CustomEvent('rest-done', {
+            detail: this.numA - this.numB
+          }));
+      }
+      sum(){
+        this.dispatchEvent(new CustomEvent('sum-done',{
+          detail: this.numA + this.numB
+        }));
+      }
+    }
+
+    window.customElements.define(TesterComponent.is, TesterComponent);
+  </script>
+</dom-module>

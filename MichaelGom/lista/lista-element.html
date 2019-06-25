@@ -1,0 +1,87 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="./demo/locales/locales.json">
+
+<dom-module id="lista-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-dropdown-menu label="seleccione idioma"  no-animations>
+      <paper-listbox slot="dropdown-content" selected="0">
+        <dom-repeat items="[[languages]]" as="language" index-as="my-index">
+          <template>
+            <paper-item data-key="[[language.key]]" on-click="_langSelected">[[language.value]]</paper-item>
+          </template>
+        </dom-repeat>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <h2></h2>
+  </template>
+
+  <script>
+    /**
+     * `lista-element`
+     * es un componente para cambiar lenguaje
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ListaElement extends Polymer.Element {
+      static get is() { return 'lista-element'; }
+      static get properties() {
+        return {
+          languages:{
+            type: Array,
+            value: [{
+              key: 'en',
+              value: 'english'
+              },{
+                key:'esp',
+                value: 'español' 
+              }
+              ]
+          },
+          locales: {
+            type: Map,
+            value: [
+              'en',{ 
+                name : 'school'
+                },
+              'esp',{
+                name : 'escuela'
+              }
+            ]
+          },
+          lang:{
+            type:String,
+            valu:'',
+            observe: 'changeLang'
+          }
+          prop1: {
+            type: String,
+            value: 'lista-element'
+          }
+        };
+      }
+
+
+
+      _langSelected(event){
+        const key = event.model.language.key;
+        this.set('lang', key);
+      }
+
+      async _langChanged(){
+        const response = await.fetch('')   
+      }
+
+    }
+    window.customElements.define(ListaElement.is, ListaElement);
+  </script>
+</dom-module>

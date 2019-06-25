@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="prueba-elemnt">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .cButton{
+        background-color:  cornflowerblue;
+        height: 100px;
+        right: 100px;
+      }
+
+    </style>
+    
+    <button on-click="clicked" class="cButton">{{label}}</button>
+    
+  </template>
+
+  <script>
+    /**
+     * `prueba-elemnt`
+     * es una prueba polymer
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PruebaElemnt extends Polymer.Element {
+      static get is() { return 'prueba-elemnt'; }
+      static get properties() {
+        return {
+          label: {
+            type: String,
+            value: 'world'
+          }
+        };
+      }
+
+      
+
+    }
+
+    window.customElements.define(PruebaElemnt.is, PruebaElemnt);
+  </script>
+</dom-module>
