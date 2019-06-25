@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="languages-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `languages-element`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class LanguagesElement extends Polymer.Element {
+      static get is() { return 'languages-element'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'languages-element'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(LanguagesElement.is, LanguagesElement);
+  </script>
+</dom-module>

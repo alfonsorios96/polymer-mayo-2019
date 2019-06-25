@@ -1,8 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icons/device-icons.html">
 <link rel="import" href="../iron-icons/av-icons.html">
-<link rel="import" href="../paper-button/paper-button.html">
-
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <dom-module id="phone-component">
     <template>
     <style>
@@ -22,7 +21,7 @@
       }
 
       .header {
-        border: 1px solid red;
+
         width: 550px;
         height: 50px;
         display: flex;
@@ -30,13 +29,22 @@
         justify-content: space-between;
       }
 
-      .playButton {
+      .button {
         background-color: darkred;
         color: white;
       }
 
-      .battery {
-        border: 1px solid yellow;
+      iron-icon {
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+      }
+
+      paper-icon-button {
+        height: 40px;
+        width: 40px;
+      }
+
+      #battery {
         width: 60px;
         height: 40px;
         display: flex;
@@ -45,7 +53,6 @@
       }
 
       .signalIcon {
-        border: 1px solid green;
         width: 40px;
         height: 40px;
         display: flex;
@@ -72,7 +79,7 @@
         align-items: center;
       }
 
-      .low-battery {
+      .lower-battery {
         background-color: darkred;
         color: white;
       }
@@ -87,11 +94,10 @@
         color: white;
       }
     </style>
-
     <div class="container">
       <section>
         <span class="header">
-          <span class="battery">
+          <span id="battery">
             <iron-icon icon="device:battery-full"></iron-icon>
             [[batteryState]]%
           </span>
@@ -106,22 +112,24 @@
           <section class="music-title">
             <h3>Nookie - Limp Bizkit</h3>
           </section>
-          <section class="play-pause-actions">
-            <dom-if if="![[_isPlaying]]">
-              <template class="playIcon">
-                <iron-icon icon="av:play-circle-filled" on-click="play"></iron-icon>
-              </template>
-    </dom-if>
-    <dom-if if="[[_isPlaying]]">
-        <template class="playIcon">
-                <iron-icon icon="av:pause-circle-filled" on-click="stop"></iron-icon>
-              </template>
-    </dom-if>
 
-    </section>
-    </span>
-    </section>
-    <paper-button class="playButton" on-click="playingMusic">PLAY</paper-button>
+          <section class="play-paused-actions">
+
+            <dom-if if="[[!_isPlaying]]">
+              <template>
+                <paper-icon-button icon="av:play-circle-filled" on-click="play"></paper-icon-button>
+              </template>
+            </dom-if>
+
+            <dom-if if="[[_isPlaying]]">
+              <template>
+                <paper-icon-button icon="av:pause-circle-filled" on-click="paused"></paper-icon-button>
+              </template>
+            </dom-if>
+
+          </section>
+        </span>
+      </section>
     </div>
     </template>
 
@@ -135,13 +143,13 @@
                     charging: {
                         type: Boolean,
                         value: false,
-                        refletToAttribute: true,
+                        reflectToAttribute: true,
                         notify: true,
                         observer: '_charging'
                     },
                     batteryState: {
                         type: Number,
-                        value: 60,
+                        value: 50,
                         observer: '_battery'
                     },
                     _isPlaying: {
@@ -150,24 +158,22 @@
                         observer: '_charging'
                     }
                 };
-                console.log(this.$)
-
             }
 
             play() {
                 this.dispatchEvent(new CustomEvent('playingMusic'));
-                this.set(_isPlaying, true);
+                this.set('_isPlaying', true);
                 const interval = setInterval(() => {
                     if (this.batteryState > 0) {
                         this.set('bateryState', this.batteryState - 1);
                     }
-                    localStorage.setItem('playingMusic', `${interval}`);
+                    localStorage.setItem('play', `${interval}`);
                 }, 1000);
             }
 
-            stop() {
-                this.set(_isPlaying, false);
-                clearInterval(localStorage.getItem('playingMusic'));
+            paused() {
+                this.set('_isPlaying', false);
+                clearInterval(localStorage.getItem('play'));
             }
 
             _battery() {
@@ -181,9 +187,8 @@
                 if (this.batteryState > 80) {
                     statusBattery = 'full-battery'
                 }
-                console.log(this)
-                this.$.batteryState.classList.remove('low-battery', 'good-battery-level', 'full-battery');
-                //this.$.battery.classList.add(statusBattery);
+                this.$.battery.classList.remove('lower-battery', 'good-battery-level', 'full-battery');
+                this.$.battery.classList.add(statusBattery);
             }
 
             _charging() {
