@@ -39,8 +39,8 @@
       }
       submit(){        
         const user={
-          userName=this.$.userInput.value,
-          passUser=this.$.passwordInput.value
+          userName :this.$.userInput.value,
+          passUser: this.$.passwordInput.value
         }
        
         this.dispatchEvent(new CustomEvent('request-login', {
