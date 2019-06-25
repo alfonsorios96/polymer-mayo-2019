@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-card/paper-card.html">
 
 <dom-module id="top-component">
   <template>
@@ -6,8 +7,36 @@
       :host {
         display: block;
       }
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .row:nth-child(2) {
+        justify-content: space-between;
+      }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    <div class="container">
+
+        <div class="row">
+            <paper-card class="box" image="[[first.picture.large]]">
+                <div class="first"><span>1st</span></div>
+                <h2>[[first.name]]</h2>
+            </paper-card>
+        </div>
+        <div class="row">
+            <paper-card class="box" image="[[second.picture.large]]">
+                <div class="second"><span>2nd</span></div>
+                <h2>[[second.name]]</h2>
+            </paper-card>
+            <paper-card class="box" image="[[third.picture.large]]">
+                <div class="third"><span>3rd</span></div>
+                <h2>[[third.name]]</h2>
+            </paper-card>
+        </div>
+
+  </div>
   </template>
 
   <script>
@@ -23,9 +52,23 @@
       static get is() { return 'top-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'top-component'
+          first: {
+            type: Object,
+            value: () => {
+              return {};
+            }
+          },
+          second: {
+            type: Object,
+            value: () => {
+              return {};
+            }
+          },
+          third: {
+            type: Object,
+            value: () => {
+              return {};
+            }
           }
         };
       }
