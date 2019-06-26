@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../list-component/list-component.html">
+<link rel="import" href="../top-component/top-component.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
 
 <dom-module id="ranking-component">
   <template>
@@ -6,8 +9,23 @@
       :host {
         display: block;
       }
+      .container {
+
+      }
+
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    <iron-ajax id="dp" auto url="https://randomuser.me/api/?results=50" handle-as="json"
+      on-response="_responseSuccess"></iron-ajax>
+    <div class="container">
+        <top-component first="[[top.first]]" second="[[top.second]]" third="[[top.third]]"></top-component>
+        <list-component users="[[users]]" on-order-changed="orderChanged"></list-component>
+    </div>
   </template>
 
   <script>
@@ -23,11 +41,32 @@
       static get is() { return 'ranking-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'ranking-component'
+          users: {
+            type: Array,
+            value: () => []
+          },
+          top: {
+            type: Object,
+            value: {}
           }
         };
+      }
+
+      orderChanged(event) {
+        this.set('top', event.detail);
+      }
+
+      _responseSuccess() {
+        const data = this.$.dp.lastResponse;
+        const users = data.results.map(user => {
+          return {
+            name: `${user.name.first} ${user.name.last}`,
+            picture: user.picture,
+            votes: 0,
+            ranking: 0
+          };
+        });
+        this.set('users', [...users]);
       }
     }
 

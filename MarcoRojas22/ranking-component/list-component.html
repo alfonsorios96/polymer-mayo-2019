@@ -1,0 +1,118 @@
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<dom-module id="list-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container{
+        border: 1px solid black;
+                padding: 5px;
+                margin-bottom: 15px;
+                display: flex;
+                justify-content: space-between;
+      }
+      .image-thumb {
+                margin-right: 10px;
+            }
+            .user-item {
+                display: flex;
+                justify-content: space-between;
+            }
+            .votarBtn{
+                background-color: #0f9d58;
+                color: white;
+            }
+            .cancelarBtn{
+              background-color:tomato;
+              color: white;
+            }
+    </style>
+    <div class="container">
+      <paper-listbox>
+        <dom-repeat items="[[users]]" as="user">
+            <template>
+                <paper-item class="user-item">
+                    <span class="image-thumb">
+                        <img src="[[user.picture.thumbnail]]" alt="[[user.name]]">
+                    </span>
+                    [[user.name]] ([[user.votes]])
+                    <paper-button on-click="_vote" class="votarBtn">Votar</paper-button>
+                    <dom-if if="[[user.bandera]]">
+                      <template>
+                        <paper-button on-click="_desvotar" class="cancelarBtn">Cancelar</paper-button>
+                      </template>
+                    </dom-if>
+                </paper-item>
+            </template>
+        </dom-repeat>
+    </paper-listbox>
+    </div>
+  </template>
+
+  <script>
+
+    /**
+     * `phone-component`
+     * Simulacion del reproductor del telefono
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ListComponent extends Polymer.Element {
+      static get is() { return 'list-component'; }
+      static get properties() {
+        return {
+          users: {
+            type: Array,
+            value: () => []
+          }
+        };
+      }
+      
+      connectedCallback() {
+          super.connectedCallback();
+          this._usersChanged();
+        }
+        _vote(event) {
+          const _element = event.model.user;
+          const index = this.users.indexOf(_element);
+          this.set(`users.${index}.votes`, _element.votes + 1);
+          if(`users.${index}.votes` > 0)
+            this.set(`users.${index}.bandera`, false);
+          else
+            this.set(`users.${index}.bandera`, true);
+          this._usersChanged();
+        }
+        _usersChanged() {
+          const newOrder = this.users.sort((a, b) => b.votes - a.votes);
+          this.set('users', [...newOrder]);
+          this.dispatchEvent(new CustomEvent('order-changed', {
+            detail: {
+              first: this.users[0],
+              second: this.users[1],
+              third: this.users[2]
+            }
+          }));
+        }
+        _desvotar(event){
+          const _element = event.model.user;
+          const index = this.users.indexOf(_element);
+          this.set(`users.${index}.votes`, _element.votes - 1);
+          if(`users.${index}.votes` > 0)
+            this.set(`users.${index}.bandera`, true);
+          else
+            this.set(`users.${index}.bandera`, false);
+          this._usersChanged();
+        }
+    }
+
+    window.customElements.define(ListComponent.is, ListComponent);
+  </script>
+</dom-module>

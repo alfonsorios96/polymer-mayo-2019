@@ -1,0 +1,61 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="./bower_coponents/paper-item/paper-item.html">
+<link rel="import" href="./bower_components/paper-listbox/paper-listbox.html">
+<dom-module id="dropdown-menu">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+     <paper-dropdown-menu label="Select language" no-animations="true">
+      <paper-listbox slot="dropdown-content" selected="0">
+        <dom-repeat items="{{languages}}">
+          <template>
+            <paper-item on-click = "_cambio">{{item.value}}</paper-item>
+          </template>
+        </dom-repeat>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </template>
+
+  <script>
+    /**
+     * `dropdown-menu`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class DropdownMenu extends Polymer.Element {
+      static get is() { return 'dropdown-menu'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'dropdown-menu'
+          },
+          languages:{
+            value(){
+              return[
+              {key:'en', value:'English'},
+              {key:'es', value:'Español'},
+              {key:'fra', value:'Francais'},
+              {key:'jap', value:'日本人の'}
+              ]
+            }
+          }
+        };
+      }
+
+      _cambio(){
+        alert("Cambio");
+      }
+    }
+
+    window.customElements.define(DropdownMenu.is, DropdownMenu);
+  </script>
+</dom-module>

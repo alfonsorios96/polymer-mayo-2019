@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-button/paper-button.html">
 
 <dom-module id="list-component">
   <template>
@@ -14,28 +17,20 @@
         justify-content: space-between;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    <paper-listbox>
+      <dom-repeat items="[[users]]" as="user">
+          <template>
+              <paper-item class="container__list">
+                  <span class="image-thumb">
+                      <img src="[[user.picture.thumbnail]]" alt="[[user.name]]">
+                  </span>
+                  <p>[[user.name]] ([[user.votes]])</p>
+                  <paper-button on-click="_vote">Votar</paper-button>
+              </paper-item>
+          </template>
+      </dom-repeat>
+    </paper-listbox>
 
-
-    <dom-repeat items="[[users]]" as="user">
-      <template>
-        <div class="container__list">
-          <div>
-            [[user.value]]
-          </div>
-          <div>
-            Juan perez
-          </div>
-          <div>
-            <button on-click="_isVoted">
-              vote
-            </button>
-          </div>
-        </div>
-      </template>
-    </dom-repeat>
-
-    
 
   </template>
 
@@ -52,19 +47,35 @@
       static get is() { return 'list-component'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'list-component'
-          },
           users: {
             type: Array,
             value: () => []
-          },
-          users: {
-            type: Number,
-            value: 14
-          },
+          }
         };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._usersChanged();
+      }
+
+      _vote(event) {
+        const _element = event.model.user;
+        const index = this.users.indexOf(_element);
+        this.set(`users.${index}.votes`, _element.votes + 1);
+        this._usersChanged();
+      }
+
+      _usersChanged() {
+        const newOrder = this.users.sort((a, b) => b.votes - a.votes);
+        this.set('users', [...newOrder]);
+        this.dispatchEvent(new CustomEvent('order-changed', {
+          detail: {
+            first: this.users[0],
+            second: this.users[1],
+            third: this.users[2]
+          }
+        }));
       }
     }
 

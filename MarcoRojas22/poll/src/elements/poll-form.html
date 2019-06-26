@@ -1,0 +1,136 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="poll-form">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            h3 {
+                text-align: center;
+            }
+
+            .container {
+                width: 800px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .options {
+                max-height: 200px;
+                overflow-y: auto;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            paper-card {
+                padding: 15px;
+                display: flex;
+                width: 800px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            paper-button {
+                margin: 5px;
+            }
+
+            /*
+                COLORS
+            */
+
+            .success {
+                background-color: #00c853;
+                color: white;
+            }
+
+            .info {
+                background-color: #4285F4;
+                color: white;
+            }
+        </style>
+        <paper-card>
+            <div class="container">
+                <h3>Crear encuesta</h3>
+                <paper-input id="topic" label="Introduzca el tema de su encuesta"></paper-input>
+
+                <div class="options">
+                    <dom-repeat items="[[_elements]]" as="option">
+                        <template>
+                            <paper-input label="[[option.label]]" class="input-option">
+                                <paper-icon-button icon="clear" slot="suffix"
+                                                   on-click="_removeOption">
+                                </paper-icon-button>
+                            </paper-input>
+                        </template>
+                    </dom-repeat>
+                </div>
+
+                <paper-button class="info" on-click="addOption">Agregar opción</paper-button>
+                <paper-button class="success" on-click="save">Guardar</paper-button>
+            </div>
+        </paper-card>
+    </template>
+
+    <script>
+      /**
+       * @customElement
+       * @polymer
+       */
+      class PollForm extends Polymer.Element {
+        static get is() {
+          return 'poll-form';
+        }
+
+        static get properties() {
+          return {
+            _elements: {
+              type: Array,
+              value: () => []
+            }
+          };
+        }
+
+        addOption() {
+          this.set('_elements', [...this._elements, {
+            label: `Opción ${this._elements.length + 1}`
+          }]);
+        }
+
+        save() {
+          let options = [];
+          for (const option of this.shadowRoot.querySelectorAll('.input-option')) {
+            options = [...options, option.value];
+          }
+          const poll = {
+            topic: this.$.topic.value,
+            options: options.map(option => Object.assign({
+              label: option,
+              rating: 0
+            }))
+          };
+          this.set('_elements', []);
+          this.dispatchEvent(new CustomEvent('poll-saved', {detail: poll}));
+        }
+
+        _removeOption(event) {
+          this.set('_elements', this._elements
+            .filter(element => event.model.option.label !== element.label)
+            .map((element, index) => Object.assign(element, {label: `Opción ${index + 1}`})));
+        }
+      }
+
+      window.customElements.define(PollForm.is, PollForm);
+    </script>
+</dom-module>

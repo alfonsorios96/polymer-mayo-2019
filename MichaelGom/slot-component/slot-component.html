@@ -1,0 +1,62 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="slot-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container{
+        width:20px;
+        height:20px;
+      }
+
+    </style>
+    <h2>Hello!</h2>
+    <slot></slot>
+    <dom-repeat id="content" items="[[item]]" as="ite">
+    </dom-repeat>
+  
+  </template>
+  <script>
+    /**
+     * `slot-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class SlotComponent extends Polymer.Element {
+      static get is() { return 'slot-component'; }
+      static get properties() {
+        return {
+          item: {
+            type: Array,
+            value: () =>[
+              {
+                icon: "suffix"
+              },
+              {
+                icon: "preffix"
+              },
+              {
+                icon: "menu"
+              }
+            ],
+            observer: "temp"
+          }
+        };
+      }
+
+      temp(){
+        const slots = this.shadowRoot.querySelector('slot').assignedNodes()[1];
+        const domCicle = this.shadowRoot.querySelector('#content');
+        domCicle.appendChild(slots);
+        domCicle.render();
+      }
+    }
+   
+
+  </script>
+</dom-module>

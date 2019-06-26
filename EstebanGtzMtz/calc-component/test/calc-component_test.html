@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>calc-component test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../calc-component.html">
+</head>
+
+<body>
+
+    <test-fixture id="fixture1">
+        <template>
+            <calc-component a="0" b="2"></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture2">
+        <template>
+            <calc-component a="2" b="2"></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture3">
+        <template>
+            <calc-component a="-3" b="-1"></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture4">
+        <template>
+            <calc-component a="-5" b="7"></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture5">
+        <template>
+            <calc-component a="5"></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture6">
+        <template>
+            <calc-component a=3.2 b=6.8></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture7">
+        <template>
+            <calc-component a=3.14159 b=2.71828></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture8">
+        <template>
+            <calc-component a=5 b=-7></calc-component>
+        </template>
+    </test-fixture>
+
+    <test-fixture id="fixture9">
+        <template>
+            <calc-component></calc-component>
+        </template>
+    </test-fixture>
+
+    <script>
+        suite('calc-component', () => {
+
+            test('a,b >= 0', (done) => {
+                const calc = fixture('fixture1');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(-2, c);
+                    done();
+                });
+                calc.rest();
+            });
+
+            test('a,b >= 0', (done) => {
+                const calc = fixture('fixture1');
+                calc.addEventListener('sum-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(2, c);
+                    done();
+                });
+                calc.sum();
+            });
+
+            test('a=b', () => {
+                const calc = fixture('fixture2');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(0, c);
+                });
+                calc.rest();
+            });
+
+            test('a=b', () => {
+                const calc = fixture('fixture2');
+                calc.addEventListener('sum-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(4, c);
+                });
+                calc.sum();
+            });
+
+            test('a!=b ^ a,b < 0 ', () => {
+                const calc = fixture('fixture3');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(-2, c);
+                });
+                calc.rest();
+            });
+
+            test('a!=b ^ a,b < 0 ', () => {
+                const calc = fixture('fixture3');
+                calc.addEventListener('sum-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(-4, c);
+                });
+                calc.sum();
+            });
+
+            test('a<0 ^ b>0', () => {
+                const calc = fixture('fixture4');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(-12, c);
+                });
+                calc.rest();
+            });
+
+            test('a<0 ^ b>0', () => {
+                const calc = fixture('fixture4');
+                calc.addEventListener('sum-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(2, c);
+                });
+                calc.sum();
+            });
+
+            test('a', () => {
+                const calc = fixture('fixture5');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(5, c);
+                });
+                calc.rest();
+            });
+
+            test('a < b', () => {
+                const calc = fixture('fixture6');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(-3.6, c);
+                });
+                calc.rest();
+            });
+
+            test('pi - e', () => {
+                const calc = fixture('fixture7');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(0.42331, c);
+                });
+                calc.rest();
+            });
+
+            test('a>0 ^ b<0', () => {
+                const calc = fixture('fixture8');
+                calc.addEventListener('rest-done', event => {
+                    const c = event.detail;
+                    assert.strictEqual(-2, c);
+                });
+                calc.rest();
+            });
+
+            test('a || b > Number.max_safe_integer + 1', () => {
+                const calc = fixture('fixture9');
+                calc.addEventListener('rest-done', event => {
+                    const a = Number.MAX_SAFE_INTEGER * Number.MAX_SAFE_INTEGER;
+                    calc.a = a;
+                    const c = event.detail;
+                    let result = '81,129,638,414,606,663,681,390,495,662,081';
+                    result = result.replace(',', '');
+                    result = Number(result);
+                    assert.strictEqual(result, c);
+                });
+                calc.rest();
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

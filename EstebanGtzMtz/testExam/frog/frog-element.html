@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="frog-element">
+    <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  <h2>[[jump]]</h2>
+  </template>
+
+    <script>
+        class FrogElement extends Polymer.Element {
+            static get is() {
+                return 'frog-element';
+            }
+            static get properties() {
+                return {
+                    rocks: {
+                        type: Array,
+                        value: [0, 0, 0, 0, 0]
+                    },
+                    jumps: {
+                        type: Number,
+                        value: 0
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(FrogElement.is, FrogElement);
+    </script>
+</dom-module>

@@ -1,0 +1,75 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="shared-styles.html">
+<link re="import" href="../src/agregarOpc-component/opcion-component.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      paper-input {
+        max-width: 400px;
+        margin: auto;
+      }
+
+      #button-addOpc{
+        background-color: darkseagreen;
+        height: 30px;
+        width: 250px;
+      }
+
+      #button-addOpc:active{
+        background-color: darkolivegreen;
+      }
+
+    </style>
+
+    <div class="card">
+      <form style=" height: 50px;">
+        <div style=" text-align: center; background-color:  darkseagreen; ">
+          Nueva Encuesta  
+        </div>
+      </form>
+
+      <paper-input style="font-size: 18px;" always-float-label label="Nombre de la Encuesta"></paper-input>
+        <paper-input label="opcion"></paper-input>
+        <dom-if if="true">
+            <paper-input label="opcion"></paper-input>
+        </dom-if>
+        <button id="button-addOpc" on-click="agregarPaper">Agregar Opcion</button><button id="button-addOpc">Crear Encuesta</button>
+        
+        <template is="dom-repeat" items="[[cervezas]]" as="cerveza">
+            <h2>[[cerveza.name]]</h2>
+            <p>Tipo de cerveza: [[cerveza.type]]</p>
+          </template>
+        </template>
+      </div>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+      static get is() { return 'my-view1'; }
+
+      agregaPaper(){
+        return true;
+      }
+
+    }
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>

@@ -1,0 +1,83 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="meet-up">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <slot id="slot"></slot>
+    <div class="content">
+
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `meet-up`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class MeetUp extends Polymer.Element {
+      static get is() { return 'meet-up'; }
+      static get properties() {
+        return {
+          items: {
+            type: Array,
+            value: () => [],
+            observer: 'render'
+          },
+          as:{
+            type: String,
+            value: 'item'
+          },
+          index:{
+            type: String,
+            value: 'index'
+          }
+        };
+      }
+
+      render(){
+        const template = this.shadowRoot.querySelector('#slot');
+        const container = this.shadowRoot.querySelector('.content');
+        container.innerHTML  = '';
+        const nodes = template.assignedNodes();
+        for(const node of nodes){
+          if(node.nodeName === 'TEMPLATE'){
+            this._iterateNode(node);
+            this.dispatchEvent(new CustomEvent('dom-changed',{
+              detail: this.items
+            }));
+          }
+        }
+        
+      }
+
+      _iterateNode(template){
+        for(const index in this.items){
+          const _element = this.items[index];
+          const modelInstance = {};
+          modelInstance[this.as] = _element;
+          modelInstance[this.index] = Number(index);
+          const TemplateClass = Polymer.Templatize.templatize(template);
+          const instance = new TemplateClass(modelInstance);
+          const customTemplate  = this.shadowRoot.querySelector('.content');
+          for(const child of instance.root.children){
+            child.addEventListener('click', event =>{
+              event.model = modelInstance;
+            }, true);
+          }
+          customTemplate.appendChild(instance.root);
+          
+        }
+      }
+    }
+
+    window.customElements.define(MeetUp.is, MeetUp);
+  </script>
+</dom-module>

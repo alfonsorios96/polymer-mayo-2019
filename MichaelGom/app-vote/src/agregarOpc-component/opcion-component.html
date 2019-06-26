@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="opcion-component">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+    </style>
+
+    <button>[[prop1]]</button>
+
+  </template>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+      static get is() { 
+          return {
+            prop1:{
+                type:String,
+                value:"Agregar Opcion"
+            }
+
+          }; 
+          
+          }
+    }
+
+
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>

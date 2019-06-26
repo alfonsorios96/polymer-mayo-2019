@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>tester-component test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../tester-component.html">
+  </head>
+  <body>
+
+    <test-fixture id="fixture1">
+      <template>
+          <tester-component numA="2" numB="2"></tester-component>
+      </template>
+  </test-fixture>
+
+  <test-fixture id="fixture1Suma">
+    <template>
+        <tester-component numA="5" numB="5"></tester-component>
+    </template>
+  </test-fixture>
+    <script>
+      suite('tester-component', () => {
+
+
+      test('a,b >=0', (done) =>{
+        const cal = fixture('fixture1Suma');
+        cal.addEventListener('sum-done', event=>{
+          const c = event.detail;
+          assert.strictEqual(10,c);
+          done();
+        });
+        cal.sum();
+      });
+     /*    test('numA,numB >= 0', (done) => {
+      const calc = fixture('fixture1');
+      calc.addEventListener('rest-done', event => {
+        const c = event.detail;
+        assert.strictEqual("0", c);
+        done();
+      });
+      calc.rest();
+    });*/
+
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel ="import" href="./top-component.html">
+<link rel ="import" href="./list-component.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<dom-module id="ranking-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <iron-ajax id="dp" auto url="https://randomuser.me/api/?results=50" handle-as="json"
+    on-response="_responseSuccess"></iron-ajax>
+    <top-component first="[[top.first]]" second="[[top.second]]" third="[[top.third]]"></top-component>
+    <list-component users="[[users]]" on-order-changed="orderChanged"></list-component>
+  </template>
+
+  <script>
+    /**
+     * `ranking-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class RankingComponent extends Polymer.Element {
+      static get is() { return 'ranking-component'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'ranking-component'
+          },
+          users: {
+            type: Array,
+            value: () => []
+          },
+          top:{
+            type: Object,
+            value: {}
+          }
+        };
+      }
+
+      _responseSuccess(){
+        const data = this.$.dp.lastResponse;
+        const users = data.results.map(user => {
+        return {
+          name: `${user.name.first} ${user.name.last}`,
+          picture: user.picture,
+          votes: 0,
+          ranking: 0,
+          bandera:false
+          };
+        });
+        this.set('users', [...users]);
+      }
+
+      orderChanged(event){
+        this.set('top', event.detail);
+      }
+    }
+
+    window.customElements.define(RankingComponent.is, RankingComponent);
+  </script>
+</dom-module>

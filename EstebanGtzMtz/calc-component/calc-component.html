@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="calc-component">
+    <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+    <script>
+        /**
+         * `calc-component`
+         * 
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class CalcComponent extends Polymer.Element {
+            static get is() {
+                return 'calc-component';
+            }
+            static get properties() {
+                return {
+                    a: {
+                        type: Number,
+                        value: 0
+                    },
+                    b: {
+                        type: Number,
+                        value: 0
+                    }
+                };
+            }
+            rest() {
+                this.dispatchEvent(new CustomEvent('rest-done', {
+                    detail: this.a - this.b
+                }));
+            }
+
+            sum() {
+                this.dispatchEvent(new CustomEvent('sum-done', {
+                    detail: this.a + this.b
+                }));
+            }
+
+        }
+
+        window.customElements.define(CalcComponent.is, CalcComponent);
+    </script>
+</dom-module>

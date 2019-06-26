@@ -1,0 +1,161 @@
+<link rel="import" href="..bower_component/polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../iron-icons/device-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="./player-component.html">
+<link rel="import" href="./battery-component.html">
+
+<dom-module id="phone-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      #player{
+        border: 3px solid blue;
+        padding: 10px;
+      }
+      iron-icon {
+        --iron-icon-height: 20px;
+        --iron-icon-width: 20px;    
+      }
+
+      .container {
+        border: 1px solid black;
+        padding: 10px;  
+      }
+
+      .header{
+        border: 3px solid blue;
+        padding: 5px;
+        display: flex;
+        justify-content: space-between
+      }
+
+      #battery {
+        border: 1px solid black;
+        width: 70px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        color: black;
+        font:white;
+      }
+      .low-battery {
+        background-color: red;
+        color: white;
+      }
+      .stable-battery {
+        background-color: yellow;
+        color: white;
+      }
+      .full-battery {
+        background-color: green;
+        color: white;
+      }
+
+    </style>
+    <section>
+        <battery-component on-battery-Sta="chargingBattery" on-inbattery-Sta="inchargingBattery"></battery-component>
+      </section>
+    <div class="container">
+      <section class="header">
+          <div id="battery">
+              <span>
+                  <iron-icon icon="device:battery-full"></iron-icon>
+                  [[batteryStatus]]%
+              </span>
+          </div>
+          <span><iron-icon icon="device:signal-cellular-4-bar"></iron-icon></span>
+      </section>
+      <section>
+          <player-component label="play" on-player-listening="runningAppPlay" on-stop-listening="stopAppPlay"></player-component>
+
+      </section>
+  </div>
+  </template>
+
+  <script>
+    /**
+     * `phone-component`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PhoneComponent extends Polymer.Element {
+      static get is() { 
+        return 'phone-component'; 
+      }
+          static get properties() {
+          return {
+            batteryStatus: {
+              type: Number,
+              value: 100,
+              observer: 'statusBattery'
+            },
+          }
+        };
+
+        runningAppPlay(e){
+            const interval = setInterval(() => {
+              if(this.batteryStatus - e.detail>=0){
+                this.set('batteryStatus', this.batteryStatus - e.detail);
+                localStorage.setItem('interval', `${interval}`);
+            }else{
+              alert("your phone have 0% battery");
+              clearInterval(localStorage.getItem('interval'));
+            }
+            }, 1000); 
+          }
+
+          chargingBattery(e) {
+            console.log(e.detail);
+            if(this.batteryStatus<100){
+              const interval = setInterval(() => {
+                this.set('batteryStatus', this.batteryStatus + 1);
+              localStorage.setItem('interval', `${interval}`);
+              }, 1000);
+            }else{
+              clearInterval(localStorage.getItem('interval'));
+              alert("desconecte cargador del dispositivo");  
+            }
+          } 
+
+          inchargingBattery(e){
+            this.set('batterryStatus', this.batteryStatus);
+            alert("se desconecto el cargador de dispositivo");
+            clearInterval(localStorage.getItem('interval'));
+          }
+        
+      
+
+          stopAppPlay(e){
+            console.log("detener");
+            this.set('batteryStatus',this.batteryStatus);
+            alert("aplicacion detenida");
+            clearInterval(localStorage.getItem('interval'));
+          }
+
+      statusBattery() {
+          let battery = '';
+          if (this.batteryStatus < 20) {
+            battery = 'low-battery';
+          }
+          if (this.batteryStatus >= 20 && this.batteryStatus <= 80) {
+            battery = 'stable-battery';
+          }
+          if (this.batteryStatus > 80) {
+            battery = 'full-battery';
+          }
+          this.$.battery.classList.remove('low-battery', 'stable-battery', 'full-battery');
+          this.$.battery.classList.add(battery);
+        }
+
+
+      }
+
+    window.customElements.define(PhoneComponent.is, PhoneComponent);
+  </script>
+</dom-module>
